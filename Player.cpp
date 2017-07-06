@@ -10,8 +10,6 @@ Player::Player() {
   // Set initial key bindings
   keyBinding[sf::Keyboard::Left] = Action::MOVE_LEFT;
   keyBinding[sf::Keyboard::Right] = Action::MOVE_RIGHT;
-  keyBinding[sf::Keyboard::Up] = Action::MOVE_UP;
-  keyBinding[sf::Keyboard::Down] = Action::MOVE_DOWN;
 
   // Set initial action bindings
   initializeActions();
@@ -70,8 +68,6 @@ bool Player::isRealtimeAction(Player::Action action) {
   switch (action) {
     case MOVE_LEFT:
     case MOVE_RIGHT:
-    case MOVE_DOWN:
-    case MOVE_UP:
       return true;
     default:
       return false;
