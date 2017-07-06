@@ -1,0 +1,13 @@
+#ifndef SFML_TEMPLATE_STATEIDENTIFIERS_HPP
+#define SFML_TEMPLATE_STATEIDENTIFIERS_HPP
+
+namespace States {
+  enum ID {
+    NONE,
+    TITLE,
+    GAME,
+    PAUSE,
+  };
+}
+
+#endif //SFML_TEMPLATE_STATEIDENTIFIERS_HPP
