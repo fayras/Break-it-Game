@@ -8,11 +8,13 @@
 
 #include <vector>
 #include <memory>
+#include <set>
 
 #include "Category.hpp"
 #include "../system/CommandQueue.hpp"
 
 struct Command;
+class CommandQueue;
 
 class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable {
   public:
@@ -33,6 +35,14 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
     void update(sf::Time dt, CommandQueue& commands);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
+    virtual sf::FloatRect	getBoundingRect() const;
+
+    void checkSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs);
+    void checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs);
+    void removeWrecks();
+    virtual bool isMarkedForRemoval() const;
+    virtual bool isDestroyed() const;
+
   protected:
     virtual void updateCurrent(sf::Time dt, CommandQueue& commands);
     void updateChildren(sf::Time dt, CommandQueue& commands);
@@ -45,5 +55,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
     Category::Type defaultCategory;
 };
 
+bool	collision(const SceneNode& lhs, const SceneNode& rhs);
+float	distance(const SceneNode& lhs, const SceneNode& rhs);
 
 #endif //SFML_TEMPLATE_SCENENODE_HPP

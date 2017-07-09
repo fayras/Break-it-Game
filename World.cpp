@@ -1,4 +1,5 @@
 #include "World.hpp"
+#include "Paddle.hpp"
 
 World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sounds)
   : target(outputTarget),
@@ -8,19 +9,19 @@ World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sou
     fonts(fonts),
     sounds(sounds),
     sceneGraph(),
-    sceneLayers(),
-    worldBounds(0.f, 0.f, worldView.getSize().x, 5000.f),
-    spawnPosition(worldView.getSize().x / 2.f, worldBounds.height - worldView.getSize().y / 2.f)
+    worldBounds(0.f, 0.f, worldView.getSize().x, worldView.getSize().y),
+    spawnPosition(worldView.getSize().x / 2.f, worldBounds.height - 40)
 {
   sceneTexture.create(target.getSize().x, target.getSize().y);
   loadTextures();
   buildScene();
 
   // Prepare the view
-  worldView.setCenter(spawnPosition);
+  // worldView.setCenter(spawnPosition);
 }
 
 void World::update(sf::Time dt) {
+  paddle->setVelocity(paddle->getVelocity() / 2.f);
   while(!commandQueue.empty()) {
     sceneGraph.onCommand(commandQueue.pop(), dt);
   }
@@ -32,6 +33,7 @@ void World::update(sf::Time dt) {
   sceneGraph.removeWrecks();
 
   sceneGraph.update(dt, commandQueue);
+  adaptPlayerPosition();
   updateSounds();
 }
 
@@ -53,24 +55,21 @@ bool World::hasPlayerReachedEnd() const {
 }
 
 void World::loadTextures() {
-
+  textures.load(Textures::PADDLE, "assets/textures/paddleBlu.png");
+  textures.load(Textures::BLOCK, "assets/textures/element_grey_rectangle.png");
 }
 
 void World::adaptPlayerPosition() {
   // Keep player's position inside the screen bounds, at least borderDistance units from the border
   sf::FloatRect viewBounds = getViewBounds();
-  const float borderDistance = 40.f;
+  const float borderDistance = 52.f;
 
-  sf::Vector2f position = playerAircraft->getPosition();
+  sf::Vector2f position = paddle->getPosition();
   position.x = std::max(position.x, viewBounds.left + borderDistance);
   position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
   position.y = std::max(position.y, viewBounds.top + borderDistance);
   position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
-  playerAircraft->setPosition(position);
-}
-
-void World::adaptPlayerVelocity() {
-
+  paddle->setPosition(position);
 }
 
 bool matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2) {
@@ -99,20 +98,28 @@ void World::handleCollisions() {
 
 void World::updateSounds() {
   // Set listener's position to player position
-  sounds.setListenerPosition(playerAircraft->getWorldPosition());
+  sounds.setListenerPosition(paddle->getWorldPosition());
 
   // Remove unused sounds
   sounds.removeStoppedSounds();
 }
 
 void World::buildScene() {
-
+  std::unique_ptr<Paddle> pd(new Paddle(textures));
+  paddle = pd.get();
+  pd->setPosition(spawnPosition);
+  sceneGraph.attachChild(std::move(pd));
 }
 
 sf::FloatRect World::getViewBounds() const {
-  return sf::FloatRect();
+  return sf::FloatRect(worldView.getCenter() - worldView.getSize() / 2.f, worldView.getSize());
 }
 
 sf::FloatRect World::getBattlefieldBounds() const {
-  return sf::FloatRect();
+  // Return view bounds + some area at top, where enemies spawn
+  sf::FloatRect bounds = getViewBounds();
+  bounds.top -= 100.f;
+  bounds.height += 100.f;
+
+  return bounds;
 }

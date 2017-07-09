@@ -13,6 +13,7 @@
 namespace sf {
   class RenderTarget;
 }
+class Paddle;
 
 class World : private sf::NonCopyable {
   public:
@@ -26,16 +27,8 @@ class World : private sf::NonCopyable {
     bool hasPlayerReachedEnd() const;
 
   private:
-    enum Layer {
-      Background,
-      LowerAir,
-      UpperAir,
-      LayerCount
-    };
-
     void loadTextures();
     void adaptPlayerPosition();
-    void adaptPlayerVelocity();
     void handleCollisions();
     void updateSounds();
 
@@ -51,11 +44,12 @@ class World : private sf::NonCopyable {
     SoundPlayer& sounds;
 
     SceneNode sceneGraph;
-    std::array<SceneNode*, LayerCount> sceneLayers;
     CommandQueue commandQueue;
 
     sf::FloatRect worldBounds;
     sf::Vector2f spawnPosition;
+
+    Paddle* paddle;
 };
 
 #endif //SFML_TEMPLATE_WORLD_HPP

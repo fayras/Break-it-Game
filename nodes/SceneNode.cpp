@@ -1,6 +1,7 @@
 #include "SceneNode.hpp"
 
 #include "../system/Command.hpp"
+#include "../system/Utility.hpp"
 #include <cassert>
 
 SceneNode::SceneNode(Category::Type category)
@@ -83,4 +84,52 @@ void SceneNode::drawChildren(sf::RenderTarget &target, sf::RenderStates states) 
   for(const Ptr& child : children) {
     child->draw(target, states);
   }
+}
+
+sf::FloatRect SceneNode::getBoundingRect() const {
+  return sf::FloatRect();
+}
+
+void SceneNode::checkSceneCollision(SceneNode &sceneGraph, std::set<SceneNode::Pair> &collisionPairs) {
+  checkNodeCollision(sceneGraph, collisionPairs);
+
+  for(Ptr& child : sceneGraph.children) {
+    checkSceneCollision(*child, collisionPairs);
+  }
+}
+
+void SceneNode::checkNodeCollision(SceneNode &node, std::set<SceneNode::Pair> &collisionPairs) {
+  if (this != &node && collision(*this, node) && !isDestroyed() && !node.isDestroyed())
+    collisionPairs.insert(std::minmax(this, &node));
+
+  for(Ptr& child : children) {
+    child->checkNodeCollision(node, collisionPairs);
+  }
+}
+
+void SceneNode::removeWrecks() {
+  // Remove all children which request so
+  auto wreckfieldBegin = std::remove_if (children.begin(), children.end(), std::mem_fn(&SceneNode::isMarkedForRemoval));
+  children.erase(wreckfieldBegin, children.end());
+
+  // Call function recursively for all remaining children
+  std::for_each(children.begin(), children.end(), std::mem_fn(&SceneNode::removeWrecks));
+}
+
+bool SceneNode::isMarkedForRemoval() const {
+  // By default, remove node if entity is destroyed
+  return isDestroyed();
+}
+
+bool SceneNode::isDestroyed() const {
+  // By default, scene node needn't be removed
+  return false;
+}
+
+bool collision(const SceneNode& lhs, const SceneNode& rhs) {
+  return lhs.getBoundingRect().intersects(rhs.getBoundingRect());
+}
+
+float distance(const SceneNode& lhs, const SceneNode& rhs) {
+  return Vector::length(lhs.getWorldPosition() - rhs.getWorldPosition());
 }

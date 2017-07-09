@@ -1,5 +1,6 @@
 #include "ParticleNode.hpp"
 #include "../system/ResourceHolder.hpp"
+#include "../DataTables.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <algorithm>

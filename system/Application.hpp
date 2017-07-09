@@ -35,6 +35,8 @@ class Application {
     Player player;
 
     static const sf::Time	TimePerFrame;
+
+    void loadAssets();
 };
 
 

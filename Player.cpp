@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include "system/CommandQueue.hpp"
+#include "Paddle.hpp"
 #include <map>
 #include <string>
 #include <algorithm>
@@ -16,7 +17,7 @@ Player::Player() {
 
   // Assign all categories to player's aircraft
   for(auto& pair : actionBinding) {
-    pair.second.category = Category::PLAYER;
+    pair.second.category = Category::PADDLE;
   }
 }
 
@@ -58,8 +59,12 @@ sf::Keyboard::Key Player::getAssignedKey(Player::Action action) const {
 }
 
 void Player::initializeActions() {
-  // actionBinding[MOVE_LEFT].action = derivedAction<Aircraft>();
-  // actionBinding[MOVE_RIGHT].action = derivedAction<Aircraft>();
+  actionBinding[MOVE_LEFT].action = derivedAction<Paddle>([] (Paddle& p, sf::Time) {
+    p.accelerate(-1 * p.getSpeed(), 0);
+  });
+  actionBinding[MOVE_RIGHT].action = derivedAction<Paddle>([] (Paddle& p, sf::Time) {
+    p.accelerate(1 * p.getSpeed(), 0);
+  });
 }
 
 bool Player::isRealtimeAction(Player::Action action) {

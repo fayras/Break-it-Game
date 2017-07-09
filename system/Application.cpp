@@ -7,12 +7,13 @@
 const sf::Time Application::TimePerFrame = sf::seconds(1.f/60.f);
 
 Application::Application()
-  : window(sf::VideoMode(1000, 740), "Hangman"),
+  : window(sf::VideoMode(1000, 740), "Break it!"),
     isPaused(false),
-    stateStack(State::Context(window, textures, fonts, music, sounds))
+    stateStack(State::Context(window, textures, fonts, music, sounds, player))
 {
   window.setFramerateLimit(30);
 
+  loadAssets();
   registerStates();
   stateStack.push(States::ID::TITLE);
 }
@@ -70,4 +71,11 @@ void Application::registerStates() {
   stateStack.registerState<TitleState>(States::ID::TITLE);
   stateStack.registerState<GameState>(States::ID::GAME);
   stateStack.registerState<PauseState>(States::ID::PAUSE);
+}
+
+void Application::loadAssets() {
+  fonts.load(Fonts::ID::MAIN, "./assets/fonts/Roboto.ttf");
+  textures.load(Textures::BUTTON_NORMAL, "assets/textures/buttonDefault.png");
+  textures.load(Textures::BUTTON_PRESSED, "assets/textures/buttonDefault.png");
+  textures.load(Textures::BUTTON_SELECTED, "assets/textures/buttonSelected.png");
 }

@@ -14,7 +14,9 @@ namespace Textures {
     BUTTON_NORMAL,
     BUTTON_SELECTED,
     BUTTON_PRESSED,
-    PARTICLE
+    PARTICLE,
+    PADDLE,
+    BLOCK
   };
 }
 

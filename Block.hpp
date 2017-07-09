@@ -1,15 +1,18 @@
-#ifndef BREAK_IT_PADDLE_HPP
-#define BREAK_IT_PADDLE_HPP
+#ifndef BREAK_IT_BLOCK_HPP
+#define BREAK_IT_BLOCK_HPP
 
 #include <SFML/Graphics/Sprite.hpp>
 #include "entities/Entity.hpp"
 #include "ResourceIdentifiers.hpp"
 
-class Paddle : public Entity {
+class Block : public Entity {
   public:
-    explicit Paddle(const TextureHolder& textures);
+    Block(const TextureHolder& textures);
     unsigned int getCategory() const override;
-    int getSpeed() const;
+
+  protected:
+  public:
+    sf::FloatRect getBoundingRect() const override;
 
   protected:
     void updateCurrent(sf::Time dt, CommandQueue &commands) override;
@@ -19,4 +22,5 @@ class Paddle : public Entity {
     sf::Sprite sprite;
 };
 
-#endif //BREAK_IT_PADDLE_HPP
+
+#endif //BREAK_IT_BLOCK_HPP
