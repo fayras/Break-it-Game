@@ -1,6 +1,7 @@
 #include "World.hpp"
 #include "Paddle.hpp"
 #include "Block.hpp"
+#include "Ball.hpp"
 
 World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sounds)
   : target(outputTarget),
@@ -58,6 +59,7 @@ bool World::hasPlayerReachedEnd() const {
 void World::loadTextures() {
   textures.load(Textures::PADDLE, "assets/textures/paddleBlu.png");
   textures.load(Textures::BLOCK, "assets/textures/element_grey_rectangle.png");
+  textures.load(Textures::BALL, "assets/textures/ballGrey.png");
 }
 
 void World::adaptPlayerPosition() {
@@ -111,11 +113,19 @@ void World::buildScene() {
   pd->setPosition(spawnPosition);
   sceneGraph.attachChild(std::move(pd));
 
+  std::unique_ptr<Ball> ball(new Ball(textures));
+  ball->setPosition(spawnPosition.x, spawnPosition.y - 50);
+  sceneGraph.attachChild(std::move(ball));
+
   SceneNode::Ptr blockContainer(new SceneNode());
   blockContainer->setPosition(80, 70);
   for(int x = 0; x < 13; x++) {
     for(int y = 0; y < 7; y++) {
-      std::unique_ptr<Block> block(new Block(textures));
+      sf::Color color;
+      if(y < 7) { color.r = 255; color.g = 100; color.b = 100; }
+      if(y < 4) { color.r = 150; color.g = 255; color.b = 0; }
+      if(y < 2) { color.r = 100; color.g = 100; color.b = 255; }
+      std::unique_ptr<Block> block(new Block(textures, color));
       block->move(x * 70, y * 40);
       blockContainer->attachChild(std::move(block));
     }

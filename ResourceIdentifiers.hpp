@@ -16,7 +16,8 @@ namespace Textures {
     BUTTON_PRESSED,
     PARTICLE,
     PADDLE,
-    BLOCK
+    BLOCK,
+    BALL
   };
 }
 

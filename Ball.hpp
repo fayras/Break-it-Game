@@ -1,14 +1,13 @@
-#ifndef BREAK_IT_BLOCK_HPP
-#define BREAK_IT_BLOCK_HPP
+#ifndef BREAK_IT_BALL_HPP
+#define BREAK_IT_BALL_HPP
 
 #include <SFML/Graphics/Sprite.hpp>
 #include "entities/Entity.hpp"
 #include "ResourceIdentifiers.hpp"
 
-class Block : public Entity {
+class Ball : public Entity {
   public:
-    Block(const TextureHolder& textures);
-    Block(const TextureHolder& textures, sf::Color color);
+    Ball(const TextureHolder& textures);
     unsigned int getCategory() const override;
     sf::FloatRect getBoundingRect() const override;
 
@@ -21,4 +20,4 @@ class Block : public Entity {
 };
 
 
-#endif //BREAK_IT_BLOCK_HPP
+#endif //BREAK_IT_BALL_HPP

@@ -10,6 +10,14 @@ Block::Block( const TextureHolder& textures)
   centerOrigin(sprite);
 }
 
+Block::Block( const TextureHolder& textures, sf::Color color)
+  : Entity(100),
+    sprite(textures.get(Textures::BLOCK))
+{
+  sprite.setColor(color);
+  centerOrigin(sprite);
+}
+
 unsigned int Block::getCategory() const {
   return Category::BLOCK;
 }
