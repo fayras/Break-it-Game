@@ -7,7 +7,9 @@ namespace Category {
     SCENE = 1 << 0,
     SOUND_EFFECT = 1 << 1,
     PARTICLE_SYSTEM = 1 << 2,
-    PLAYER = 1 << 3
+    PLAYER = 1 << 3,
+    PADDLE = 1 << 4,
+    BLOCK = 1 << 5
   };
 }
 

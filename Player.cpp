@@ -60,8 +60,6 @@ sf::Keyboard::Key Player::getAssignedKey(Player::Action action) const {
 void Player::initializeActions() {
   // actionBinding[MOVE_LEFT].action = derivedAction<Aircraft>();
   // actionBinding[MOVE_RIGHT].action = derivedAction<Aircraft>();
-  // actionBinding[MOVE_UP].action = derivedAction<Aircraft>();
-  // actionBinding[MOVE_DOWN].action = derivedAction<Aircraft>();
 }
 
 bool Player::isRealtimeAction(Player::Action action) {
