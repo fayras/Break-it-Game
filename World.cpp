@@ -1,5 +1,6 @@
 #include "World.hpp"
 #include "Paddle.hpp"
+#include "Block.hpp"
 
 World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sounds)
   : target(outputTarget),
@@ -109,6 +110,18 @@ void World::buildScene() {
   paddle = pd.get();
   pd->setPosition(spawnPosition);
   sceneGraph.attachChild(std::move(pd));
+
+  SceneNode::Ptr blockContainer(new SceneNode());
+  blockContainer->setPosition(80, 70);
+  for(int x = 0; x < 13; x++) {
+    for(int y = 0; y < 7; y++) {
+      std::unique_ptr<Block> block(new Block(textures));
+      block->move(x * 70, y * 40);
+      blockContainer->attachChild(std::move(block));
+    }
+  }
+
+  sceneGraph.attachChild(std::move(blockContainer));
 }
 
 sf::FloatRect World::getViewBounds() const {
