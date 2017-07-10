@@ -23,7 +23,7 @@ enum CollisionSide {
 class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable {
   public:
     typedef std::unique_ptr<SceneNode> Ptr;
-    typedef std::tuple<SceneNode*, SceneNode*, CollisionSide> Pair;
+    typedef std::pair<SceneNode*, SceneNode*> Pair;
 
     SceneNode(Category::Type category = Category::NONE);
 
@@ -59,7 +59,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
     Category::Type defaultCategory;
 };
 
-CollisionSide collision(const SceneNode& lhs, const SceneNode& rhs);
+bool collision(const SceneNode& lhs, const SceneNode& rhs);
 float	distance(const SceneNode& lhs, const SceneNode& rhs);
 
 #endif //SFML_TEMPLATE_SCENENODE_HPP

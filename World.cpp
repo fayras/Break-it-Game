@@ -3,6 +3,7 @@
 #include "Block.hpp"
 #include "Ball.hpp"
 #include "system/Utility.hpp"
+#include "Wall.hpp"
 
 World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sounds)
   : target(outputTarget),
@@ -77,14 +78,14 @@ void World::adaptPlayerPosition() {
 }
 
 bool matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2) {
-  unsigned int category1 = std::get<0>(colliders)->getCategory();
-  unsigned int category2 = std::get<1>(colliders)->getCategory();
+  unsigned int category1 = colliders.first->getCategory();
+  unsigned int category2 = colliders.second->getCategory();
 
   // Make sure first pair entry has category type1 and second has type2
   if (type1 & category1 && type2 & category2) {
     return true;
   } else if (type1 & category2 && type2 & category1) {
-    std::swap(std::get<0>(colliders), std::get<1>(colliders));
+    std::swap(colliders.first, colliders.second);
     return true;
   } else {
     return false;
@@ -97,23 +98,21 @@ void World::handleCollisions() {
 
   for(SceneNode::Pair pair : collisionPairs) {
     if(matchesCategories(pair, Category::BALL, Category::BLOCK)) {
-      auto& ball = static_cast<Ball&>(*std::get<0>(pair));
-      auto& block = static_cast<Block&>(*std::get<1>(pair));
-      auto side = static_cast<CollisionSide>(std::get<2>(pair));
+      auto& ball = static_cast<Ball&>(*pair.first);
+      auto& block = static_cast<Block&>(*pair.second);
 
-      if(side == CollisionSide::BOTTOM || side == CollisionSide::TOP) {
-        ball.setVelocity(ball.getVelocity().x, ball.getVelocity().y * -1.f);
-      }
-      if(side == CollisionSide::LEFT || side == CollisionSide::RIGHT) {
-        ball.setVelocity(ball.getVelocity().x * -1.f, ball.getVelocity().y);
-      }
       block.destroy();
     } else if(matchesCategories(pair, Category::BALL, Category::PADDLE)) {
-      auto& ball = static_cast<Ball&>(*std::get<0>(pair));
-      auto& p = static_cast<Paddle&>(*std::get<1>(pair));
-      ball.setVelocity(ball.getVelocity() * -1.f);
-    }
+      auto& ball = static_cast<Ball&>(*pair.first);
+      auto& p = static_cast<Paddle&>(*pair.second);
 
+      ball.setVelocity(ball.getVelocity() * -1.f);
+    } else if(matchesCategories(pair, Category::BALL, Category::WALL)) {
+      auto& ball = static_cast<Ball&>(*pair.first);
+      auto& wall = static_cast<Wall&>(*pair.second);
+
+      wall.highlight(true);
+    }
   }
 }
 
@@ -130,6 +129,16 @@ void World::buildScene() {
   paddle = pd.get();
   pd->setPosition(spawnPosition);
   sceneGraph.attachChild(std::move(pd));
+
+  std::unique_ptr<Wall> wallLeft(new Wall(20.f, worldView.getSize().y + 40.f));
+  wallLeft->setPosition(-15.f, -20.f);
+  sceneGraph.attachChild(std::move(wallLeft));
+  std::unique_ptr<Wall> wallTop(new Wall(worldView.getSize().x, 20.f));
+  wallTop->setPosition(0.f, -15.f);
+  sceneGraph.attachChild(std::move(wallTop));
+  std::unique_ptr<Wall> wallRight(new Wall(20.f, worldView.getSize().y + 40.f));
+  wallRight->setPosition(worldView.getSize().x - 5.f, -20.f);
+  sceneGraph.attachChild(std::move(wallRight));
 
   std::unique_ptr<Ball> ball(new Ball(textures));
   ball->setPosition(spawnPosition.x, spawnPosition.y - 50);
