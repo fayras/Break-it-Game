@@ -99,8 +99,9 @@ void SceneNode::checkSceneCollision(SceneNode &sceneGraph, std::set<SceneNode::P
 }
 
 void SceneNode::checkNodeCollision(SceneNode &node, std::set<SceneNode::Pair> &collisionPairs) {
-  if (this != &node && collision(*this, node) && !isDestroyed() && !node.isDestroyed())
-    collisionPairs.insert(std::minmax(this, &node));
+  CollisionSide side = collision(*this, node);
+  if (this != &node && side != CollisionSide::NONE && !isDestroyed() && !node.isDestroyed())
+    collisionPairs.insert(std::make_tuple(this, &node, side));
 
   for(Ptr& child : children) {
     child->checkNodeCollision(node, collisionPairs);
@@ -126,8 +127,27 @@ bool SceneNode::isDestroyed() const {
   return false;
 }
 
-bool collision(const SceneNode& lhs, const SceneNode& rhs) {
-  return lhs.getBoundingRect().intersects(rhs.getBoundingRect());
+CollisionSide collision(const SceneNode& lhs, const SceneNode& rhs) {
+  sf::FloatRect r1 = lhs.getBoundingRect();
+  sf::FloatRect r2 = rhs.getBoundingRect();
+  float w = 0.5f * (r1.width + r2.width);
+  float h = 0.5f * (r1.height + r2.height);
+  float dx = (r1.left + r1.width * 0.5f) - (r2.left + r2.width * 0.5f);
+  float dy = (r1.top + r1.height * 0.5f) - (r2.top + r2.height * 0.5f);
+
+  if(std::abs(dx) <= w && std::abs(dy) <= h) {
+    float wy = w * dy;
+    float hx = h * dx;
+    if(wy > hx) {
+      if(wy > -hx) return CollisionSide::TOP;
+      else return CollisionSide::LEFT;
+    } else {
+      if(wy > -hx) return CollisionSide::RIGHT;
+      else CollisionSide::BOTTOM;
+    }
+  }
+
+  return CollisionSide::NONE;
 }
 
 float distance(const SceneNode& lhs, const SceneNode& rhs) {

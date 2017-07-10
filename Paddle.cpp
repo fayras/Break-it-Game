@@ -10,7 +10,6 @@ Paddle::Paddle(const TextureHolder& textures)
     sprite(textures.get(Textures::PADDLE))
 {
   centerOrigin(sprite);
-  int a = getSpeed();
 }
 
 unsigned int Paddle::getCategory() const {
@@ -27,4 +26,8 @@ void Paddle::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) cons
 
 int Paddle::getSpeed() const {
   return SPEED;
+}
+
+sf::FloatRect Paddle::getBoundingRect() const {
+  return getWorldTransform().transformRect(sprite.getGlobalBounds());
 }

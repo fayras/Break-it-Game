@@ -2,6 +2,7 @@
 #include "Paddle.hpp"
 #include "Block.hpp"
 #include "Ball.hpp"
+#include "system/Utility.hpp"
 
 World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sounds)
   : target(outputTarget),
@@ -76,14 +77,14 @@ void World::adaptPlayerPosition() {
 }
 
 bool matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2) {
-  unsigned int category1 = colliders.first->getCategory();
-  unsigned int category2 = colliders.second->getCategory();
+  unsigned int category1 = std::get<0>(colliders)->getCategory();
+  unsigned int category2 = std::get<1>(colliders)->getCategory();
 
   // Make sure first pair entry has category type1 and second has type2
   if (type1 & category1 && type2 & category2) {
     return true;
   } else if (type1 & category2 && type2 & category1) {
-    std::swap(colliders.first, colliders.second);
+    std::swap(std::get<0>(colliders), std::get<1>(colliders));
     return true;
   } else {
     return false;
@@ -95,6 +96,23 @@ void World::handleCollisions() {
   sceneGraph.checkSceneCollision(sceneGraph, collisionPairs);
 
   for(SceneNode::Pair pair : collisionPairs) {
+    if(matchesCategories(pair, Category::BALL, Category::BLOCK)) {
+      auto& ball = static_cast<Ball&>(*std::get<0>(pair));
+      auto& block = static_cast<Block&>(*std::get<1>(pair));
+      auto side = static_cast<CollisionSide>(std::get<2>(pair));
+
+      if(side == CollisionSide::BOTTOM || side == CollisionSide::TOP) {
+        ball.setVelocity(ball.getVelocity().x, ball.getVelocity().y * -1.f);
+      }
+      if(side == CollisionSide::LEFT || side == CollisionSide::RIGHT) {
+        ball.setVelocity(ball.getVelocity().x * -1.f, ball.getVelocity().y);
+      }
+      block.destroy();
+    } else if(matchesCategories(pair, Category::BALL, Category::PADDLE)) {
+      auto& ball = static_cast<Ball&>(*std::get<0>(pair));
+      auto& p = static_cast<Paddle&>(*std::get<1>(pair));
+      ball.setVelocity(ball.getVelocity() * -1.f);
+    }
 
   }
 }
@@ -115,6 +133,7 @@ void World::buildScene() {
 
   std::unique_ptr<Ball> ball(new Ball(textures));
   ball->setPosition(spawnPosition.x, spawnPosition.y - 50);
+  ball->setVelocity(Random::integer(-500, 500), Random::integer(-500, 0));
   sceneGraph.attachChild(std::move(ball));
 
   SceneNode::Ptr blockContainer(new SceneNode());

@@ -11,7 +11,7 @@ Application::Application()
     isPaused(false),
     stateStack(State::Context(window, textures, fonts, music, sounds, player))
 {
-  window.setFramerateLimit(30);
+  // window.setFramerateLimit(30);
 
   loadAssets();
   registerStates();

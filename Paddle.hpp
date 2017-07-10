@@ -10,6 +10,7 @@ class Paddle : public Entity {
     explicit Paddle(const TextureHolder& textures);
     unsigned int getCategory() const override;
     int getSpeed() const;
+    sf::FloatRect getBoundingRect() const override;
 
   protected:
     void updateCurrent(sf::Time dt, CommandQueue &commands) override;

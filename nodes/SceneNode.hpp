@@ -16,10 +16,14 @@
 struct Command;
 class CommandQueue;
 
+enum CollisionSide {
+  NONE = 0, LEFT = 1, RIGHT = 1<<1, TOP = 1<<2, BOTTOM = 1<<3
+};
+
 class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable {
   public:
     typedef std::unique_ptr<SceneNode> Ptr;
-    typedef std::pair<SceneNode*, SceneNode*> Pair;
+    typedef std::tuple<SceneNode*, SceneNode*, CollisionSide> Pair;
 
     SceneNode(Category::Type category = Category::NONE);
 
@@ -55,7 +59,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
     Category::Type defaultCategory;
 };
 
-bool	collision(const SceneNode& lhs, const SceneNode& rhs);
+CollisionSide collision(const SceneNode& lhs, const SceneNode& rhs);
 float	distance(const SceneNode& lhs, const SceneNode& rhs);
 
 #endif //SFML_TEMPLATE_SCENENODE_HPP
