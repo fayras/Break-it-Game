@@ -14,7 +14,7 @@ namespace {
 SoundPlayer::SoundPlayer()
   : soundBuffers(), sounds()
 {
-  // soundBuffers.load(SoundEffect::GUESS_RIGHT,	"./assets/sounds/win.wav");
+  soundBuffers.load(SoundEffect::HIT_BLOCK,	"assets/sounds/Wav/Explosion_02.wav");
 
   // Listener points towards the screen (default in SFML)
   sf::Listener::setDirection(0.f, 0.f, -1.f);

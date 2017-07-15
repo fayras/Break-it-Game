@@ -9,11 +9,14 @@
 #include "ResourceIdentifiers.hpp"
 #include "system/SoundPlayer.hpp"
 #include "nodes/SceneNode.hpp"
+#include "Ball.hpp"
+#include "Paddle.hpp"
+#include "Block.hpp"
+#include "Wall.hpp"
 
 namespace sf {
   class RenderTarget;
 }
-class Paddle;
 
 class World : private sf::NonCopyable {
   public:
@@ -30,6 +33,7 @@ class World : private sf::NonCopyable {
     void loadTextures();
     void adaptPlayerPosition();
     void handleCollisions();
+    bool collision(sf::FloatRect rectA, sf::FloatRect rectB, sf::Vector2f& ballVelocity) const;
     void updateSounds();
 
     void buildScene();
@@ -43,13 +47,23 @@ class World : private sf::NonCopyable {
     FontHolder& fonts;
     SoundPlayer& sounds;
 
-    SceneNode sceneGraph;
     CommandQueue commandQueue;
 
     sf::FloatRect worldBounds;
     sf::Vector2f spawnPosition;
 
-    Paddle* paddle;
+    std::unique_ptr<Ball> ball;
+    std::unique_ptr<Paddle> paddle;
+    std::vector<std::unique_ptr<Block>> blocks;
+    std::vector<std::unique_ptr<Wall>> walls;
+
+    void removeWrecks();
+
+    bool shakeScreen{false};
+    sf::Time shakeTimer{sf::Time::Zero};
+    bool shakeDirection{false};
+    float shakeOffsetX{0};
+    float shakeOffsetY{0};
 };
 
 #endif //SFML_TEMPLATE_WORLD_HPP

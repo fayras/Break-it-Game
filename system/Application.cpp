@@ -3,15 +3,15 @@
 #include "../states/GameState.hpp"
 #include "../states/TitleState.hpp"
 #include "../states/PauseState.hpp"
-
-const sf::Time Application::TimePerFrame = sf::seconds(1.f/60.f);
+const int FPS = 60;
+const sf::Time Application::TimePerFrame = sf::seconds(1.f / FPS);
 
 Application::Application()
   : window(sf::VideoMode(1000, 740), "Break it!"),
     isPaused(false),
     stateStack(State::Context(window, textures, fonts, music, sounds, player))
 {
-  // window.setFramerateLimit(30);
+  // window.setFramerateLimit(FPS);
 
   loadAssets();
   registerStates();

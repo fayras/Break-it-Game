@@ -3,7 +3,9 @@
 
 Wall::Wall(float width, float height)
   : rect(sf::Vector2f(width, height))
-{}
+{
+  rect.setFillColor(sf::Color::Black);
+}
 
 unsigned int Wall::getCategory() const {
   return Category::WALL;

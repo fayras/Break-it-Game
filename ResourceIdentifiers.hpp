@@ -29,7 +29,7 @@ namespace Fonts {
 
 namespace SoundEffect {
   enum ID {
-
+    HIT_BLOCK
   };
 }
 

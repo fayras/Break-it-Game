@@ -18,6 +18,15 @@ bool GameState::update(sf::Time dt) {
   world.update(dt);
   CommandQueue& commands = world.getCommandQueue();
   player.handleRealtimeInput(commands);
+
+  if(!world.hasAlivePlayer()) {
+    requestStackPush(States::PAUSE);
+  }
+
+  if(world.hasPlayerReachedEnd()) {
+    requestStackPush(States::PAUSE);
+  }
+
   return true;
 }
 

@@ -1,9 +1,6 @@
+#include <iostream>
 #include "World.hpp"
-#include "Paddle.hpp"
-#include "Block.hpp"
-#include "Ball.hpp"
 #include "system/Utility.hpp"
-#include "Wall.hpp"
 
 World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sounds)
   : target(outputTarget),
@@ -12,7 +9,6 @@ World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sou
     textures(),
     fonts(fonts),
     sounds(sounds),
-    sceneGraph(),
     worldBounds(0.f, 0.f, worldView.getSize().x, worldView.getSize().y),
     spawnPosition(worldView.getSize().x / 2.f, worldBounds.height - 40)
 {
@@ -27,23 +23,60 @@ World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sou
 void World::update(sf::Time dt) {
   paddle->setVelocity(paddle->getVelocity() / 2.f);
   while(!commandQueue.empty()) {
-    sceneGraph.onCommand(commandQueue.pop(), dt);
+    Command command = commandQueue.pop();
+    paddle->onCommand(command, dt);
+    ball->onCommand(command, dt);
+    for(auto& wall : walls) wall->onCommand(command, dt);
+    for(auto& block : blocks) block->onCommand(command, dt);
   }
 
   // Collision detection and response (may destroy entities)
   handleCollisions();
 
   // Remove all destroyed entities, create new ones
-  sceneGraph.removeWrecks();
+  removeWrecks();
 
-  sceneGraph.update(dt, commandQueue);
+  paddle->update(dt, commandQueue);
+  ball->update(dt, commandQueue);
+  for(auto& wall : walls) wall->update(dt, commandQueue);
+  for(auto& block : blocks) block->update(dt, commandQueue);
+
   adaptPlayerPosition();
   updateSounds();
+
+  if(shakeScreen) {
+    shakeTimer += dt;
+    if(shakeTimer.asMilliseconds() > 200) {
+      shakeScreen = false;
+      shakeTimer = sf::Time::Zero;
+      worldView.setCenter(worldBounds.width * 0.5f, worldBounds.height * 0.5f);
+    } else {
+      if(shakeDirection) {
+        shakeOffsetX -= 1.f * dt.asMilliseconds();
+        if(shakeOffsetX < -10) {
+          shakeOffsetX = -10;
+          shakeDirection = !shakeDirection;
+        }
+      } else {
+        shakeOffsetX += 1.f * dt.asMilliseconds();
+        if(shakeOffsetX > 10) {
+          shakeOffsetX = 10;
+          shakeDirection = !shakeDirection;
+        }
+      }
+      shakeOffsetY = shakeOffsetX;
+      worldView.setCenter(worldBounds.width * 0.5f + shakeOffsetX, worldBounds.height * 0.5f + shakeOffsetY);
+    }
+  }
+  target.setView(worldView);
 }
 
 void World::draw() {
   target.setView(worldView);
-  target.draw(sceneGraph);
+  for(const auto& wall : walls) target.draw(*wall);
+  for(const auto& block : blocks) target.draw(*block);
+  target.draw(*ball);
+  target.draw(*paddle);
 }
 
 CommandQueue& World::getCommandQueue() {
@@ -51,11 +84,11 @@ CommandQueue& World::getCommandQueue() {
 }
 
 bool World::hasAlivePlayer() const {
-  return true;
+  return ball->getPosition().y < worldBounds.height;
 }
 
 bool World::hasPlayerReachedEnd() const {
-  return false;
+  return blocks.empty();
 }
 
 void World::loadTextures() {
@@ -77,41 +110,23 @@ void World::adaptPlayerPosition() {
   paddle->setPosition(position);
 }
 
-bool matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2) {
-  unsigned int category1 = colliders.first->getCategory();
-  unsigned int category2 = colliders.second->getCategory();
-
-  // Make sure first pair entry has category type1 and second has type2
-  if (type1 & category1 && type2 & category2) {
-    return true;
-  } else if (type1 & category2 && type2 & category1) {
-    std::swap(colliders.first, colliders.second);
-    return true;
-  } else {
-    return false;
-  }
-}
-
 void World::handleCollisions() {
-  std::set<SceneNode::Pair> collisionPairs;
-  sceneGraph.checkSceneCollision(sceneGraph, collisionPairs);
+  sf::FloatRect ballRect = ball->getBoundingRect();
+  sf::Vector2f ballVel = ball->getVelocity();
 
-  for(SceneNode::Pair pair : collisionPairs) {
-    if(matchesCategories(pair, Category::BALL, Category::BLOCK)) {
-      auto& ball = static_cast<Ball&>(*pair.first);
-      auto& block = static_cast<Block&>(*pair.second);
-
-      block.destroy();
-    } else if(matchesCategories(pair, Category::BALL, Category::PADDLE)) {
-      auto& ball = static_cast<Ball&>(*pair.first);
-      auto& p = static_cast<Paddle&>(*pair.second);
-
-      ball.setVelocity(ball.getVelocity() * -1.f);
-    } else if(matchesCategories(pair, Category::BALL, Category::WALL)) {
-      auto& ball = static_cast<Ball&>(*pair.first);
-      auto& wall = static_cast<Wall&>(*pair.second);
-
-      wall.highlight(true);
+  collision(ballRect, paddle->getBoundingRect(), ballVel);
+  for(const auto& block : blocks) {
+    sf::FloatRect blockRect = block->getBoundingRect();
+    if(collision(ballRect, blockRect, ballVel)) {
+      sounds.play(SoundEffect::HIT_BLOCK);
+      block->destroy();
+      shakeScreen = true;
+    }
+  }
+  for(const auto& wall : walls) {
+    sf::FloatRect blockRect = wall->getBoundingRect();
+    if(collision(ballRect, blockRect, ballVel)) {
+      // shakeScreen = true;
     }
   }
 }
@@ -125,41 +140,30 @@ void World::updateSounds() {
 }
 
 void World::buildScene() {
-  std::unique_ptr<Paddle> pd(new Paddle(textures));
-  paddle = pd.get();
-  pd->setPosition(spawnPosition);
-  sceneGraph.attachChild(std::move(pd));
-
-  std::unique_ptr<Wall> wallLeft(new Wall(20.f, worldView.getSize().y + 40.f));
-  wallLeft->setPosition(-15.f, -20.f);
-  sceneGraph.attachChild(std::move(wallLeft));
-  std::unique_ptr<Wall> wallTop(new Wall(worldView.getSize().x, 20.f));
-  wallTop->setPosition(0.f, -15.f);
-  sceneGraph.attachChild(std::move(wallTop));
-  std::unique_ptr<Wall> wallRight(new Wall(20.f, worldView.getSize().y + 40.f));
-  wallRight->setPosition(worldView.getSize().x - 5.f, -20.f);
-  sceneGraph.attachChild(std::move(wallRight));
-
-  std::unique_ptr<Ball> ball(new Ball(textures));
-  ball->setPosition(spawnPosition.x, spawnPosition.y - 50);
+  ball = std::move(std::unique_ptr<Ball>(new Ball(textures)));
+  ball->move(spawnPosition.x, spawnPosition.y - 50);
   ball->setVelocity(Random::integer(-500, 500), Random::integer(-500, 0));
-  sceneGraph.attachChild(std::move(ball));
 
-  SceneNode::Ptr blockContainer(new SceneNode());
-  blockContainer->setPosition(80, 70);
+  paddle = std::move(std::unique_ptr<Paddle>(new Paddle(textures)));
+  paddle->move(spawnPosition);
+
+  walls.push_back(std::move(std::unique_ptr<Wall>(new Wall{20.f, worldView.getSize().y + 40.f})));
+  walls.back()->setPosition(-20.f, -20.f);
+  walls.push_back(std::move(std::unique_ptr<Wall>(new Wall{worldView.getSize().x, 20.f})));
+  walls.back()->setPosition(0.f, -20.f);
+  walls.push_back(std::move(std::unique_ptr<Wall>(new Wall{20.f, worldView.getSize().y + 40.f})));
+  walls.back()->setPosition(worldView.getSize().x, -20.f);
+
   for(int x = 0; x < 13; x++) {
     for(int y = 0; y < 7; y++) {
       sf::Color color;
       if(y < 7) { color.r = 255; color.g = 100; color.b = 100; }
       if(y < 4) { color.r = 150; color.g = 255; color.b = 0; }
       if(y < 2) { color.r = 100; color.g = 100; color.b = 255; }
-      std::unique_ptr<Block> block(new Block(textures, color));
-      block->move(x * 70, y * 40);
-      blockContainer->attachChild(std::move(block));
+      blocks.push_back(std::move(std::unique_ptr<Block>(new Block{textures, color})));
+      blocks.back()->move(x * 70 + 80, y * 40 + 70);
     }
   }
-
-  sceneGraph.attachChild(std::move(blockContainer));
 }
 
 sf::FloatRect World::getViewBounds() const {
@@ -173,4 +177,37 @@ sf::FloatRect World::getBattlefieldBounds() const {
   bounds.height += 100.f;
 
   return bounds;
+}
+
+void World::removeWrecks() {
+  auto wreckfieldBegin = std::remove_if (blocks.begin(), blocks.end(), std::mem_fn(&Block::isMarkedForRemoval));
+  blocks.erase(wreckfieldBegin, blocks.end());
+
+  // Call function recursively for all remaining children
+  std::for_each(blocks.begin(), blocks.end(), std::mem_fn(&SceneNode::removeWrecks));
+}
+
+bool World::collision(sf::FloatRect ballRect, sf::FloatRect blockRect, sf::Vector2f& ballVelocity) const {
+  if(!ballRect.intersects(blockRect)) {
+    return false;
+  }
+
+  float overlapLeft = ballRect.left + ballRect.width - blockRect.left;
+  float overlapRight = blockRect.left + blockRect.width - ballRect.left;
+  float overlapTop = ballRect.top + ballRect.height - blockRect.top;
+  float overlapBottom = blockRect.top + blockRect.height - ballRect.top;
+
+  bool ballFromLeft = std::abs(overlapLeft) < std::abs(overlapRight);
+  bool ballFromTop = std::abs(overlapTop) < std::abs(overlapBottom);
+
+  float minOverlapX = ballFromLeft ? overlapLeft : overlapRight;
+  float minOverlapY = ballFromTop ? overlapTop : overlapBottom;
+
+  if(std::abs(minOverlapX) < std::abs(minOverlapY)) {
+    ball->setVelocity(ballVelocity.x * -1.f, ballVelocity.y);
+  } else {
+    ball->setVelocity(ballVelocity.x, ballVelocity.y * -1.f);
+  }
+
+  return true;
 }
