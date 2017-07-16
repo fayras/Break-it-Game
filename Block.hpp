@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include "entities/Entity.hpp"
 #include "ResourceIdentifiers.hpp"
+#include "system/Animation.hpp"
 
 class Block : public Entity {
   public:
@@ -11,6 +12,7 @@ class Block : public Entity {
     Block(const TextureHolder& textures, sf::Color color);
     unsigned int getCategory() const override;
     sf::FloatRect getBoundingRect() const override;
+    bool isMarkedForRemoval() const override;
 
   protected:
     void updateCurrent(sf::Time dt, CommandQueue &commands) override;
@@ -18,6 +20,7 @@ class Block : public Entity {
 
   private:
     sf::Sprite sprite;
+    Animation breakAnimation;
 };
 
 

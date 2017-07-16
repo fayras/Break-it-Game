@@ -95,6 +95,7 @@ void World::loadTextures() {
   textures.load(Textures::PADDLE, "assets/textures/paddleBlu.png");
   textures.load(Textures::BLOCK, "assets/textures/element_grey_rectangle.png");
   textures.load(Textures::BALL, "assets/textures/ballGrey.png");
+  textures.load(Textures::EXPLOSION, "assets/textures/Explosion.png");
 }
 
 void World::adaptPlayerPosition() {
@@ -142,7 +143,7 @@ void World::updateSounds() {
 void World::buildScene() {
   ball = std::move(std::unique_ptr<Ball>(new Ball(textures)));
   ball->move(spawnPosition.x, spawnPosition.y - 50);
-  ball->setVelocity(Random::integer(-500, 500), Random::integer(-500, 0));
+  ball->setVelocity(Random::integer(-500, 500), Random::integer(-400, -200));
 
   paddle = std::move(std::unique_ptr<Paddle>(new Paddle(textures)));
   paddle->move(spawnPosition);

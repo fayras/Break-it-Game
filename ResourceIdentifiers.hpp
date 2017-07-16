@@ -17,7 +17,8 @@ namespace Textures {
     PARTICLE,
     PADDLE,
     BLOCK,
-    BALL
+    BALL,
+    EXPLOSION
   };
 }
 
@@ -35,7 +36,7 @@ namespace SoundEffect {
 
 namespace Music {
   enum ID {
-
+    GAME
   };
 }
 
