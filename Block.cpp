@@ -2,7 +2,6 @@
 #include "system/Utility.hpp"
 #include "system/ResourceHolder.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
-#include <iostream>
 
 Block::Block( const TextureHolder& textures)
   : Entity(100),
@@ -11,23 +10,16 @@ Block::Block( const TextureHolder& textures)
 {
   breakAnimation.setFrameSize(sf::Vector2i(256, 256));
   breakAnimation.setNumFrames(16);
-  breakAnimation.setDuration(sf::seconds(1));
+  breakAnimation.setDuration(sf::seconds(0.75));
 
   centerOrigin(sprite);
   centerOrigin(breakAnimation);
 }
 
 Block::Block( const TextureHolder& textures, sf::Color color)
-  : Entity(100),
-    sprite(textures.get(Textures::BLOCK)),
-    breakAnimation(textures.get(Textures::EXPLOSION))
+  : Block(textures)
 {
-  breakAnimation.setFrameSize(sf::Vector2i(256, 256));
-  breakAnimation.setNumFrames(16);
-  breakAnimation.setDuration(sf::seconds(1));
   sprite.setColor(color);
-  centerOrigin(sprite);
-  centerOrigin(breakAnimation);
 }
 
 unsigned int Block::getCategory() const {
