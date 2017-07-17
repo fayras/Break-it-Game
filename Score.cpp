@@ -1,0 +1,32 @@
+#include "Score.hpp"
+#include "system/Utility.hpp"
+#include <SFML/Graphics/RenderTarget.hpp>
+
+Score::Score(const sf::Texture &texture, const sf::Font& font)
+  : SpriteNode(texture),
+    scoreText(std::to_string(score), font)
+{
+  centerOrigin(scoreText);
+}
+
+void Score::updateCurrent(sf::Time dt, CommandQueue &commands) {
+  SpriteNode::updateCurrent(dt, commands);
+}
+
+void Score::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
+  SpriteNode::drawCurrent(target, states);
+  target.draw(scoreText, states);
+}
+
+void Score::increaseMultiplier() {
+  multiplier += 0.1f;
+}
+
+void Score::resetMultiplier() {
+  multiplier = 1.0f;
+}
+
+void Score::increase(int amount) {
+  score += amount * multiplier;
+  scoreText.setString(std::to_string(score));
+}

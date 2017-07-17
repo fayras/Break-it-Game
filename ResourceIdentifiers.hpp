@@ -20,7 +20,8 @@ namespace Textures {
     BALL,
     EXPLOSION,
     STARFIELD,
-    TITLE
+    TITLE,
+    SCORE
   };
 }
 
