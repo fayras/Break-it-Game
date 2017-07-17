@@ -59,7 +59,7 @@ class World : private sf::NonCopyable {
     std::unique_ptr<Paddle> paddle;
     std::vector<std::unique_ptr<Block>> blocks;
     std::vector<std::unique_ptr<Wall>> walls;
-    Score score;
+    std::unique_ptr<Score> score;
 
     void removeWrecks();
 

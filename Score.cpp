@@ -4,9 +4,9 @@
 
 Score::Score(const sf::Texture &texture, const sf::Font& font)
   : SpriteNode(texture),
-    scoreText(std::to_string(score), font)
+    scoreText("Score: " + std::to_string(score), font)
 {
-  centerOrigin(scoreText);
+  scoreText.move(20, 10);
 }
 
 void Score::updateCurrent(sf::Time dt, CommandQueue &commands) {
@@ -28,5 +28,5 @@ void Score::resetMultiplier() {
 
 void Score::increase(int amount) {
   score += amount * multiplier;
-  scoreText.setString(std::to_string(score));
+  scoreText.setString("Score: " + std::to_string(score));
 }

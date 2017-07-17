@@ -10,8 +10,7 @@ World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sou
     fonts(fonts),
     sounds(sounds),
     worldBounds(0.f, 0.f, worldView.getSize().x, worldView.getSize().y),
-    spawnPosition(worldView.getSize().x / 2.f, worldBounds.height - 40),
-    score(textures.get(Textures::SCORE), fonts.get(Fonts::MAIN))
+    spawnPosition(worldView.getSize().x / 2.f, worldBounds.height - 40)
 {
   sceneTexture.create(target.getSize().x, target.getSize().y);
   loadTextures();
@@ -85,7 +84,7 @@ void World::draw() {
   for(const auto& block : blocks) target.draw(*block);
   target.draw(*ball);
   target.draw(*paddle);
-  target.draw(score);
+  target.draw(*score);
 }
 
 CommandQueue& World::getCommandQueue() {
@@ -106,6 +105,7 @@ void World::loadTextures() {
   textures.load(Textures::BALL, "assets/textures/ballGrey.png");
   textures.load(Textures::EXPLOSION, "assets/textures/Explosion.png");
   textures.load(Textures::STARFIELD, "assets/textures/starfield.png");
+  textures.load(Textures::SCORE, "assets/textures/glassPanel_cornerBL.png");
 }
 
 void World::adaptPlayerPosition() {
@@ -127,7 +127,7 @@ void World::handleCollisions() {
 
   if(collision(ballRect, paddle->getBoundingRect(), ballVel)) {
     sounds.play(SoundEffect::HIT_GENERAL);
-    score.resetMultiplier();
+    score->resetMultiplier();
   }
   for(const auto& block : blocks) {
     sf::FloatRect blockRect = block->getBoundingRect();
@@ -135,8 +135,8 @@ void World::handleCollisions() {
       sounds.play(SoundEffect::HIT_BLOCK);
       block->destroy();
       shakeScreen = true;
-      score.increase(10);
-      score.increaseMultiplier();
+      score->increase(10);
+      score->increaseMultiplier();
     }
   }
   for(const auto& wall : walls) {
@@ -156,7 +156,8 @@ void World::updateSounds() {
 }
 
 void World::buildScene() {
-  score.setPosition(worldView.getSize().x - 320, 20);
+  score = std::move(std::unique_ptr<Score>(new Score(textures.get(Textures::SCORE), fonts.get(Fonts::MAIN))));
+  score->setPosition(worldView.getSize().x - 295, 10);
 
   sf::Texture& stars = textures.get(Textures::STARFIELD);
   stars.setRepeated(true);
