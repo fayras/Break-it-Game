@@ -31,7 +31,8 @@ namespace Fonts {
 
 namespace SoundEffect {
   enum ID {
-    HIT_BLOCK
+    HIT_BLOCK,
+    HIT_GENERAL
   };
 }
 

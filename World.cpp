@@ -123,7 +123,9 @@ void World::handleCollisions() {
   sf::FloatRect ballRect = ball->getBoundingRect();
   sf::Vector2f ballVel = ball->getVelocity();
 
-  collision(ballRect, paddle->getBoundingRect(), ballVel);
+  if(collision(ballRect, paddle->getBoundingRect(), ballVel)) {
+    sounds.play(SoundEffect::HIT_GENERAL);
+  }
   for(const auto& block : blocks) {
     sf::FloatRect blockRect = block->getBoundingRect();
     if(collision(ballRect, blockRect, ballVel)) {
@@ -135,7 +137,7 @@ void World::handleCollisions() {
   for(const auto& wall : walls) {
     sf::FloatRect blockRect = wall->getBoundingRect();
     if(collision(ballRect, blockRect, ballVel)) {
-      // shakeScreen = true;
+      sounds.play(SoundEffect::HIT_GENERAL);
     }
   }
 }
