@@ -13,6 +13,7 @@
 #include "Paddle.hpp"
 #include "Block.hpp"
 #include "Wall.hpp"
+#include "nodes/SpriteNode.hpp"
 
 namespace sf {
   class RenderTarget;
@@ -52,6 +53,7 @@ class World : private sf::NonCopyable {
     sf::FloatRect worldBounds;
     sf::Vector2f spawnPosition;
 
+    std::unique_ptr<SpriteNode> background;
     std::unique_ptr<Ball> ball;
     std::unique_ptr<Paddle> paddle;
     std::vector<std::unique_ptr<Block>> blocks;

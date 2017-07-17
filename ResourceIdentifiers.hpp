@@ -18,7 +18,8 @@ namespace Textures {
     PADDLE,
     BLOCK,
     BALL,
-    EXPLOSION
+    EXPLOSION,
+    STARFIELD
   };
 }
 

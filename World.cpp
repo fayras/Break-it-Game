@@ -21,6 +21,12 @@ World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sou
 }
 
 void World::update(sf::Time dt) {
+  background->move(0, 100 * dt.asSeconds());
+  // keep bg repeating. 1400 = size of texture
+  if(background->getPosition().y > 0) {
+    background->setPosition(0, -1400 + worldView.getSize().y);
+  }
+
   paddle->setVelocity(paddle->getVelocity() / 2.f);
   while(!commandQueue.empty()) {
     Command command = commandQueue.pop();
@@ -73,6 +79,7 @@ void World::update(sf::Time dt) {
 
 void World::draw() {
   target.setView(worldView);
+  target.draw(*background);
   for(const auto& wall : walls) target.draw(*wall);
   for(const auto& block : blocks) target.draw(*block);
   target.draw(*ball);
@@ -96,6 +103,7 @@ void World::loadTextures() {
   textures.load(Textures::BLOCK, "assets/textures/element_grey_rectangle.png");
   textures.load(Textures::BALL, "assets/textures/ballGrey.png");
   textures.load(Textures::EXPLOSION, "assets/textures/Explosion.png");
+  textures.load(Textures::STARFIELD, "assets/textures/starfield.png");
 }
 
 void World::adaptPlayerPosition() {
@@ -141,6 +149,10 @@ void World::updateSounds() {
 }
 
 void World::buildScene() {
+  sf::Texture& stars = textures.get(Textures::STARFIELD);
+  stars.setRepeated(true);
+  background = std::move(std::unique_ptr<SpriteNode>(new SpriteNode(stars)));
+
   ball = std::move(std::unique_ptr<Ball>(new Ball(textures)));
   ball->move(spawnPosition.x, spawnPosition.y - 50);
   ball->setVelocity(Random::integer(-500, 500), Random::integer(-400, -200));
