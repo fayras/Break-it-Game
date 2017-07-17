@@ -78,4 +78,5 @@ void Application::loadAssets() {
   textures.load(Textures::BUTTON_NORMAL, "assets/textures/buttonDefault.png");
   textures.load(Textures::BUTTON_PRESSED, "assets/textures/buttonDefault.png");
   textures.load(Textures::BUTTON_SELECTED, "assets/textures/buttonSelected.png");
+  textures.load(Textures::TITLE, "assets/textures/title.png");
 }

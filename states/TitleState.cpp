@@ -5,10 +5,11 @@
 
 TitleState::TitleState(StateStack &stack, State::Context context)
     : State(stack, context),
-      guiContainer()
+      guiContainer(),
+      background(context.textures->get(Textures::TITLE))
 {
   auto btPlay = std::make_shared<gui::Button>(context);
-  btPlay->setPosition(100, 100);
+  btPlay->setPosition(0, 0);
   btPlay->setText("Spielen");
   btPlay->setCallback([this] () {
     requestStackPop();
@@ -16,12 +17,13 @@ TitleState::TitleState(StateStack &stack, State::Context context)
   });
 
   auto btExit = std::make_shared<gui::Button>(context);
-  btExit->setPosition(100, 200);
+  btExit->setPosition(200, 0);
   btExit->setText("Beenden");
   btExit->setCallback([this] () {
     requestStackPop();
   });
 
+  guiContainer.move(300, 500);
   guiContainer.pack(btPlay);
   guiContainer.pack(btExit);
 }

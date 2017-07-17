@@ -19,7 +19,8 @@ namespace Textures {
     BLOCK,
     BALL,
     EXPLOSION,
-    STARFIELD
+    STARFIELD,
+    TITLE
   };
 }
 
