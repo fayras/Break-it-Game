@@ -30,3 +30,7 @@ void Score::increase(int amount) {
   score += amount * multiplier;
   scoreText.setString("Score: " + std::to_string(score));
 }
+
+int Score::get() const {
+  return score;
+}

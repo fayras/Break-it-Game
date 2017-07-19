@@ -76,3 +76,11 @@ bool Player::isRealtimeAction(Player::Action action) {
       return false;
   }
 }
+
+void Player::setScore(int score) {
+  this->score = score;
+}
+
+int Player::getScore() const {
+  return score;
+}

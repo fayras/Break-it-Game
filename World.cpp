@@ -234,3 +234,7 @@ bool World::collision(sf::FloatRect ballRect, sf::FloatRect blockRect, sf::Vecto
 
   return true;
 }
+
+int World::getScore() const {
+  return score->get();
+}

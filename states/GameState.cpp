@@ -22,10 +22,12 @@ bool GameState::update(sf::Time dt) {
   player.handleRealtimeInput(commands);
 
   if(!world.hasAlivePlayer()) {
-    requestStackPush(States::PAUSE);
+    player.setScore(world.getScore());
+    requestStackPush(States::GAME_OVER);
   }
 
   if(world.hasPlayerReachedEnd()) {
+    player.setScore(world.getScore());
     requestStackPush(States::PAUSE);
   }
 

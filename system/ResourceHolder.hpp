@@ -16,6 +16,7 @@ class ResourceHolder {
     void load(Identifier id, const std::string &filename, const Parameter &secondParam);
     Resource &get(Identifier id);
     const Resource &get(Identifier id) const;
+    bool exists(Identifier id) const;
 
   private:
     void insertResource(Identifier id, std::unique_ptr<Resource> resource);

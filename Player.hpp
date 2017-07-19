@@ -20,6 +20,8 @@ class Player {
     void handleRealtimeInput(CommandQueue& commands);
     void assignKey(Action action, sf::Keyboard::Key key);
     sf::Keyboard::Key getAssignedKey(Action action) const;
+    void setScore(int score);
+    int getScore() const;
 
   private:
     void initializeActions();
@@ -27,6 +29,7 @@ class Player {
 
     std::map<sf::Keyboard::Key, Action> keyBinding;
     std::map<Action, Command> actionBinding;
+    int score{0};
 };
 
 #endif //SFML_TEMPLATE_PLAYER_HPP

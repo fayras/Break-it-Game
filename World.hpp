@@ -30,6 +30,7 @@ class World : private sf::NonCopyable {
 
     bool hasAlivePlayer() const;
     bool hasPlayerReachedEnd() const;
+    int getScore() const;
 
   private:
     void loadTextures();

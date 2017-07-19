@@ -21,13 +21,15 @@ namespace Textures {
     EXPLOSION,
     STARFIELD,
     TITLE,
-    SCORE
+    SCORE,
+    GAME_OVER_SCREEN
   };
 }
 
 namespace Fonts {
   enum ID {
     MAIN,
+    ARCADE
   };
 }
 

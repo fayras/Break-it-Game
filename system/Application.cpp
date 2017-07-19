@@ -3,6 +3,8 @@
 #include "../states/GameState.hpp"
 #include "../states/TitleState.hpp"
 #include "../states/PauseState.hpp"
+#include "../states/GameOverState.hpp"
+
 const int FPS = 60;
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / FPS);
 
@@ -71,12 +73,15 @@ void Application::registerStates() {
   stateStack.registerState<TitleState>(States::ID::TITLE);
   stateStack.registerState<GameState>(States::ID::GAME);
   stateStack.registerState<PauseState>(States::ID::PAUSE);
+  stateStack.registerState<GameOverState>(States::ID::GAME_OVER);
 }
 
 void Application::loadAssets() {
   fonts.load(Fonts::ID::MAIN, "./assets/fonts/Roboto.ttf");
+  fonts.load(Fonts::ID::ARCADE, "./assets/fonts/Arcade.ttf");
   textures.load(Textures::BUTTON_NORMAL, "assets/textures/buttonDefault.png");
   textures.load(Textures::BUTTON_PRESSED, "assets/textures/buttonDefault.png");
   textures.load(Textures::BUTTON_SELECTED, "assets/textures/buttonSelected.png");
   textures.load(Textures::TITLE, "assets/textures/title.png");
+  textures.load(Textures::GAME_OVER_SCREEN, "assets/textures/game_over_screen.png");
 }

@@ -10,6 +10,7 @@ class Score : public SpriteNode {
     void increaseMultiplier();
     void resetMultiplier();
     void increase(int amount = 10);
+    int get() const;
 
   protected:
     void updateCurrent(sf::Time dt, CommandQueue &commands) override;
