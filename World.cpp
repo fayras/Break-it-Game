@@ -4,9 +4,7 @@
 
 World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sounds)
   : target(outputTarget),
-    sceneTexture(),
     worldView(outputTarget.getDefaultView()),
-    textures(),
     fonts(fonts),
     sounds(sounds),
     worldBounds(0.f, 0.f, worldView.getSize().x, worldView.getSize().y),
@@ -133,7 +131,7 @@ void World::handleCollisions() {
     sf::FloatRect blockRect = block->getBoundingRect();
     if(collision(ballRect, blockRect, ballVel)) {
       sounds.play(SoundEffect::HIT_BLOCK);
-      block->destroy();
+      block->damage(100);
       shakeScreen = true;
       score->increase(10);
       score->increaseMultiplier();
@@ -156,25 +154,25 @@ void World::updateSounds() {
 }
 
 void World::buildScene() {
-  score = std::move(std::unique_ptr<Score>(new Score(textures.get(Textures::SCORE), fonts.get(Fonts::MAIN))));
+  score = std::move(std::make_unique<Score>(textures.get(Textures::SCORE), fonts.get(Fonts::ARCADE)));
   score->setPosition(worldView.getSize().x - 295, 10);
 
   sf::Texture& stars = textures.get(Textures::STARFIELD);
   stars.setRepeated(true);
-  background = std::move(std::unique_ptr<SpriteNode>(new SpriteNode(stars)));
+  background = std::move(std::make_unique<SpriteNode>(stars));
 
-  ball = std::move(std::unique_ptr<Ball>(new Ball(textures)));
+  ball = std::move(std::make_unique<Ball>(textures));
   ball->move(spawnPosition.x, spawnPosition.y - 50);
   ball->setVelocity(Random::integer(-500, 500), Random::integer(-400, -200));
 
-  paddle = std::move(std::unique_ptr<Paddle>(new Paddle(textures)));
+  paddle = std::move(std::make_unique<Paddle>(textures));
   paddle->move(spawnPosition);
 
-  walls.push_back(std::move(std::unique_ptr<Wall>(new Wall{20.f, worldView.getSize().y + 40.f})));
+  walls.push_back(std::move(std::make_unique<Wall>(20.f, worldView.getSize().y + 40.f)));
   walls.back()->setPosition(-20.f, -20.f);
-  walls.push_back(std::move(std::unique_ptr<Wall>(new Wall{worldView.getSize().x, 20.f})));
+  walls.push_back(std::move(std::make_unique<Wall>(worldView.getSize().x, 20.f)));
   walls.back()->setPosition(0.f, -20.f);
-  walls.push_back(std::move(std::unique_ptr<Wall>(new Wall{20.f, worldView.getSize().y + 40.f})));
+  walls.push_back(std::move(std::make_unique<Wall>(20.f, worldView.getSize().y + 40.f)));
   walls.back()->setPosition(worldView.getSize().x, -20.f);
 
   for(int x = 0; x < 13; x++) {
@@ -183,14 +181,14 @@ void World::buildScene() {
       if(y < 7) { color.r = 255; color.g = 100; color.b = 100; }
       if(y < 4) { color.r = 150; color.g = 255; color.b = 0; }
       if(y < 2) { color.r = 100; color.g = 100; color.b = 255; }
-      blocks.push_back(std::move(std::unique_ptr<Block>(new Block{textures, color})));
-      blocks.back()->move(x * 70 + 80, y * 40 + 70);
+      blocks.push_back(std::move(std::make_unique<Block>(textures, color)));
+      blocks.back()->move(x * 70 + 80, y * 40 + 110);
     }
   }
 }
 
 sf::FloatRect World::getViewBounds() const {
-  return sf::FloatRect(worldView.getCenter() - worldView.getSize() / 2.f, worldView.getSize());
+  return {worldView.getCenter() - worldView.getSize() / 2.f, worldView.getSize()};
 }
 
 sf::FloatRect World::getBattlefieldBounds() const {

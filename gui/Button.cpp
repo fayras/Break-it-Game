@@ -4,17 +4,15 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 
 gui::Button::Button(State::Context context)
-  : callback(),
-    normalTexture(context.textures->get(Textures::ID::BUTTON_NORMAL)),
+  : normalTexture(context.textures->get(Textures::ID::BUTTON_NORMAL)),
     selectedTexture(context.textures->get(Textures::ID::BUTTON_SELECTED)),
     pressedTexture(context.textures->get(Textures::ID::BUTTON_PRESSED)),
-    sprite(),
-    text("", context.fonts->get(Fonts::ID::MAIN)),
+    text("", context.fonts->get(Fonts::ID::ARCADE)),
     isToggle(false)
 {
   sprite.setTexture(normalTexture);
   sf::FloatRect bounds = sprite.getLocalBounds();
-  text.setPosition(bounds.width / 2.f, bounds.height / 2.f - 3);
+  text.setPosition(bounds.width / 2.f, bounds.height / 2.f - 2);
   text.setFillColor(sf::Color::Black);
 }
 

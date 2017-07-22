@@ -38,7 +38,7 @@ void Application::run() {
 }
 
 void Application::processEvents() {
-  sf::Event event;
+  sf::Event event{};
   while (window.pollEvent(event)) {
     if(!isPaused) stateStack.handleEvent(event);
 

@@ -1,7 +1,7 @@
 #include "MusicPlayer.hpp"
 
 MusicPlayer::MusicPlayer()
-  : music(), filenames(), volume(100.f)
+  : volume(100.f)
 {
   filenames[Music::GAME] = "./assets/music/Retro1 140.wav";
 }

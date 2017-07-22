@@ -11,9 +11,7 @@ namespace {
   const float MinDistance3D = std::sqrt(MinDistance2D*MinDistance2D + ListenerZ*ListenerZ);
 }
 
-SoundPlayer::SoundPlayer()
-  : soundBuffers(), sounds()
-{
+SoundPlayer::SoundPlayer() {
   soundBuffers.load(SoundEffect::HIT_BLOCK,	"assets/sounds/Wav/Explosion_02.wav");
   soundBuffers.load(SoundEffect::HIT_GENERAL,	"assets/sounds/Wav/Hit_01.wav");
 
@@ -26,7 +24,7 @@ void SoundPlayer::play(SoundEffect::ID effect) {
 }
 
 void SoundPlayer::play(SoundEffect::ID effect, sf::Vector2f position) {
-  sounds.push_back(sf::Sound());
+  sounds.emplace_back(sf::Sound());
   sf::Sound& sound = sounds.back();
 
   sound.setBuffer(soundBuffers.get(effect));
@@ -49,5 +47,5 @@ void SoundPlayer::setListenerPosition(sf::Vector2f position) {
 
 sf::Vector2f SoundPlayer::getListenerPosition() const {
   sf::Vector3f position = sf::Listener::getPosition();
-  return sf::Vector2f(position.x, -position.y);
+  return {position.x, -position.y};
 }
