@@ -60,10 +60,10 @@ sf::Keyboard::Key Player::getAssignedKey(Player::Action action) const {
 
 void Player::initializeActions() {
   actionBinding[MOVE_LEFT].action = derivedAction<Paddle>([] (Paddle& p, sf::Time) {
-    p.accelerate(-1 * p.getSpeed(), 0);
+    p.accelerate(-1 * p.getMovementSpeed(), 0);
   });
   actionBinding[MOVE_RIGHT].action = derivedAction<Paddle>([] (Paddle& p, sf::Time) {
-    p.accelerate(1 * p.getSpeed(), 0);
+    p.accelerate(1 * p.getMovementSpeed(), 0);
   });
 }
 

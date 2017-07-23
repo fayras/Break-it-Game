@@ -5,8 +5,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <vector>
 
-struct ParticleData
-{
+struct ParticleData {
   sf::Color color;
   sf::Time lifetime;
 };

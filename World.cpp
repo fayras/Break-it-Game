@@ -121,15 +121,22 @@ void World::adaptPlayerPosition() {
 
 void World::handleCollisions() {
   sf::FloatRect ballRect = ball->getBoundingRect();
+  sf::FloatRect paddleRect = paddle->getBoundingRect();
   sf::Vector2f ballVel = ball->getVelocity();
 
-  if(collision(ballRect, paddle->getBoundingRect(), ballVel)) {
+  if(collision(ballRect, paddleRect, ballVel)) {
+    float offset = ballRect.width * 0.5f + ballRect.left - paddleRect.width * 0.5f - paddleRect.left;
+    float angle = offset / (paddleRect.width * 0.5f);
+    float ballSpeed = Vector::length(ball->getVelocity());
+    sf::Vector2f newVel(angle, -0.5f);
+    ball->setVelocity(Vector::unit(newVel) * ballSpeed);
     sounds.play(SoundEffect::HIT_GENERAL);
     score->resetMultiplier();
   }
   for(const auto& block : blocks) {
     sf::FloatRect blockRect = block->getBoundingRect();
     if(collision(ballRect, blockRect, ballVel)) {
+      ball->setVelocity(ball->getVelocity() + Vector::unit(ball->getVelocity()) * 3.0f);
       sounds.play(SoundEffect::HIT_BLOCK);
       block->damage(100);
       shakeScreen = true;
@@ -163,7 +170,7 @@ void World::buildScene() {
 
   ball = std::move(std::make_unique<Ball>(textures));
   ball->move(spawnPosition.x, spawnPosition.y - 50);
-  ball->setVelocity(Random::integer(-500, 500), Random::integer(-400, -200));
+  ball->setVelocity(0, -300);
 
   paddle = std::move(std::make_unique<Paddle>(textures));
   paddle->move(spawnPosition);

@@ -24,7 +24,7 @@ void Paddle::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) cons
   target.draw(sprite, states);
 }
 
-int Paddle::getSpeed() const {
+int Paddle::getMovementSpeed() const {
   return SPEED;
 }
 

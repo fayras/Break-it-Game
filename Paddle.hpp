@@ -9,7 +9,7 @@ class Paddle : public Entity {
   public:
     explicit Paddle(const TextureHolder& textures);
     unsigned int getCategory() const override;
-    int getSpeed() const;
+    int getMovementSpeed() const;
     sf::FloatRect getBoundingRect() const override;
 
   protected:

@@ -7,7 +7,7 @@
 
 class Ball : public Entity {
   public:
-    Ball(const TextureHolder& textures);
+    explicit Ball(const TextureHolder& textures);
     unsigned int getCategory() const override;
     sf::FloatRect getBoundingRect() const override;
 
