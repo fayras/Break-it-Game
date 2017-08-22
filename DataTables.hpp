@@ -3,6 +3,7 @@
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/System.hpp>
 #include <vector>
 
 struct ParticleData {
@@ -10,7 +11,13 @@ struct ParticleData {
   sf::Time lifetime;
 };
 
-std::vector<ParticleData>	initializeParticleData();
+struct LevelData {
+  std::vector<std::pair<sf::Vector2i, sf::Color>> blockColors;
+  float ballSpeedMultiplier;
+  float scoreMultiplier;
+};
 
+std::vector<ParticleData>	initializeParticleData();
+std::vector<LevelData> initializeLevelData();
 
 #endif //BREAK_IT_DATATABLES_HPP

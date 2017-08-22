@@ -40,8 +40,8 @@ class World : private sf::NonCopyable {
     void updateSounds();
 
     void buildScene();
+    void loadLevel(int level);
     sf::FloatRect getViewBounds() const;
-    sf::FloatRect getBattlefieldBounds() const;
 
     sf::RenderTarget&	target;
     sf::RenderTexture sceneTexture;
@@ -61,6 +61,7 @@ class World : private sf::NonCopyable {
     std::vector<std::unique_ptr<Block>> blocks;
     std::vector<std::unique_ptr<Wall>> walls;
     std::unique_ptr<Score> score;
+    int currentLevel{0};
 
     void removeWrecks();
 

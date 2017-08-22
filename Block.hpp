@@ -8,7 +8,7 @@
 
 class Block : public Entity {
   public:
-    Block(const TextureHolder& textures);
+    explicit Block(const TextureHolder& textures);
     Block(const TextureHolder& textures, sf::Color color);
     unsigned int getCategory() const override;
     sf::FloatRect getBoundingRect() const override;

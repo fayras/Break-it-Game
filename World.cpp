@@ -1,6 +1,11 @@
 #include <iostream>
 #include "World.hpp"
 #include "system/Utility.hpp"
+#include "DataTables.hpp"
+
+namespace {
+  const std::vector<LevelData> LevelTable = initializeLevelData();
+}
 
 World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sounds)
   : target(outputTarget),
@@ -39,6 +44,9 @@ void World::update(sf::Time dt) {
 
   // Remove all destroyed entities, create new ones
   removeWrecks();
+  if(blocks.empty()) {
+    loadLevel(currentLevel + 1);
+  }
 
   paddle->update(dt, commandQueue);
   ball->update(dt, commandQueue);
@@ -94,7 +102,7 @@ bool World::hasAlivePlayer() const {
 }
 
 bool World::hasPlayerReachedEnd() const {
-  return blocks.empty();
+  return blocks.empty() && currentLevel == LevelTable.size() - 1;
 }
 
 void World::loadTextures() {
@@ -169,11 +177,8 @@ void World::buildScene() {
   background = std::move(std::make_unique<SpriteNode>(stars));
 
   ball = std::move(std::make_unique<Ball>(textures));
-  ball->move(spawnPosition.x, spawnPosition.y - 50);
-  ball->setVelocity(0, -300);
 
   paddle = std::move(std::make_unique<Paddle>(textures));
-  paddle->move(spawnPosition);
 
   walls.push_back(std::move(std::make_unique<Wall>(20.f, worldView.getSize().y + 40.f)));
   walls.back()->setPosition(-20.f, -20.f);
@@ -182,29 +187,28 @@ void World::buildScene() {
   walls.push_back(std::move(std::make_unique<Wall>(20.f, worldView.getSize().y + 40.f)));
   walls.back()->setPosition(worldView.getSize().x, -20.f);
 
-  for(int x = 0; x < 13; x++) {
-    for(int y = 0; y < 7; y++) {
-      sf::Color color;
-      if(y < 7) { color.r = 255; color.g = 100; color.b = 100; }
-      if(y < 4) { color.r = 150; color.g = 255; color.b = 0; }
-      if(y < 2) { color.r = 100; color.g = 100; color.b = 255; }
-      blocks.push_back(std::move(std::make_unique<Block>(textures, color)));
-      blocks.back()->move(x * 70 + 80, y * 40 + 110);
-    }
+  loadLevel(currentLevel);
+}
+
+void World::loadLevel(int level) {
+  if(level >= LevelTable.size()) {
+    return;
+  }
+
+  currentLevel = level;
+  const LevelData& ld = LevelTable[level];
+
+  paddle->setPosition(spawnPosition);
+  ball->setPosition(spawnPosition.x, spawnPosition.y - 50);
+  ball->setVelocity(0, -300 * ld.ballSpeedMultiplier);
+  for(auto const &pair : ld.blockColors) {
+    blocks.push_back(std::move(std::make_unique<Block>(textures, pair.second)));
+    blocks.back()->move(pair.first.x * 70 + 80, pair.first.y * 40 + 110);
   }
 }
 
 sf::FloatRect World::getViewBounds() const {
   return {worldView.getCenter() - worldView.getSize() / 2.f, worldView.getSize()};
-}
-
-sf::FloatRect World::getBattlefieldBounds() const {
-  // Return view bounds + some area at top, where enemies spawn
-  sf::FloatRect bounds = getViewBounds();
-  bounds.top -= 100.f;
-  bounds.height += 100.f;
-
-  return bounds;
 }
 
 void World::removeWrecks() {
