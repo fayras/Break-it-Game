@@ -5,7 +5,7 @@
 #include <cassert>
 
 SceneNode::SceneNode(Category::Type category)
-  : children(), parent(nullptr), defaultCategory(category)
+  : parent(nullptr), defaultCategory(category)
 {}
 
 void SceneNode::attachChild(SceneNode::Ptr child) {
@@ -87,7 +87,7 @@ void SceneNode::drawChildren(sf::RenderTarget &target, sf::RenderStates states) 
 }
 
 sf::FloatRect SceneNode::getBoundingRect() const {
-  return sf::FloatRect();
+  return {};
 }
 
 void SceneNode::checkSceneCollision(SceneNode &sceneGraph, std::set<SceneNode::Pair> &collisionPairs) {

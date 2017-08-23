@@ -11,7 +11,7 @@ class EmitterNode : public SceneNode {
     explicit EmitterNode(Particle::Type type);
 
   private:
-    virtual void updateCurrent(sf::Time dt, CommandQueue& commands);
+    void updateCurrent(sf::Time dt, CommandQueue& commands) override;
     void emitParticles(sf::Time dt);
 
     sf::Time accumulatedTime;

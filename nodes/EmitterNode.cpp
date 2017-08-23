@@ -2,14 +2,13 @@
 #include "ParticleNode.hpp"
 
 EmitterNode::EmitterNode(Particle::Type type)
-  : SceneNode(),
-    accumulatedTime(sf::Time::Zero),
+  : accumulatedTime(sf::Time::Zero),
     type(type),
     particleSystem(nullptr)
 {}
 
 void EmitterNode::updateCurrent(sf::Time dt, CommandQueue &commands) {
-  if(particleSystem) {
+  if(particleSystem != nullptr) {
     emitParticles(dt);
   } else {
     // Find particle node with the same type as emitter node
