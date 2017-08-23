@@ -15,6 +15,7 @@
 #include "Wall.hpp"
 #include "nodes/SpriteNode.hpp"
 #include "Score.hpp"
+#include "nodes/ParticleNode.hpp"
 
 namespace sf {
   class RenderTarget;
@@ -61,6 +62,7 @@ class World : private sf::NonCopyable {
     std::vector<std::unique_ptr<Block>> blocks;
     std::vector<std::unique_ptr<Wall>> walls;
     std::unique_ptr<Score> score;
+    std::unique_ptr<ParticleNode> particles;
     int currentLevel{0};
 
     void removeWrecks();

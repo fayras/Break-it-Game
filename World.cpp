@@ -35,6 +35,7 @@ void World::update(sf::Time dt) {
     Command command = commandQueue.pop();
     paddle->onCommand(command, dt);
     ball->onCommand(command, dt);
+    particles->onCommand(command, dt);
     for(auto& wall : walls) wall->onCommand(command, dt);
     for(auto& block : blocks) block->onCommand(command, dt);
   }
@@ -50,6 +51,7 @@ void World::update(sf::Time dt) {
 
   paddle->update(dt, commandQueue);
   ball->update(dt, commandQueue);
+  particles->update(dt, commandQueue);
   for(auto& wall : walls) wall->update(dt, commandQueue);
   for(auto& block : blocks) block->update(dt, commandQueue);
 
@@ -88,6 +90,7 @@ void World::draw() {
   target.draw(*background);
   for(const auto& wall : walls) target.draw(*wall);
   for(const auto& block : blocks) target.draw(*block);
+  target.draw(*particles);
   target.draw(*ball);
   target.draw(*paddle);
   target.draw(*score);
@@ -112,6 +115,7 @@ void World::loadTextures() {
   textures.load(Textures::EXPLOSION, "assets/textures/Explosion.png");
   textures.load(Textures::STARFIELD, "assets/textures/starfield.png");
   textures.load(Textures::SCORE, "assets/textures/glassPanel_cornerBL.png");
+  textures.load(Textures::PARTICLE, "assets/textures/particle.png");
 }
 
 void World::adaptPlayerPosition() {
@@ -186,6 +190,8 @@ void World::buildScene() {
   walls.back()->setPosition(0.f, -20.f);
   walls.push_back(std::move(std::make_unique<Wall>(20.f, worldView.getSize().y + 40.f)));
   walls.back()->setPosition(worldView.getSize().x, -20.f);
+
+  particles = std::move(std::make_unique<ParticleNode>(Particle::Propellant, textures));
 
   loadLevel(currentLevel);
 }

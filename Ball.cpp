@@ -1,6 +1,8 @@
 #include "Ball.hpp"
 #include "system/ResourceHolder.hpp"
 #include "system/Utility.hpp"
+#include "nodes/ParticleNode.hpp"
+#include "nodes/EmitterNode.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
 Ball::Ball(const TextureHolder& textures)
@@ -8,6 +10,9 @@ Ball::Ball(const TextureHolder& textures)
     sprite(textures.get(Textures::BALL))
 {
   centerOrigin(sprite);
+  std::unique_ptr<EmitterNode> trail(new EmitterNode(Particle::Propellant));
+  trail->setPosition(0, 0);
+  attachChild(std::move(trail));
 }
 
 unsigned int Ball::getCategory() const {
