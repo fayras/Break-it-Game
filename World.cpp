@@ -208,6 +208,7 @@ void World::loadLevel(int level) {
   paddle->setPosition(spawnPosition);
   ball->setPosition(spawnPosition.x, spawnPosition.y - 50);
   ball->setVelocity(0, -300 * ld.ballSpeedMultiplier);
+  particles->clearParticles();
   for(auto const &pair : ld.blockColors) {
     blocks.push_back(std::move(std::make_unique<Block>(textures, pair.second)));
     blocks.back()->move(pair.first.x * 70 + 80, pair.first.y * 40 + 110);

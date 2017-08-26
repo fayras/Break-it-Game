@@ -61,8 +61,7 @@ void ParticleNode::drawCurrent(sf::RenderTarget &target, sf::RenderStates states
   target.draw(vertexArray, states);
 }
 
-void
-ParticleNode::addVertex(float worldX, float worldY, float texCoordX, float texCoordY, const sf::Color &color) const {
+void ParticleNode::addVertex(float worldX, float worldY, float texCoordX, float texCoordY, const sf::Color &color) const {
   sf::Vertex vertex;
   vertex.position = sf::Vector2f(worldX, worldY);
   vertex.texCoords = sf::Vector2f(texCoordX, texCoordY);
@@ -89,4 +88,8 @@ void ParticleNode::computeVertices() const {
     addVertex(pos.x + half.x, pos.y + half.y, size.x, size.y, color);
     addVertex(pos.x - half.x, pos.y + half.y, 0.f,    size.y, color);
   }
+}
+
+void ParticleNode::clearParticles() {
+  particles.clear();
 }
