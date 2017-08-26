@@ -201,6 +201,7 @@ void World::loadLevel(int level) {
     return;
   }
 
+  showNewLevelMessage = true;
   currentLevel = level;
   const LevelData& ld = LevelTable[level];
 
@@ -252,4 +253,8 @@ bool World::collision(sf::FloatRect ballRect, sf::FloatRect blockRect, sf::Vecto
 
 int World::getScore() const {
   return score->get();
+}
+
+int World::getLevel() const {
+  return currentLevel + 1;
 }

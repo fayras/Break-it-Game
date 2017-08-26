@@ -31,6 +31,12 @@ bool GameState::update(sf::Time dt) {
     requestStackPush(States::PAUSE);
   }
 
+  if(world.showNewLevelMessage) {
+    world.showNewLevelMessage = false;
+    player.setLevel(world.getLevel());
+    requestStackPush(States::LEVEL_INTRO);
+  }
+
   return true;
 }
 

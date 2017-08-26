@@ -32,6 +32,9 @@ class World : private sf::NonCopyable {
     bool hasAlivePlayer() const;
     bool hasPlayerReachedEnd() const;
     int getScore() const;
+    int getLevel() const;
+
+    bool showNewLevelMessage{false};
 
   private:
     void loadTextures();

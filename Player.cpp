@@ -84,3 +84,11 @@ void Player::setScore(int score) {
 int Player::getScore() const {
   return score;
 }
+
+void Player::setLevel(int level) {
+  this->level = level;
+}
+
+int Player::getLevel() const {
+  return level;
+}
