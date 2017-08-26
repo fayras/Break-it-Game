@@ -17,8 +17,8 @@ std::vector<LevelData> initializeLevelData() {
   std::vector<LevelData> data(2);
 
   data[0].ballSpeedMultiplier = 1.0f;
-  for(int x = 6; x < 7; x++) {
-    for(int y = 0; y < 1; y++) {
+  for(int x = 0; x < 13; x++) {
+    for(int y = 0; y < 7; y++) {
       sf::Color color;
       if(y < 7) { color.r = 255; color.g = 100; color.b = 100; }
       if(y < 4) { color.r = 150; color.g = 255; color.b = 0; }

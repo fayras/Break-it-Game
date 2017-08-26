@@ -22,7 +22,8 @@ namespace Textures {
     STARFIELD,
     TITLE,
     SCORE,
-    GAME_OVER_SCREEN
+    GAME_OVER_SCREEN,
+    GAME_WIN_SCREEN
   };
 }
 

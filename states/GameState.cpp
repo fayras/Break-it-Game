@@ -28,7 +28,8 @@ bool GameState::update(sf::Time dt) {
 
   if(world.hasPlayerReachedEnd()) {
     player.setScore(world.getScore());
-    requestStackPush(States::PAUSE);
+    player.setLevel(-1);
+    requestStackPush(States::GAME_OVER);
   }
 
   if(world.showNewLevelMessage) {
