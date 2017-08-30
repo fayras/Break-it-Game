@@ -3,10 +3,6 @@
 #include "system/Utility.hpp"
 #include "DataTables.hpp"
 
-namespace {
-  const std::vector<LevelData> LevelTable = initializeLevelData();
-}
-
 World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sounds)
   : target(outputTarget),
     worldView(outputTarget.getDefaultView()),
@@ -37,23 +33,24 @@ void World::update(sf::Time dt) {
     ball->onCommand(command, dt);
     particles->onCommand(command, dt);
     for(auto& wall : walls) wall->onCommand(command, dt);
-    for(auto& block : blocks) block->onCommand(command, dt);
+    // for(auto& block : blocks) block->onCommand(command, dt);
+    currentLevel->onCommand(command, dt);
   }
 
   // Collision detection and response (may destroy entities)
   handleCollisions();
 
-  // Remove all destroyed entities, create new ones
-  removeWrecks();
-  if(blocks.empty()) {
-    loadLevel(currentLevel + 1);
+  if(currentLevel->done()) {
+    loadNextLevel();
+    // currentLevel->loadNext();
   }
 
   paddle->update(dt, commandQueue);
   ball->update(dt, commandQueue);
   particles->update(dt, commandQueue);
+  currentLevel->update(dt, commandQueue);
   for(auto& wall : walls) wall->update(dt, commandQueue);
-  for(auto& block : blocks) block->update(dt, commandQueue);
+  // for(auto& block : blocks) block->update(dt, commandQueue);
 
   adaptPlayerPosition();
   updateSounds();
@@ -89,7 +86,8 @@ void World::draw() {
   target.setView(worldView);
   target.draw(*background);
   for(const auto& wall : walls) target.draw(*wall);
-  for(const auto& block : blocks) target.draw(*block);
+  // for(const auto& block : blocks) target.draw(*block);
+  target.draw(*currentLevel);
   target.draw(*particles);
   target.draw(*ball);
   target.draw(*paddle);
@@ -105,7 +103,7 @@ bool World::hasAlivePlayer() const {
 }
 
 bool World::hasPlayerReachedEnd() const {
-  return blocks.empty() && currentLevel == LevelTable.size() - 1;
+  return currentLevel->done() && currentLevel->isLast();
 }
 
 void World::loadTextures() {
@@ -145,6 +143,7 @@ void World::handleCollisions() {
     sounds.play(SoundEffect::HIT_GENERAL);
     score->resetMultiplier();
   }
+  /*
   for(const auto& block : blocks) {
     sf::FloatRect blockRect = block->getBoundingRect();
     if(collision(ballRect, blockRect, ballVel)) {
@@ -156,6 +155,7 @@ void World::handleCollisions() {
       score->increaseMultiplier();
     }
   }
+   */
   for(const auto& wall : walls) {
     sf::FloatRect blockRect = wall->getBoundingRect();
     if(collision(ballRect, blockRect, ballVel)) {
@@ -192,39 +192,22 @@ void World::buildScene() {
   walls.back()->setPosition(worldView.getSize().x, -20.f);
 
   particles = std::move(std::make_unique<ParticleNode>(Particle::Propellant, textures));
+  currentLevel = std::move(std::make_unique<Level>(textures));
 
-  loadLevel(currentLevel);
+  loadNextLevel();
 }
 
-void World::loadLevel(int level) {
-  if(level >= LevelTable.size()) {
-    return;
-  }
-
-  showNewLevelMessage = true;
-  currentLevel = level;
-  const LevelData& ld = LevelTable[level];
+void World::loadNextLevel() {
+  currentLevel->loadNext();
 
   paddle->setPosition(spawnPosition);
   ball->setPosition(spawnPosition.x, spawnPosition.y - 50);
-  ball->setVelocity(0, -300 * ld.ballSpeedMultiplier);
+  ball->setVelocity(0, -300 * currentLevel->getBallSpeedMultiplier());
   particles->clearParticles();
-  for(auto const &pair : ld.blockColors) {
-    blocks.push_back(std::move(std::make_unique<Block>(textures, pair.second)));
-    blocks.back()->move(pair.first.x * 70 + 80, pair.first.y * 40 + 110);
-  }
 }
 
 sf::FloatRect World::getViewBounds() const {
   return {worldView.getCenter() - worldView.getSize() / 2.f, worldView.getSize()};
-}
-
-void World::removeWrecks() {
-  auto wreckfieldBegin = std::remove_if (blocks.begin(), blocks.end(), std::mem_fn(&Block::isMarkedForRemoval));
-  blocks.erase(wreckfieldBegin, blocks.end());
-
-  // Call function recursively for all remaining children
-  std::for_each(blocks.begin(), blocks.end(), std::mem_fn(&SceneNode::removeWrecks));
 }
 
 bool World::collision(sf::FloatRect ballRect, sf::FloatRect blockRect, sf::Vector2f& ballVelocity) const {
@@ -257,5 +240,5 @@ int World::getScore() const {
 }
 
 int World::getLevel() const {
-  return currentLevel + 1;
+  return currentLevel->getID();
 }

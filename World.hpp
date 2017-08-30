@@ -16,6 +16,7 @@
 #include "nodes/SpriteNode.hpp"
 #include "Score.hpp"
 #include "nodes/ParticleNode.hpp"
+#include "Level.hpp"
 
 namespace sf {
   class RenderTarget;
@@ -44,7 +45,7 @@ class World : private sf::NonCopyable {
     void updateSounds();
 
     void buildScene();
-    void loadLevel(int level);
+    void loadNextLevel();
     sf::FloatRect getViewBounds() const;
 
     sf::RenderTarget&	target;
@@ -62,13 +63,10 @@ class World : private sf::NonCopyable {
     std::unique_ptr<SpriteNode> background;
     std::unique_ptr<Ball> ball;
     std::unique_ptr<Paddle> paddle;
-    std::vector<std::unique_ptr<Block>> blocks;
     std::vector<std::unique_ptr<Wall>> walls;
     std::unique_ptr<Score> score;
     std::unique_ptr<ParticleNode> particles;
-    int currentLevel{0};
-
-    void removeWrecks();
+    std::unique_ptr<Level> currentLevel;
 
     bool shakeScreen{false};
     sf::Time shakeTimer{sf::Time::Zero};

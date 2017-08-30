@@ -3,7 +3,7 @@
 #include "system/ResourceHolder.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
-Block::Block( const TextureHolder& textures)
+Block::Block(const TextureHolder& textures)
   : Entity(100),
     sprite(textures.get(Textures::BLOCK)),
     breakAnimation(textures.get(Textures::EXPLOSION))
@@ -44,7 +44,7 @@ void Block::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const
 
 sf::FloatRect Block::getBoundingRect() const {
   if(isDestroyed()) {
-    return sf::FloatRect();
+    return {};
   }
   return getWorldTransform().transformRect(sprite.getGlobalBounds());
 }

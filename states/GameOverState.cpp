@@ -6,9 +6,7 @@
 #include "../gui/Button.hpp"
 
 GameOverState::GameOverState(StateStack &stack, State::Context context)
-  : State(stack, context),
-    scoreText(),
-    guiContainer()
+  : State(stack, context)
 {
   sf::Font& font = context.fonts->get(Fonts::ARCADE);
   sf::Vector2f windowSize(context.window->getSize());
@@ -38,7 +36,7 @@ GameOverState::GameOverState(StateStack &stack, State::Context context)
   guiContainer.pack(returnButton);
   guiContainer.pack(backToMenuButton);
 
-  if(context.player->getLevel() == -1) {
+  if(context.player->getLevel() < 0) {
     background.setTexture(context.textures->get(Textures::GAME_WIN_SCREEN));
   } else {
     background.setTexture(context.textures->get(Textures::GAME_OVER_SCREEN));
