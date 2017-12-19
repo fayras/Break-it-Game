@@ -143,8 +143,8 @@ void World::handleCollisions() {
     sounds.play(SoundEffect::HIT_GENERAL);
     score->resetMultiplier();
   }
-  /*
-  for(const auto& block : blocks) {
+
+  for(auto block : currentLevel->getBlocks()) {
     sf::FloatRect blockRect = block->getBoundingRect();
     if(collision(ballRect, blockRect, ballVel)) {
       ball->setVelocity(ball->getVelocity() + Vector::unit(ball->getVelocity()) * 3.0f);
@@ -155,7 +155,7 @@ void World::handleCollisions() {
       score->increaseMultiplier();
     }
   }
-   */
+
   for(const auto& wall : walls) {
     sf::FloatRect blockRect = wall->getBoundingRect();
     if(collision(ballRect, blockRect, ballVel)) {

@@ -9,6 +9,7 @@ class Level : public SceneNode {
   public:
     explicit Level(const TextureHolder& textures);
     void loadNext();
+    std::vector<Block*> getBlocks() const;
 
     bool done() const;
     bool isLast() const;

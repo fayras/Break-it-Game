@@ -44,3 +44,16 @@ bool Level::isLast() const {
 void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
   removeWrecks();
 }
+
+std::vector<Block*> Level::getBlocks() const {
+  // return children;
+
+  std::vector<Block*> retCastData;
+
+  for (auto& item : children) {
+    auto t = dynamic_cast<Block*>(item.get());   //(*)
+    retCastData.push_back(t);
+  }
+
+  return retCastData;
+}
