@@ -3,6 +3,7 @@
 #include "../system/Command.hpp"
 #include "../system/Utility.hpp"
 #include <cassert>
+#include <cmath>
 
 SceneNode::SceneNode(Category::Type category)
   : parent(nullptr), defaultCategory(category)

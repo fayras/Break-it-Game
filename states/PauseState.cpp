@@ -4,6 +4,7 @@
 #include "../gui/Button.hpp"
 #include "../system/MusicPlayer.hpp"
 #include "../system/ResourceHolder.hpp"
+#include <cmath>
 
 PauseState::PauseState(StateStack &stack, State::Context context)
   : State(stack, context), pausedText(), guiContainer()

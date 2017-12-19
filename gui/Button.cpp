@@ -2,6 +2,7 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <cmath>
 
 gui::Button::Button(State::Context context)
   : normalTexture(context.textures->get(Textures::ID::BUTTON_NORMAL)),

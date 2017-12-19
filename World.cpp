@@ -2,6 +2,7 @@
 #include "World.hpp"
 #include "system/Utility.hpp"
 #include "DataTables.hpp"
+#include <cmath>
 
 World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sounds)
   : target(outputTarget),

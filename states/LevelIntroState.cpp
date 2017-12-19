@@ -2,6 +2,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "../system/ResourceHolder.hpp"
+#include <cmath>
 
 LevelIntroState::LevelIntroState(StateStack &stack, State::Context context) : State(stack, context) {
   sf::Font& font = context.fonts->get(Fonts::MAIN);

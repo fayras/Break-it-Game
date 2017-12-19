@@ -4,6 +4,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include "../system/MusicPlayer.hpp"
 #include "../gui/Button.hpp"
+#include <cmath>
 
 GameOverState::GameOverState(StateStack &stack, State::Context context)
   : State(stack, context)
