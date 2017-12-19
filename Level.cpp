@@ -19,9 +19,10 @@ int Level::getID() const {
 void Level::loadNext() {
   if(getID() + 1 >= LevelTable.size()) {
     currentID = -2;
+  } else {
+    currentID++;
+    load();
   }
-  currentID++;
-  load();
 }
 
 void Level::load() {
@@ -51,7 +52,7 @@ std::vector<Block*> Level::getBlocks() const {
   std::vector<Block*> retCastData;
 
   for (auto& item : children) {
-    auto t = dynamic_cast<Block*>(item.get());   //(*)
+    auto t = dynamic_cast<Block*>(item.get());
     retCastData.push_back(t);
   }
 
