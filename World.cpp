@@ -205,6 +205,7 @@ void World::loadNextLevel() {
   ball->setPosition(spawnPosition.x, spawnPosition.y - 50);
   ball->setVelocity(0, -300 * currentLevel->getBallSpeedMultiplier());
   particles->clearParticles();
+  showNewLevelMessage = true;
 }
 
 sf::FloatRect World::getViewBounds() const {
