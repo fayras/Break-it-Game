@@ -245,5 +245,5 @@ int World::getScore() const {
 }
 
 int World::getLevel() const {
-  return currentLevel->getID();
+  return currentLevel->getID() + 1;
 }
