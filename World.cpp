@@ -185,12 +185,15 @@ void World::buildScene() {
 
   paddle = std::move(std::make_unique<Paddle>(textures));
 
-  walls.push_back(std::move(std::make_unique<Wall>(20.f, worldView.getSize().y + 40.f)));
-  walls.back()->setPosition(-20.f, -20.f);
-  walls.push_back(std::move(std::make_unique<Wall>(worldView.getSize().x, 20.f)));
-  walls.back()->setPosition(0.f, -20.f);
-  walls.push_back(std::move(std::make_unique<Wall>(20.f, worldView.getSize().y + 40.f)));
-  walls.back()->setPosition(worldView.getSize().x, -20.f);
+  float wallWidth = 80.f;
+  float halfWallWidth = wallWidth / 2.f;
+
+  walls.push_back(std::move(std::make_unique<Wall>(halfWallWidth, worldView.getSize().y + wallWidth)));
+  walls.back()->setPosition(-halfWallWidth, -halfWallWidth);
+  walls.push_back(std::move(std::make_unique<Wall>(worldView.getSize().x + wallWidth, halfWallWidth)));
+  walls.back()->setPosition(-halfWallWidth, -halfWallWidth);
+  walls.push_back(std::move(std::make_unique<Wall>(halfWallWidth, worldView.getSize().y + wallWidth)));
+  walls.back()->setPosition(worldView.getSize().x, -halfWallWidth);
 
   particles = std::move(std::make_unique<ParticleNode>(Particle::Propellant, textures));
   currentLevel = std::move(std::make_unique<Level>(textures));
