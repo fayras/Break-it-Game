@@ -24,6 +24,8 @@ class Player {
     int getScore() const;
     void setLevel(int level);
     int getLevel() const;
+    void setLives(int lives);
+    int getLives() const;
 
   private:
     void initializeActions();
@@ -33,6 +35,7 @@ class Player {
     std::map<Action, Command> actionBinding;
     int score{0};
     int level{0};
+    int lives{3};
 };
 
 #endif //SFML_TEMPLATE_PLAYER_HPP

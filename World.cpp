@@ -36,6 +36,7 @@ void World::update(sf::Time dt) {
     for(auto& wall : walls) wall->onCommand(command, dt);
     // for(auto& block : blocks) block->onCommand(command, dt);
     currentLevel->onCommand(command, dt);
+    score->onCommand(command, dt);
   }
 
   // Collision detection and response (may destroy entities)
@@ -99,11 +100,11 @@ CommandQueue& World::getCommandQueue() {
   return commandQueue;
 }
 
-bool World::hasAlivePlayer() const {
+bool World::ballInsideBounds() const {
   return ball->getPosition().y < worldBounds.height;
 }
 
-bool World::hasPlayerReachedEnd() const {
+bool World::reachedEnd() const {
   return currentLevel->done() && currentLevel->isLast();
 }
 
@@ -203,12 +204,7 @@ void World::buildScene() {
 
 void World::loadNextLevel() {
   currentLevel->loadNext();
-
-  paddle->setPosition(spawnPosition);
-  ball->setPosition(spawnPosition.x, spawnPosition.y - 50);
-  ball->setVelocity(0, -300 * currentLevel->getBallSpeedMultiplier());
-  particles->clearParticles();
-  showNewLevelMessage = true;
+  resetPositions();
 }
 
 sf::FloatRect World::getViewBounds() const {
@@ -246,4 +242,12 @@ int World::getScore() const {
 
 int World::getLevel() const {
   return currentLevel->getID() + 1;
+}
+
+void World::resetPositions() {
+  paddle->setPosition(spawnPosition);
+  ball->setPosition(spawnPosition.x, spawnPosition.y - 50);
+  ball->setVelocity(0, -300 * currentLevel->getBallSpeedMultiplier());
+  particles->clearParticles();
+  showNewLevelMessage = true;
 }

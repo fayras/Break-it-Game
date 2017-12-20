@@ -30,10 +30,11 @@ class World : private sf::NonCopyable {
 
     CommandQueue& getCommandQueue();
 
-    bool hasAlivePlayer() const;
-    bool hasPlayerReachedEnd() const;
+    bool ballInsideBounds() const;
+    bool reachedEnd() const;
     int getScore() const;
     int getLevel() const;
+    void resetPositions();
 
     bool showNewLevelMessage{false};
 

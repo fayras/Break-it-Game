@@ -10,7 +10,8 @@ namespace Category {
     BALL = 1 << 3,
     PADDLE = 1 << 4,
     BLOCK = 1 << 5,
-    WALL = 1 << 6
+    WALL = 1 << 6,
+    SCORE = 1 << 7
   };
 }
 
