@@ -10,7 +10,6 @@ GameState::GameState(StateStack &stack, const State::Context &context)
       player(*context.player)
 {
   context.music->play(Music::GAME);
-  player.setLives(3);
 }
 
 void GameState::draw() {
@@ -22,20 +21,7 @@ bool GameState::update(sf::Time dt) {
   CommandQueue& commands = world.getCommandQueue();
   player.handleRealtimeInput(commands);
 
-  if(!world.ballInsideBounds()) {
-    player.setLives(player.getLives() - 1);
-    world.resetPositions();
-    Command command = Command();
-    command.category = Category::SCORE;
-    command.action = derivedAction<Score>([](Score& score, sf::Time) {
-      score.resetMultiplier();
-      score.increase(-score.get() / 2);
-    });
-    commands.push(command);
-    // requestStackPush(States::GAME_OVER);
-  }
-
-  if(player.getLives() <= 0) {
+  if(world.destroyed()) {
     player.setScore(world.getScore());
     requestStackPush(States::GAME_OVER);
   }
@@ -46,7 +32,7 @@ bool GameState::update(sf::Time dt) {
     requestStackPush(States::GAME_OVER);
   }
 
-  if(world.showNewLevelMessage && player.getLives() > 0) {
+  if(world.showNewLevelMessage && !world.destroyed()) {
     world.showNewLevelMessage = false;
     player.setLevel(world.getLevel());
     requestStackPush(States::LEVEL_INTRO);

@@ -23,7 +23,8 @@ namespace Textures {
     TITLE,
     SCORE,
     GAME_OVER_SCREEN,
-    GAME_WIN_SCREEN
+    GAME_WIN_SCREEN,
+    LIFE
   };
 }
 

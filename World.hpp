@@ -17,6 +17,7 @@
 #include "Score.hpp"
 #include "nodes/ParticleNode.hpp"
 #include "Level.hpp"
+#include "Life.hpp"
 
 namespace sf {
   class RenderTarget;
@@ -37,6 +38,8 @@ class World : private sf::NonCopyable {
     void resetPositions();
 
     bool showNewLevelMessage{false};
+
+    bool destroyed();
 
   private:
     void loadTextures();
@@ -66,6 +69,7 @@ class World : private sf::NonCopyable {
     std::unique_ptr<Paddle> paddle;
     std::vector<std::unique_ptr<Wall>> walls;
     std::unique_ptr<Score> score;
+    std::unique_ptr<Life> lives;
     std::unique_ptr<ParticleNode> particles;
     std::unique_ptr<Level> currentLevel;
 

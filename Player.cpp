@@ -92,11 +92,3 @@ void Player::setLevel(int level) {
 int Player::getLevel() const {
   return level;
 }
-
-void Player::setLives(int lives) {
-  this->lives = lives;
-}
-
-int Player::getLives() const {
-  return lives;
-}

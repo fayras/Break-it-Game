@@ -11,7 +11,8 @@ namespace Category {
     PADDLE = 1 << 4,
     BLOCK = 1 << 5,
     WALL = 1 << 6,
-    SCORE = 1 << 7
+    SCORE = 1 << 7,
+    LIFE = 1 << 8
   };
 }
 

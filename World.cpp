@@ -37,6 +37,7 @@ void World::update(sf::Time dt) {
     // for(auto& block : blocks) block->onCommand(command, dt);
     currentLevel->onCommand(command, dt);
     score->onCommand(command, dt);
+    lives->onCommand(command, dt);
   }
 
   // Collision detection and response (may destroy entities)
@@ -47,10 +48,25 @@ void World::update(sf::Time dt) {
     // currentLevel->loadNext();
   }
 
+  if(!ballInsideBounds()) {
+    lives->decrease();
+    resetPositions();
+    Command command = Command();
+    command.category = Category::SCORE;
+    command.action = derivedAction<Score>([](Score& score, sf::Time) {
+      score.resetMultiplier();
+      score.increase(-score.get() / 2);
+    });
+    commandQueue.push(command);
+    // requestStackPush(States::GAME_OVER);
+  }
+
   paddle->update(dt, commandQueue);
   ball->update(dt, commandQueue);
   particles->update(dt, commandQueue);
   currentLevel->update(dt, commandQueue);
+  score->update(dt, commandQueue);
+  lives->update(dt, commandQueue);
   for(auto& wall : walls) wall->update(dt, commandQueue);
   // for(auto& block : blocks) block->update(dt, commandQueue);
 
@@ -94,6 +110,7 @@ void World::draw() {
   target.draw(*ball);
   target.draw(*paddle);
   target.draw(*score);
+  target.draw(*lives);
 }
 
 CommandQueue& World::getCommandQueue() {
@@ -116,6 +133,8 @@ void World::loadTextures() {
   textures.load(Textures::STARFIELD, "assets/textures/starfield.png");
   textures.load(Textures::SCORE, "assets/textures/glassPanel_cornerBL.png");
   textures.load(Textures::PARTICLE, "assets/textures/particle.png");
+  textures.load(Textures::LIFE, "assets/textures/life.png");
+  textures.get(Textures::LIFE).setRepeated(true);
 }
 
 void World::adaptPlayerPosition() {
@@ -177,6 +196,9 @@ void World::updateSounds() {
 void World::buildScene() {
   score = std::move(std::make_unique<Score>(textures.get(Textures::SCORE), fonts.get(Fonts::ARCADE)));
   score->setPosition(worldView.getSize().x - 295, 10);
+
+  lives = std::move(std::make_unique<Life>(textures.get(Textures::LIFE)));
+  lives->setPosition(10, 10);
 
   sf::Texture& stars = textures.get(Textures::STARFIELD);
   stars.setRepeated(true);
@@ -250,4 +272,8 @@ void World::resetPositions() {
   ball->setVelocity(0, -300 * currentLevel->getBallSpeedMultiplier());
   particles->clearParticles();
   showNewLevelMessage = true;
+}
+
+bool World::destroyed() {
+  return lives->getLives() <= 0;
 }
