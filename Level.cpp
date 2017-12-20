@@ -47,14 +47,12 @@ void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
 }
 
 std::vector<Block*> Level::getBlocks() const {
-  // return children;
-
-  std::vector<Block*> retCastData;
+  std::vector<Block*> blocks;
 
   for (auto& item : children) {
     auto t = dynamic_cast<Block*>(item.get());
-    retCastData.push_back(t);
+    blocks.push_back(t);
   }
 
-  return retCastData;
+  return blocks;
 }
