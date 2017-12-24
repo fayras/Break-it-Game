@@ -12,7 +12,8 @@ namespace Category {
     BLOCK = 1 << 5,
     WALL = 1 << 6,
     SCORE = 1 << 7,
-    LIFE = 1 << 8
+    LIFE = 1 << 8,
+    BACKGROUND = 1 << 9
   };
 }
 

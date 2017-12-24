@@ -34,6 +34,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
     sf::Transform getWorldTransform() const;
 
     void onCommand(const Command& command, sf::Time dt);
+    void setCategory(Category::Type category);
     virtual unsigned int getCategory() const;
 
     void update(sf::Time dt, CommandQueue& commands);

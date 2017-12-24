@@ -21,12 +21,6 @@ World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sou
 }
 
 void World::update(sf::Time dt) {
-  background->move(0, 100 * dt.asSeconds());
-  // keep bg repeating. 1400 = size of texture
-  if(background->getPosition().y > 0) {
-    background->setPosition(0, -1400 + worldView.getSize().y);
-  }
-
   paddle->setVelocity(paddle->getVelocity() / 2.f);
   while(!commandQueue.empty()) {
     Command command = commandQueue.pop();
@@ -40,6 +34,17 @@ void World::update(sf::Time dt) {
 //    score->onCommand(command, dt);
 //    lives->onCommand(command, dt);
   }
+
+  Command bgCommand;
+  bgCommand.category = Category::BACKGROUND;
+  bgCommand.action = [this](SceneNode& background, sf::Time) {
+    background.move(0, 100 * dt.asSeconds());
+    // keep bg repeating. 1400 = size of texture
+    if(background.getPosition().y > 0) {
+      background.setPosition(0, -1400 + worldView.getSize().y);
+    }
+  };
+  commandQueue.push(bgCommand);
 
   // Collision detection and response (may destroy entities)
   handleCollisions();
@@ -208,6 +213,7 @@ void World::buildScene() {
   sf::Texture& stars = textures.get(Textures::STARFIELD);
   stars.setRepeated(true);
   auto background = std::make_unique<SpriteNode>(stars);
+  background->setCategory(Category::BACKGROUND);
   sceneGraph.attachChild(std::move(background));
 
   auto ball = std::make_unique<Ball>(textures);

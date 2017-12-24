@@ -51,6 +51,10 @@ void SceneNode::onCommand(const Command &command, sf::Time dt) {
   }
 }
 
+void SceneNode::setCategory(const Category::Type category) {
+  defaultCategory = category;
+}
+
 unsigned int SceneNode::getCategory() const {
   return defaultCategory;
 }
