@@ -6,7 +6,9 @@ namespace {
 
 Level::Level(const TextureHolder &textures)
   : textures(textures), levelData()
-{}
+{
+  loadNext();
+}
 
 bool Level::done() const {
   return children.empty();

@@ -30,14 +30,15 @@ void World::update(sf::Time dt) {
   paddle->setVelocity(paddle->getVelocity() / 2.f);
   while(!commandQueue.empty()) {
     Command command = commandQueue.pop();
-    paddle->onCommand(command, dt);
-    ball->onCommand(command, dt);
-    particles->onCommand(command, dt);
-    for(auto& wall : walls) wall->onCommand(command, dt);
-    // for(auto& block : blocks) block->onCommand(command, dt);
-    currentLevel->onCommand(command, dt);
-    score->onCommand(command, dt);
-    lives->onCommand(command, dt);
+    sceneGraph.onCommand(command, dt);
+//    paddle->onCommand(command, dt);
+//    ball->onCommand(command, dt);
+//    particles->onCommand(command, dt);
+//    for(auto& wall : walls) wall->onCommand(command, dt);
+//    // for(auto& block : blocks) block->onCommand(command, dt);
+//    currentLevel->onCommand(command, dt);
+//    score->onCommand(command, dt);
+//    lives->onCommand(command, dt);
   }
 
   // Collision detection and response (may destroy entities)
@@ -61,14 +62,15 @@ void World::update(sf::Time dt) {
     // requestStackPush(States::GAME_OVER);
   }
 
-  paddle->update(dt, commandQueue);
-  ball->update(dt, commandQueue);
-  particles->update(dt, commandQueue);
-  currentLevel->update(dt, commandQueue);
-  score->update(dt, commandQueue);
-  lives->update(dt, commandQueue);
-  for(auto& wall : walls) wall->update(dt, commandQueue);
+//  paddle->update(dt, commandQueue);
+//  ball->update(dt, commandQueue);
+//  particles->update(dt, commandQueue);
+//  currentLevel->update(dt, commandQueue);
+//  score->update(dt, commandQueue);
+//  lives->update(dt, commandQueue);
+//  for(auto& wall : walls) wall->update(dt, commandQueue);
   // for(auto& block : blocks) block->update(dt, commandQueue);
+  sceneGraph.update(dt, commandQueue);
 
   adaptPlayerPosition();
   updateSounds();
@@ -102,15 +104,16 @@ void World::update(sf::Time dt) {
 
 void World::draw() {
   target.setView(worldView);
-  target.draw(*background);
-  for(const auto& wall : walls) target.draw(*wall);
-  // for(const auto& block : blocks) target.draw(*block);
-  target.draw(*currentLevel);
-  target.draw(*particles);
-  target.draw(*ball);
-  target.draw(*paddle);
-  target.draw(*score);
-  target.draw(*lives);
+//  target.draw(*background);
+//  for(const auto& wall : walls) target.draw(*wall);
+//  // for(const auto& block : blocks) target.draw(*block);
+//  target.draw(*currentLevel);
+//  target.draw(*particles);
+//  target.draw(*ball);
+//  target.draw(*paddle);
+//  target.draw(*score);
+//  target.draw(*lives);
+  target.draw(sceneGraph);
 }
 
 CommandQueue& World::getCommandQueue() {
@@ -194,34 +197,51 @@ void World::updateSounds() {
 }
 
 void World::buildScene() {
-  score = std::move(std::make_unique<Score>(textures.get(Textures::SCORE), fonts.get(Fonts::ARCADE)));
+  auto score = std::make_unique<Score>(textures.get(Textures::SCORE), fonts.get(Fonts::ARCADE));
   score->setPosition(worldView.getSize().x - 295, 10);
+  sceneGraph.attachChild(std::move(score));
 
-  lives = std::move(std::make_unique<Life>(textures.get(Textures::LIFE)));
+  auto lives = std::make_unique<Life>(textures.get(Textures::LIFE));
   lives->setPosition(10, 10);
+  sceneGraph.attachChild(std::move(lives));
 
   sf::Texture& stars = textures.get(Textures::STARFIELD);
   stars.setRepeated(true);
-  background = std::move(std::make_unique<SpriteNode>(stars));
+  auto background = std::make_unique<SpriteNode>(stars);
+  sceneGraph.attachChild(std::move(background));
 
-  ball = std::move(std::make_unique<Ball>(textures));
+  auto ball = std::make_unique<Ball>(textures);
+  sceneGraph.attachChild(std::move(ball));
 
-  paddle = std::move(std::make_unique<Paddle>(textures));
+  auto paddle = std::make_unique<Paddle>(textures);
+  this->paddle = paddle.get();
+  sceneGraph.attachChild(std::move(paddle));
 
   float wallWidth = 80.f;
   float halfWallWidth = wallWidth / 2.f;
 
-  walls.push_back(std::move(std::make_unique<Wall>(halfWallWidth, worldView.getSize().y + wallWidth)));
-  walls.back()->setPosition(-halfWallWidth, -halfWallWidth);
-  walls.push_back(std::move(std::make_unique<Wall>(worldView.getSize().x + wallWidth, halfWallWidth)));
-  walls.back()->setPosition(-halfWallWidth, -halfWallWidth);
-  walls.push_back(std::move(std::make_unique<Wall>(halfWallWidth, worldView.getSize().y + wallWidth)));
-  walls.back()->setPosition(worldView.getSize().x, -halfWallWidth);
+  auto walls = std::make_unique<SceneNode>();
 
-  particles = std::move(std::make_unique<ParticleNode>(Particle::Propellant, textures));
-  currentLevel = std::move(std::make_unique<Level>(textures));
+  auto wall1 = std::make_unique<Wall>(halfWallWidth, worldView.getSize().y + wallWidth);
+  wall1->setPosition(-halfWallWidth, -halfWallWidth);
+  walls->attachChild(std::move(wall1));
 
-  loadNextLevel();
+  auto wall2 = std::make_unique<Wall>(worldView.getSize().x + wallWidth, halfWallWidth);
+  wall2->setPosition(-halfWallWidth, -halfWallWidth);
+  walls->attachChild(std::move(wall2));
+
+  auto wall3 = std::make_unique<Wall>(halfWallWidth, worldView.getSize().y + wallWidth);
+  wall3->setPosition(worldView.getSize().x, -halfWallWidth);
+  walls->attachChild(std::move(wall3));
+
+  sceneGraph.attachChild(std::move(walls));
+
+  auto particles = std::make_unique<ParticleNode>(Particle::Propellant, textures);
+  sceneGraph.attachChild(std::move(particles));
+  auto level = std::move(std::make_unique<Level>(textures));
+  sceneGraph.attachChild(std::move(level));
+
+  // loadNextLevel();
 }
 
 void World::loadNextLevel() {

@@ -64,14 +64,16 @@ class World : private sf::NonCopyable {
     sf::FloatRect worldBounds;
     sf::Vector2f spawnPosition;
 
-    std::unique_ptr<SpriteNode> background;
-    std::unique_ptr<Ball> ball;
-    std::unique_ptr<Paddle> paddle;
-    std::vector<std::unique_ptr<Wall>> walls;
-    std::unique_ptr<Score> score;
-    std::unique_ptr<Life> lives;
-    std::unique_ptr<ParticleNode> particles;
-    std::unique_ptr<Level> currentLevel;
+//    std::unique_ptr<SpriteNode> background;
+//    std::unique_ptr<Ball> ball;
+//    std::unique_ptr<Paddle> paddle;
+//    std::vector<std::unique_ptr<Wall>> walls;
+//    std::unique_ptr<Score> score;
+//    std::unique_ptr<Life> lives;
+//    std::unique_ptr<ParticleNode> particles;
+//    std::unique_ptr<Level> currentLevel;
+    Paddle* paddle;
+    SceneNode sceneGraph;
 
     bool shakeScreen{false};
     sf::Time shakeTimer{sf::Time::Zero};
