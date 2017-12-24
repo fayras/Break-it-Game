@@ -1,11 +1,12 @@
 #include "Level.hpp"
+#include "nodes/ParticleNode.hpp"
 
 namespace {
   const std::vector<LevelData> LevelTable = initializeLevelData();
 }
 
 Level::Level(const TextureHolder &textures)
-  : textures(textures), levelData()
+  : textures(textures), levelData(), bounds()
 {
   loadNext();
 }
@@ -21,10 +22,11 @@ int Level::getID() const {
 void Level::loadNext() {
   if(getID() + 1 >= LevelTable.size()) {
     currentID = -2;
-  } else {
-    currentID++;
-    load();
+    return;
   }
+
+  currentID++;
+  load();
 }
 
 void Level::load() {
@@ -46,6 +48,31 @@ bool Level::isLast() const {
 
 void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
   removeWrecks();
+
+  if(done()) {
+    loadNext();
+    Command command;
+    command.category = Category::PADDLE | Category::BALL;
+    command.action = derivedAction<Entity>([this](Entity& node, sf::Time) {
+      sf::Vector2f spawnPosition{levelData.spawnPosition.x * bounds.width, levelData.spawnPosition.y * bounds.height};
+      if(node.getCategory() == Category::PADDLE) {
+        node.setPosition(spawnPosition);
+      }
+
+      if(node.getCategory() == Category::BALL) {
+        node.setPosition(spawnPosition.x, spawnPosition.y - 50);
+        node.setVelocity(0, -300 * getBallSpeedMultiplier());
+      }
+    });
+    commands.push(command);
+
+    Command command2;
+    command2.category = Category::PARTICLE_SYSTEM;
+    command2.action = derivedAction<ParticleNode>([](ParticleNode& particles, sf::Time) {
+      particles.clearParticles();
+    });
+    commands.push(command2);
+  }
 }
 
 std::vector<Block*> Level::getBlocks() const {
@@ -57,4 +84,8 @@ std::vector<Block*> Level::getBlocks() const {
   }
 
   return blocks;
+}
+
+void Level::setBounds(const sf::FloatRect &bounds) {
+  this->bounds = bounds;
 }

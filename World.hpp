@@ -49,7 +49,6 @@ class World : private sf::NonCopyable {
     void updateSounds();
 
     void buildScene();
-    void loadNextLevel();
     sf::FloatRect getViewBounds() const;
 
     sf::RenderTarget&	target;

@@ -49,11 +49,6 @@ void World::update(sf::Time dt) {
   // Collision detection and response (may destroy entities)
   handleCollisions();
 
-  if(currentLevel->done()) {
-    loadNextLevel();
-    // currentLevel->loadNext();
-  }
-
   if(!ballInsideBounds()) {
     lives->decrease();
     resetPositions();
@@ -244,15 +239,9 @@ void World::buildScene() {
 
   auto particles = std::make_unique<ParticleNode>(Particle::Propellant, textures);
   sceneGraph.attachChild(std::move(particles));
-  auto level = std::move(std::make_unique<Level>(textures));
+  auto level = std::make_unique<Level>(textures);
+  level->setBounds(worldBounds);
   sceneGraph.attachChild(std::move(level));
-
-  // loadNextLevel();
-}
-
-void World::loadNextLevel() {
-  currentLevel->loadNext();
-  resetPositions();
 }
 
 sf::FloatRect World::getViewBounds() const {
@@ -293,10 +282,6 @@ int World::getLevel() const {
 }
 
 void World::resetPositions() {
-  paddle->setPosition(spawnPosition);
-  ball->setPosition(spawnPosition.x, spawnPosition.y - 50);
-  ball->setVelocity(0, -300 * currentLevel->getBallSpeedMultiplier());
-  particles->clearParticles();
   showNewLevelMessage = true;
 }
 

@@ -16,7 +16,6 @@ std::vector<ParticleData> initializeParticleData() {
 std::vector<LevelData> initializeLevelData() {
   std::vector<LevelData> data(2);
 
-  data[0].ballSpeedMultiplier = 1.0f;
   for(int x = 0; x < 13; x++) {
     for(int y = 0; y < 7; y++) {
       sf::Color color;

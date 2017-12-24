@@ -13,8 +13,9 @@ struct ParticleData {
 
 struct LevelData {
   std::vector<std::pair<sf::Vector2i, sf::Color>> blockColors;
-  float ballSpeedMultiplier;
-  float scoreMultiplier;
+  float ballSpeedMultiplier{1.0f};
+  float scoreMultiplier{1.0f};
+  sf::Vector2f spawnPosition{0.5, 0.94};
 };
 
 std::vector<ParticleData>	initializeParticleData();
