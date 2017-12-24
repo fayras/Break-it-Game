@@ -15,9 +15,6 @@ World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sou
   sceneTexture.create(target.getSize().x, target.getSize().y);
   loadTextures();
   buildScene();
-
-  // Prepare the view
-  // worldView.setCenter(spawnPosition);
 }
 
 void World::update(sf::Time dt) {
@@ -25,14 +22,6 @@ void World::update(sf::Time dt) {
   while(!commandQueue.empty()) {
     Command command = commandQueue.pop();
     sceneGraph.onCommand(command, dt);
-//    paddle->onCommand(command, dt);
-//    ball->onCommand(command, dt);
-//    particles->onCommand(command, dt);
-//    for(auto& wall : walls) wall->onCommand(command, dt);
-//    // for(auto& block : blocks) block->onCommand(command, dt);
-//    currentLevel->onCommand(command, dt);
-//    score->onCommand(command, dt);
-//    lives->onCommand(command, dt);
   }
 
   Command bgCommand;
@@ -59,17 +48,8 @@ void World::update(sf::Time dt) {
       score.increase(-score.get() / 2);
     });
     commandQueue.push(command);
-    // requestStackPush(States::GAME_OVER);
   }
 
-//  paddle->update(dt, commandQueue);
-//  ball->update(dt, commandQueue);
-//  particles->update(dt, commandQueue);
-//  currentLevel->update(dt, commandQueue);
-//  score->update(dt, commandQueue);
-//  lives->update(dt, commandQueue);
-//  for(auto& wall : walls) wall->update(dt, commandQueue);
-  // for(auto& block : blocks) block->update(dt, commandQueue);
   sceneGraph.update(dt, commandQueue);
 
   adaptPlayerPosition();
@@ -104,15 +84,6 @@ void World::update(sf::Time dt) {
 
 void World::draw() {
   target.setView(worldView);
-//  target.draw(*background);
-//  for(const auto& wall : walls) target.draw(*wall);
-//  // for(const auto& block : blocks) target.draw(*block);
-//  target.draw(*currentLevel);
-//  target.draw(*particles);
-//  target.draw(*ball);
-//  target.draw(*paddle);
-//  target.draw(*score);
-//  target.draw(*lives);
   target.draw(sceneGraph);
 }
 
