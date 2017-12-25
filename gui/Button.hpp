@@ -20,22 +20,22 @@ namespace gui {
       typedef std::shared_ptr<Button> Ptr;
       typedef std::function<void()> Callback;
 
-      Button(State::Context context);
+      explicit Button(State::Context context);
       void setCallback(Callback callback);
       void setText(const std::string& text);
       void setToggle(bool flag);
 
-      virtual bool selectable() const;
-      virtual void select();
-      virtual void deselect();
+      bool selectable() const override;
+      void select() override;
+      void deselect() override;
 
-      virtual void activate();
-      virtual void deactivate();
-      virtual void handleEvent(const sf::Event& event);
-      virtual sf::FloatRect getBounds() const override ;
+      void activate() override;
+      void deactivate() override;
+      void handleEvent(const sf::Event& event) override;
+      sf::FloatRect getBounds() const override;
 
     protected:
-      virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+      void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
       Callback callback;
       sf::Texture& normalTexture;

@@ -28,15 +28,15 @@ void StateStack::handleEvent(const sf::Event& event) {
 }
 
 void StateStack::push(States::ID id) {
-  pendingList.push_back(PendingChange(Action::PUSH, id));
+  pendingList.emplace_back(Action::PUSH, id);
 }
 
 void StateStack::pop() {
-  pendingList.push_back(PendingChange(Action::POP));
+  pendingList.emplace_back(Action::POP);
 }
 
 void StateStack::clear() {
-  pendingList.push_back(PendingChange(Action::CLEAR));
+  pendingList.emplace_back(Action::CLEAR);
 }
 
 bool StateStack::empty() const {

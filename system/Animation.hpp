@@ -33,7 +33,7 @@ class Animation : public sf::Drawable, public sf::Transformable {
     void update(sf::Time dt);
 
   private:
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     sf::Sprite sprite;
     sf::Vector2i frameSize;

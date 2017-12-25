@@ -31,7 +31,7 @@ class StateStack : private sf::NonCopyable {
     void handleEvent(const sf::Event& event);
 
     template<typename T, typename... Args>
-    void registerState(States::ID stateID, Args&&... args);
+    void registerState(States::ID id, Args&&... args);
     void push(States::ID stateID);
     void pop();
     void clear();

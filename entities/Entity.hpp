@@ -19,10 +19,10 @@ class Entity : public SceneNode {
     void destroy();
 
     virtual void remove();
-    virtual bool isDestroyed() const;
+    bool isDestroyed() const override;
 
   protected:
-    virtual void updateCurrent(sf::Time dt, CommandQueue& commands);
+    void updateCurrent(sf::Time dt, CommandQueue& commands) override;
 
   private:
     sf::Vector2f velocity;

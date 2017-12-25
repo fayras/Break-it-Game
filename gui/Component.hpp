@@ -16,7 +16,7 @@ namespace gui {
       typedef std::shared_ptr<Component> Ptr;
 
       Component();
-      ~Component();
+      ~Component() override;
 
       bool selected() const;
       virtual bool selectable() const = 0;

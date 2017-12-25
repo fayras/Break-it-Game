@@ -16,7 +16,7 @@ State::State(StateStack& stack, Context context)
   : stack(&stack), context(context)
 {}
 
-State::~State() {}
+State::~State() = default;
 
 void State::requestStackPush(States::ID id) {
   stack->push(id);

@@ -25,7 +25,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
     typedef std::unique_ptr<SceneNode> Ptr;
     typedef std::pair<SceneNode*, SceneNode*> Pair;
 
-    SceneNode(Category::Type category = Category::NONE);
+    explicit SceneNode(Category::Type category = Category::NONE);
 
     void attachChild(Ptr child);
     Ptr detachChild(const SceneNode& node);
@@ -38,7 +38,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
     virtual unsigned int getCategory() const;
 
     void update(sf::Time dt, CommandQueue& commands);
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     virtual sf::FloatRect	getBoundingRect() const;
 

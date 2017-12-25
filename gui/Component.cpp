@@ -4,7 +4,7 @@ gui::Component::Component()
   : isSelected(false), isActive(false)
 {}
 
-gui::Component::~Component() {}
+gui::Component::~Component() = default;
 
 bool gui::Component::selected() const {
   return isSelected;

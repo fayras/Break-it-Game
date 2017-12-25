@@ -9,7 +9,6 @@ class Wall : public SceneNode {
     Wall(float width, float height);
     unsigned int getCategory() const override;
     sf::FloatRect getBoundingRect() const override;
-    void highlight(bool flag);
     void setDeadly(bool deadly);
     bool isDeadly() const;
 

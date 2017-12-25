@@ -1,7 +1,6 @@
 #include <iostream>
 #include "World.hpp"
 #include "system/Utility.hpp"
-#include "DataTables.hpp"
 #include <cmath>
 #include <algorithm>
 
@@ -131,8 +130,8 @@ void World::handleCollisions() {
   for(auto collision : pairs) {
     SceneNode::Pair collisionPair = collision.first;
     if(matchesCategories(collisionPair, Category::BALL, Category::PADDLE)) {
-      auto& ball = static_cast<Ball&>(*collisionPair.first);
-      auto& paddle = static_cast<Paddle&>(*collisionPair.second);
+      auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
+      auto& paddle = dynamic_cast<Paddle&>(*collisionPair.second);
 
       sf::FloatRect ballRect = ball.getBoundingRect();
       sf::FloatRect paddleRect = paddle.getBoundingRect();
@@ -145,8 +144,8 @@ void World::handleCollisions() {
       sounds.play(SoundEffect::HIT_GENERAL);
       score->resetMultiplier();
     } else if(matchesCategories(collisionPair, Category::BALL, Category::BLOCK)) {
-      auto& ball = static_cast<Ball&>(*collisionPair.first);
-      auto& block = static_cast<Block&>(*collisionPair.second);
+      auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
+      auto& block = dynamic_cast<Block&>(*collisionPair.second);
 
       if(collision.second == CollisionSide::LEFT || collision.second == CollisionSide::RIGHT) {
         ball.setVelocity(-ball.getVelocity().x, ball.getVelocity().y);
@@ -161,8 +160,8 @@ void World::handleCollisions() {
       score->increase(10);
       score->increaseMultiplier();
     } else if(matchesCategories(collisionPair, Category::BALL, Category::WALL)) {
-      auto& ball = static_cast<Ball&>(*collisionPair.first);
-      auto& wall = static_cast<Wall&>(*collisionPair.second);
+      auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
+      auto& wall = dynamic_cast<Wall&>(*collisionPair.second);
 
       if(collision.second == CollisionSide::LEFT || collision.second == CollisionSide::RIGHT) {
         ball.setVelocity(-ball.getVelocity().x, ball.getVelocity().y);

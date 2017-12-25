@@ -12,12 +12,12 @@ namespace gui {
 
       Container();
       void pack(Component::Ptr component);
-      virtual bool selectable() const;
-      virtual void handleEvent(const sf::Event& event);
+      bool selectable() const override;
+      void handleEvent(const sf::Event& event) override;
       sf::FloatRect getBounds() const override;
 
     private:
-      virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+      void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
       bool hasSelection() const;
       void select(std::size_t index);

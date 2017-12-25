@@ -10,9 +10,9 @@ class LevelIntroState : public State {
   public:
     LevelIntroState(StateStack& stack, Context context);
 
-    virtual void draw();
-    virtual bool update(sf::Time dt);
-    virtual bool handleEvent(const sf::Event& event);
+    void draw() override;
+    bool update(sf::Time dt) override;
+    bool handleEvent(const sf::Event& event) override;
 
   private:
     sf::RectangleShape backgroundShape;

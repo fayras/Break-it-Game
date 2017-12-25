@@ -31,7 +31,6 @@ class World : private sf::NonCopyable {
 
     CommandQueue& getCommandQueue();
 
-    bool ballInsideBounds() const;
     bool reachedEnd() const;
     int getScore() const;
     int getLevel() const;
