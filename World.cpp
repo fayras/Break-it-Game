@@ -3,6 +3,21 @@
 #include "system/Utility.hpp"
 #include "DataTables.hpp"
 #include <cmath>
+#include <algorithm>
+
+bool matchesCategories(SceneNode::Pair& colliders, Category::Type typeA, Category::Type typeB) {
+  unsigned int categoryA = colliders.first->getCategory();
+  unsigned int categoryB = colliders.second->getCategory();
+
+  if(typeA & categoryA && typeB & categoryB) {
+    return true;
+  } else if(typeA & categoryB && typeB & categoryA) {
+    std::swap(colliders.first, colliders.second);
+    return true;
+  } else {
+    return false;
+  }
+}
 
 World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sounds)
   : target(outputTarget),
@@ -15,6 +30,7 @@ World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sou
   sceneTexture.create(target.getSize().x, target.getSize().y);
   loadTextures();
   buildScene();
+  resetPositions();
 }
 
 void World::update(sf::Time dt) {
@@ -26,7 +42,7 @@ void World::update(sf::Time dt) {
 
   Command bgCommand;
   bgCommand.category = Category::BACKGROUND;
-  bgCommand.action = [&worldView](SceneNode& background, sf::Time) {
+  bgCommand.action = [this, &dt](SceneNode& background, sf::Time) {
     background.move(0, 100 * dt.asSeconds());
     // keep bg repeating. 1400 = size of texture
     if(background.getPosition().y > 0) {
@@ -37,18 +53,6 @@ void World::update(sf::Time dt) {
 
   // Collision detection and response (may destroy entities)
   handleCollisions();
-
-  if(!ballInsideBounds()) {
-    lives->decrease();
-    resetPositions();
-    Command command = Command();
-    command.category = Category::SCORE;
-    command.action = derivedAction<Score>([](Score& score, sf::Time) {
-      score.resetMultiplier();
-      score.increase(-score.get() / 2);
-    });
-    commandQueue.push(command);
-  }
 
   sceneGraph.update(dt, commandQueue);
 
@@ -91,10 +95,6 @@ CommandQueue& World::getCommandQueue() {
   return commandQueue;
 }
 
-bool World::ballInsideBounds() const {
-  return ball->getPosition().y < worldBounds.height;
-}
-
 bool World::reachedEnd() const {
   return currentLevel->done() && currentLevel->isLast();
 }
@@ -125,35 +125,74 @@ void World::adaptPlayerPosition() {
 }
 
 void World::handleCollisions() {
-  sf::FloatRect ballRect = ball->getBoundingRect();
-  sf::FloatRect paddleRect = paddle->getBoundingRect();
-  sf::Vector2f ballVel = ball->getVelocity();
+  std::map<SceneNode::Pair, CollisionSide> pairs;
+  sceneGraph.checkSceneCollision(sceneGraph, pairs);
 
-  if(collision(ballRect, paddleRect, ballVel)) {
-    float offset = ballRect.width * 0.5f + ballRect.left - paddleRect.width * 0.5f - paddleRect.left;
-    float angle = offset / (paddleRect.width * 0.5f);
-    float ballSpeed = Vector::length(ball->getVelocity());
-    sf::Vector2f newVel(angle, -0.5f);
-    ball->setVelocity(Vector::unit(newVel) * ballSpeed);
-    sounds.play(SoundEffect::HIT_GENERAL);
-    score->resetMultiplier();
-  }
+  for(auto collision : pairs) {
+    SceneNode::Pair collisionPair = collision.first;
+    if(matchesCategories(collisionPair, Category::BALL, Category::PADDLE)) {
+      auto& ball = static_cast<Ball&>(*collisionPair.first);
+      auto& paddle = static_cast<Paddle&>(*collisionPair.second);
 
-  for(auto block : currentLevel->getBlocks()) {
-    sf::FloatRect blockRect = block->getBoundingRect();
-    if(collision(ballRect, blockRect, ballVel)) {
-      ball->setVelocity(ball->getVelocity() + Vector::unit(ball->getVelocity()) * 3.0f);
+      sf::FloatRect ballRect = ball.getBoundingRect();
+      sf::FloatRect paddleRect = paddle.getBoundingRect();
+
+      float offset = ballRect.width * 0.5f + ballRect.left - paddleRect.width * 0.5f - paddleRect.left;
+      float angle = offset / (paddleRect.width * 0.5f);
+      float ballSpeed = Vector::length(ball.getVelocity());
+      sf::Vector2f newVel(angle, -0.5f);
+      ball.setVelocity(Vector::unit(newVel) * ballSpeed);
+      sounds.play(SoundEffect::HIT_GENERAL);
+      score->resetMultiplier();
+    } else if(matchesCategories(collisionPair, Category::BALL, Category::BLOCK)) {
+      auto& ball = static_cast<Ball&>(*collisionPair.first);
+      auto& block = static_cast<Block&>(*collisionPair.second);
+
+      if(collision.second == CollisionSide::LEFT || collision.second == CollisionSide::RIGHT) {
+        ball.setVelocity(-ball.getVelocity().x, ball.getVelocity().y);
+      } else {
+        ball.setVelocity(ball.getVelocity().x, -ball.getVelocity().y);
+      }
+
+      ball.setVelocity(ball.getVelocity() + Vector::unit(ball.getVelocity()) * 3.0f);
       sounds.play(SoundEffect::HIT_BLOCK);
-      block->damage(100);
+      block.damage(100);
       shakeScreen = true;
       score->increase(10);
       score->increaseMultiplier();
-    }
-  }
+    } else if(matchesCategories(collisionPair, Category::BALL, Category::WALL)) {
+      auto& ball = static_cast<Ball&>(*collisionPair.first);
+      auto& wall = static_cast<Wall&>(*collisionPair.second);
 
-  for(const auto& wall : walls) {
-    sf::FloatRect blockRect = wall->getBoundingRect();
-    if(collision(ballRect, blockRect, ballVel)) {
+      if(collision.second == CollisionSide::LEFT || collision.second == CollisionSide::RIGHT) {
+        ball.setVelocity(-ball.getVelocity().x, ball.getVelocity().y);
+      } else {
+        ball.setVelocity(ball.getVelocity().x, -ball.getVelocity().y);
+      }
+
+      if(wall.isDeadly()) {
+        resetPositions();
+        Command command1;
+        command1.category = Category::PADDLE;
+        command1.action = derivedAction<Paddle>([](Paddle& paddle, sf::Time) {
+          paddle.damage(1);
+        });
+        Command command2;
+        command2.category = Category::LIFE;
+        command2.action = derivedAction<Life>([](Life& life, sf::Time) {
+          life.decrease();
+        });
+        Command command3;
+        command3.category = Category::SCORE;
+        command3.action = derivedAction<Score>([](Score& score, sf::Time) {
+          score.resetMultiplier();
+          score.increase(-score.get() / 2);
+        });
+        commandQueue.push(command1);
+        commandQueue.push(command2);
+        commandQueue.push(command3);
+      }
+
       sounds.play(SoundEffect::HIT_GENERAL);
     }
   }
@@ -203,42 +242,23 @@ void World::buildScene() {
   wall3->setPosition(worldView.getSize().x, -halfWallWidth);
   walls->attachChild(std::move(wall3));
 
+  auto wall4 = std::make_unique<Wall>(worldView.getSize().x + wallWidth, halfWallWidth);
+  wall4->setPosition(-halfWallWidth, worldView.getSize().y);
+  wall4->setDeadly(true);
+  walls->attachChild(std::move(wall4));
+
   sceneGraph.attachChild(std::move(walls));
 
   auto particles = std::make_unique<ParticleNode>(Particle::Propellant, textures);
   sceneGraph.attachChild(std::move(particles));
   auto level = std::make_unique<Level>(textures);
-  level->setBounds(worldBounds);
+  level->setBounds(&worldBounds);
+  currentLevel = level.get();
   sceneGraph.attachChild(std::move(level));
 }
 
 sf::FloatRect World::getViewBounds() const {
   return {worldView.getCenter() - worldView.getSize() / 2.f, worldView.getSize()};
-}
-
-bool World::collision(sf::FloatRect ballRect, sf::FloatRect blockRect, sf::Vector2f& ballVelocity) const {
-  if(!ballRect.intersects(blockRect)) {
-    return false;
-  }
-
-  float overlapLeft = ballRect.left + ballRect.width - blockRect.left;
-  float overlapRight = blockRect.left + blockRect.width - ballRect.left;
-  float overlapTop = ballRect.top + ballRect.height - blockRect.top;
-  float overlapBottom = blockRect.top + blockRect.height - ballRect.top;
-
-  bool ballFromLeft = std::abs(overlapLeft) < std::abs(overlapRight);
-  bool ballFromTop = std::abs(overlapTop) < std::abs(overlapBottom);
-
-  float minOverlapX = ballFromLeft ? overlapLeft : overlapRight;
-  float minOverlapY = ballFromTop ? overlapTop : overlapBottom;
-
-  if(std::abs(minOverlapX) < std::abs(minOverlapY)) {
-    ball->setVelocity(ballVelocity.x * -1.f, ballVelocity.y);
-  } else {
-    ball->setVelocity(ballVelocity.x, ballVelocity.y * -1.f);
-  }
-
-  return true;
 }
 
 int World::getScore() const {
@@ -251,6 +271,25 @@ int World::getLevel() const {
 
 void World::resetPositions() {
   showNewLevelMessage = true;
+  Command command1;
+  command1.category = Category::PADDLE;
+  command1.action = derivedAction<Paddle>([this](Paddle& paddle, sf::Time) {
+    paddle.setPosition(spawnPosition);
+  });
+  Command command2;
+  command2.category = Category::BALL;
+  command2.action = derivedAction<Ball>([this](Ball& ball, sf::Time) {
+    ball.setPosition(spawnPosition.x, spawnPosition.y - 50);
+    ball.setVelocity(0, -300 * currentLevel->getBallSpeedMultiplier());
+  });
+  Command command3;
+  command3.category = Category::PARTICLE_SYSTEM;
+  command3.action = derivedAction<ParticleNode>([](ParticleNode& particles, sf::Time) {
+    particles.clearParticles();
+  });
+  commandQueue.push(command1);
+  commandQueue.push(command2);
+  commandQueue.push(command3);
 }
 
 bool World::destroyed() {

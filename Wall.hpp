@@ -10,12 +10,15 @@ class Wall : public SceneNode {
     unsigned int getCategory() const override;
     sf::FloatRect getBoundingRect() const override;
     void highlight(bool flag);
+    void setDeadly(bool deadly);
+    bool isDeadly() const;
 
   protected:
     void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const override;
 
   private:
     sf::RectangleShape rect;
+    bool deadly{false};
 };
 
 #endif //BREAK_IT_WALL_HPP

@@ -8,7 +8,7 @@
 
 #include <vector>
 #include <memory>
-#include <set>
+#include <map>
 
 #include "Category.hpp"
 #include "../system/CommandQueue.hpp"
@@ -42,8 +42,8 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 
     virtual sf::FloatRect	getBoundingRect() const;
 
-    void checkSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs);
-    void checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs);
+    void checkSceneCollision(SceneNode& sceneGraph, std::map<Pair, CollisionSide>& collisionPairs);
+    void checkNodeCollision(SceneNode& node, std::map<Pair, CollisionSide>& collisionPairs);
     void removeWrecks();
     virtual bool isMarkedForRemoval() const;
     virtual bool isDestroyed() const;
@@ -60,7 +60,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
     Category::Type defaultCategory;
 };
 
-bool collision(const SceneNode& lhs, const SceneNode& rhs);
+CollisionSide collision(const SceneNode &lhs, const SceneNode &rhs);
 float	distance(const SceneNode& lhs, const SceneNode& rhs);
 
 #endif //SFML_TEMPLATE_SCENENODE_HPP

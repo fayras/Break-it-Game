@@ -6,7 +6,7 @@ namespace {
 }
 
 Level::Level(const TextureHolder &textures)
-  : textures(textures), levelData(), bounds()
+  : textures(textures), levelData(), bounds(nullptr)
 {
   loadNext();
 }
@@ -54,7 +54,7 @@ void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
     Command command;
     command.category = Category::PADDLE | Category::BALL;
     command.action = derivedAction<Entity>([this](Entity& node, sf::Time) {
-      sf::Vector2f spawnPosition{levelData.spawnPosition.x * bounds.width, levelData.spawnPosition.y * bounds.height};
+      sf::Vector2f spawnPosition{levelData.spawnPosition.x * bounds->width, levelData.spawnPosition.y * bounds->height};
       if(node.getCategory() == Category::PADDLE) {
         node.setPosition(spawnPosition);
       }
@@ -86,6 +86,6 @@ std::vector<Block*> Level::getBlocks() const {
   return blocks;
 }
 
-void Level::setBounds(const sf::FloatRect &bounds) {
+void Level::setBounds(sf::FloatRect* bounds) {
   this->bounds = bounds;
 }

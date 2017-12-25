@@ -23,3 +23,11 @@ void Wall::highlight(bool flag) {
   if(flag) rect.setFillColor(sf::Color::Red);
   else rect.setFillColor(sf::Color::White);
 }
+
+void Wall::setDeadly(bool deadly) {
+  this->deadly = deadly;
+}
+
+bool Wall::isDeadly() const {
+  return deadly;
+}

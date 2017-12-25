@@ -45,7 +45,6 @@ class World : private sf::NonCopyable {
     void loadTextures();
     void adaptPlayerPosition();
     void handleCollisions();
-    bool collision(sf::FloatRect rectA, sf::FloatRect rectB, sf::Vector2f& ballVelocity) const;
     void updateSounds();
 
     void buildScene();
@@ -63,16 +62,9 @@ class World : private sf::NonCopyable {
     sf::FloatRect worldBounds;
     sf::Vector2f spawnPosition;
 
-//    std::unique_ptr<SpriteNode> background;
-//    std::unique_ptr<Ball> ball;
-//    std::unique_ptr<Paddle> paddle;
-//    std::vector<std::unique_ptr<Wall>> walls;
-//    std::unique_ptr<Score> score;
-//    std::unique_ptr<Life> lives;
-//    std::unique_ptr<ParticleNode> particles;
-//    std::unique_ptr<Level> currentLevel;
     Paddle* paddle;
     Score* score;
+    Level* currentLevel;
     SceneNode sceneGraph;
 
     bool shakeScreen{false};

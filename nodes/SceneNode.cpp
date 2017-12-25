@@ -95,7 +95,7 @@ sf::FloatRect SceneNode::getBoundingRect() const {
   return {};
 }
 
-void SceneNode::checkSceneCollision(SceneNode &sceneGraph, std::set<SceneNode::Pair> &collisionPairs) {
+void SceneNode::checkSceneCollision(SceneNode &sceneGraph, std::map<SceneNode::Pair, CollisionSide> &collisionPairs) {
   checkNodeCollision(sceneGraph, collisionPairs);
 
   for(Ptr& child : sceneGraph.children) {
@@ -103,9 +103,10 @@ void SceneNode::checkSceneCollision(SceneNode &sceneGraph, std::set<SceneNode::P
   }
 }
 
-void SceneNode::checkNodeCollision(SceneNode &node, std::set<SceneNode::Pair> &collisionPairs) {
-  if (this != &node && collision(*this, node) && !isDestroyed() && !node.isDestroyed())
-    collisionPairs.insert(std::minmax(this, &node));
+void SceneNode::checkNodeCollision(SceneNode &node, std::map<SceneNode::Pair, CollisionSide> &collisionPairs) {
+  CollisionSide side;
+  if (this != &node && (side = collision(*this, node)) && !isDestroyed() && !node.isDestroyed())
+    collisionPairs.try_emplace(std::minmax(this, &node), side);
 
   for(Ptr& child : children) {
     child->checkNodeCollision(node, collisionPairs);
@@ -131,15 +132,30 @@ bool SceneNode::isDestroyed() const {
   return false;
 }
 
-bool collision(const SceneNode& lhs, const SceneNode& rhs) {
+CollisionSide collision(const SceneNode &lhs, const SceneNode &rhs) {
   sf::FloatRect r1 = lhs.getBoundingRect();
   sf::FloatRect r2 = rhs.getBoundingRect();
-  float w = 0.5f * (r1.width + r2.width);
-  float h = 0.5f * (r1.height + r2.height);
-  float dx = (r1.left + r1.width * 0.5f) - (r2.left + r2.width * 0.5f);
-  float dy = (r1.top + r1.height * 0.5f) - (r2.top + r2.height * 0.5f);
 
-  return std::abs(dx) <= w && std::abs(dy) <= h;
+  if(!r1.intersects(r2)) {
+    return CollisionSide::NONE;
+  }
+
+  float overlapLeft = r1.left + r1.width - r2.left;
+  float overlapRight = r2.left + r2.width - r1.left;
+  float overlapTop = r1.top + r1.height - r2.top;
+  float overlapBottom = r2.top + r2.height - r1.top;
+
+  bool ballFromLeft = std::abs(overlapLeft) < std::abs(overlapRight);
+  bool ballFromTop = std::abs(overlapTop) < std::abs(overlapBottom);
+
+  float minOverlapX = ballFromLeft ? overlapLeft : overlapRight;
+  float minOverlapY = ballFromTop ? overlapTop : overlapBottom;
+
+  if(std::abs(minOverlapX) < std::abs(minOverlapY)) {
+    return ballFromLeft ? CollisionSide::LEFT : CollisionSide::RIGHT;
+  } else {
+    return ballFromTop ? CollisionSide::TOP : CollisionSide::BOTTOM;
+  }
 }
 
 float distance(const SceneNode& lhs, const SceneNode& rhs) {
