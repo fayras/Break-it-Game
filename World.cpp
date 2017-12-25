@@ -207,11 +207,6 @@ void World::updateSounds() {
 }
 
 void World::buildScene() {
-  auto score = std::make_unique<Score>(textures.get(Textures::SCORE), fonts.get(Fonts::ARCADE));
-  score->setPosition(worldView.getSize().x - 295, 10);
-  this->score = score.get();
-  sceneGraph.attachChild(std::move(score));
-
   sf::Texture& stars = textures.get(Textures::STARFIELD);
   stars.setRepeated(true);
   auto background = std::make_unique<SpriteNode>(stars);
@@ -255,6 +250,11 @@ void World::buildScene() {
   level->setBounds(&worldBounds);
   currentLevel = level.get();
   sceneGraph.attachChild(std::move(level));
+
+  auto score = std::make_unique<Score>(textures.get(Textures::SCORE), fonts.get(Fonts::ARCADE));
+  score->setPosition(worldView.getSize().x - 295, 10);
+  this->score = score.get();
+  sceneGraph.attachChild(std::move(score));
 }
 
 sf::FloatRect World::getViewBounds() const {
