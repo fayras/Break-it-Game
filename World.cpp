@@ -26,7 +26,7 @@ void World::update(sf::Time dt) {
 
   Command bgCommand;
   bgCommand.category = Category::BACKGROUND;
-  bgCommand.action = [this](SceneNode& background, sf::Time) {
+  bgCommand.action = [&worldView](SceneNode& background, sf::Time) {
     background.move(0, 100 * dt.asSeconds());
     // keep bg repeating. 1400 = size of texture
     if(background.getPosition().y > 0) {
@@ -170,11 +170,8 @@ void World::updateSounds() {
 void World::buildScene() {
   auto score = std::make_unique<Score>(textures.get(Textures::SCORE), fonts.get(Fonts::ARCADE));
   score->setPosition(worldView.getSize().x - 295, 10);
+  this->score = score.get();
   sceneGraph.attachChild(std::move(score));
-
-  auto lives = std::make_unique<Life>(textures.get(Textures::LIFE));
-  lives->setPosition(10, 10);
-  sceneGraph.attachChild(std::move(lives));
 
   sf::Texture& stars = textures.get(Textures::STARFIELD);
   stars.setRepeated(true);
@@ -257,5 +254,5 @@ void World::resetPositions() {
 }
 
 bool World::destroyed() {
-  return lives->getLives() <= 0;
+  return paddle->isDestroyed();
 }

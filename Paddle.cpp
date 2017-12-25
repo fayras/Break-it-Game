@@ -1,15 +1,20 @@
 #include "Paddle.hpp"
 #include "system/ResourceHolder.hpp"
 #include "system/Utility.hpp"
+#include "Life.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
 const int SPEED = 500;
 
 Paddle::Paddle(const TextureHolder& textures)
-  : Entity(1),
+  : Entity(3),
     sprite(textures.get(Textures::PADDLE))
 {
   centerOrigin(sprite);
+
+  auto lives = std::make_unique<Life>(textures.get(Textures::LIFE));
+  lives->setPosition(10, 10);
+  attachChild(std::move(lives));
 }
 
 unsigned int Paddle::getCategory() const {

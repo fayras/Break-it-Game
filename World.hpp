@@ -72,6 +72,7 @@ class World : private sf::NonCopyable {
 //    std::unique_ptr<ParticleNode> particles;
 //    std::unique_ptr<Level> currentLevel;
     Paddle* paddle;
+    Score* score;
     SceneNode sceneGraph;
 
     bool shakeScreen{false};
