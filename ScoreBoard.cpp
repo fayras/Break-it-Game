@@ -42,3 +42,7 @@ void ScoreBoard::addEntry(std::string name, int score) {
 bool ScoreBoard::worthInsert(int score) const {
   return entries.size() < maxEntries || score > entries.rbegin()->score;
 }
+
+const std::set<ScoreBoard::Entry>& ScoreBoard::getEntries() const {
+  return entries;
+}

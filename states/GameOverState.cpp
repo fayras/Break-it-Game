@@ -14,7 +14,11 @@ GameOverState::GameOverState(StateStack &stack, State::Context context)
   sf::Vector2f windowSize(context.window->getSize());
 
   scoreText.setFont(font);
-  scoreText.setString("Dein Score: " + std::to_string(context.player->getScore()));
+  std::string scoreString;
+  for(const auto& score : context.scoreBoard->getEntries()) {
+    scoreString += score.name + " " + std::to_string(score.score) + "\n";
+  }
+  scoreText.setString(scoreString);
   scoreText.setCharacterSize(35);
   sf::FloatRect bounds = scoreText.getLocalBounds();
   scoreText.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
@@ -39,6 +43,10 @@ GameOverState::GameOverState(StateStack &stack, State::Context context)
   nameInput->setSize(200, 30);
   nameInput->setPosition(0.5f * windowSize.x - 100, 0.6f * windowSize.y);
   nameInput->setCallback([this, context] (std::string input) {
+    if(input.empty()) {
+      return;
+    }
+
     context.scoreBoard->addEntry(input, context.player->getScore());
     context.scoreBoard->save();
   });

@@ -25,6 +25,8 @@ class ScoreBoard {
     void addEntry(std::string, int score);
     bool worthInsert(int score) const;
 
+    const std::set<ScoreBoard::Entry>& getEntries() const;
+
   private:
     std::string filePath;
     std::size_t maxEntries;
