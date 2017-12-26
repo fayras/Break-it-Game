@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 #include <memory>
+#include <functional>
 
 namespace sf {
   class Event;
@@ -14,6 +15,7 @@ namespace gui {
   class Component : public sf::Drawable, public sf::Transformable, private sf::NonCopyable {
     public:
       typedef std::shared_ptr<Component> Ptr;
+      typedef std::function<void()> Callback;
 
       Component();
       ~Component() override;
