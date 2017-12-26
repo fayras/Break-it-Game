@@ -22,6 +22,7 @@ namespace gui {
 
       void setCallback(TextInput::Callback callback);
       void setSize(float width, float height);
+      void setPlaceholder(std::string placeholder);
 
     protected:
       void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
@@ -30,6 +31,7 @@ namespace gui {
       bool hasFocus;
       std::string inputString;
       sf::Text text;
+      sf::Text placeholder;
       sf::RectangleShape background;
       sf::RectangleShape caret;
       TextInput::Callback callback;

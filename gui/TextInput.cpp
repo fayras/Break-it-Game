@@ -4,18 +4,22 @@
 #include <SFML/Window/Event.hpp>
 
 gui::TextInput::TextInput(const FontHolder &fonts)
-  : hasFocus(false), inputString(), text(inputString, fonts.get(Fonts::ARCADE), 16),
-    background(), caret(sf::Vector2f(1, 16))
+  : hasFocus(false), inputString(),
+    text(inputString, fonts.get(Fonts::ARCADE), 16),
+    placeholder("", fonts.get(Fonts::ARCADE), 16),
+    background(), caret(sf::Vector2f(1, 20))
 {
-  background.setFillColor(sf::Color::Transparent);
-  background.setOutlineColor(sf::Color(255, 255, 255, 100));
+  background.setFillColor(sf::Color(0, 0, 0, 150));
+  background.setOutlineColor(sf::Color(255, 255, 255, 150));
   background.setOutlineThickness(1.0f);
   caret.setFillColor(sf::Color::White);
   text.setFillColor(sf::Color::White);
+  placeholder.setFillColor(sf::Color(255, 255, 255, 210));
 
   sf::FloatRect bounds = background.getLocalBounds();
   text.setPosition(bounds.left + 10, bounds.top + 5);
-  caret.setPosition(bounds.left + 10, bounds.top + 10);
+  placeholder.setPosition(bounds.left + 10, bounds.top + 5);
+  caret.setPosition(bounds.left + 10, bounds.top + 6);
 }
 
 bool gui::TextInput::selectable() const {
@@ -53,6 +57,10 @@ void gui::TextInput::setSize(float width, float height) {
   background.setSize(sf::Vector2f(width, height));
 }
 
+void gui::TextInput::setPlaceholder(std::string placeholder) {
+  this->placeholder.setString(placeholder);
+}
+
 void gui::TextInput::handleEvent(const sf::Event &event) {
   if(event.type == sf::Event::MouseButtonPressed) {
     if(event.mouseButton.button == sf::Mouse::Left) {
@@ -86,6 +94,10 @@ void gui::TextInput::handleEvent(const sf::Event &event) {
 void gui::TextInput::draw(sf::RenderTarget &target, sf::RenderStates states) const {
   states.transform *= getTransform();
   target.draw(background, states);
-  target.draw(text, states);
+  if(inputString.empty()) {
+    target.draw(placeholder, states);
+  } else {
+    target.draw(text, states);
+  }
   if(selected()) target.draw(caret, states);
 }
