@@ -25,7 +25,7 @@ void ScoreBoard::save() const {
   file.open(filePath, std::ios::binary | std::ios::out | std::ios::trunc);
 
   for(const auto& entry : entries) {
-    file << entry.name << entry.score << "\n";
+    file << entry.name << " " << entry.score << std::endl;
   }
 
   file.close();
