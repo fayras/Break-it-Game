@@ -8,6 +8,7 @@ gui::Container::Container()
 {}
 
 void gui::Container::pack(gui::Component::Ptr component) {
+  component->setParent(this);
   children.push_back(component);
 
   if (!hasSelection() && component->selectable())
@@ -19,36 +20,15 @@ bool gui::Container::selectable() const {
 }
 
 void gui::Container::handleEvent(const sf::Event &event) {
-  // If we have selected a child then give it events
-  if (hasSelection() && children[selectedChild]->active()) {
-    children[selectedChild]->handleEvent(event);
-  } else if (event.type == sf::Event::KeyReleased) {
+  if (event.type == sf::Event::KeyReleased) {
     if (event.key.code == sf::Keyboard::Up) {
       selectPrevious();
     } else if (event.key.code == sf::Keyboard::Down) {
       selectNext();
-    } else if (event.key.code == sf::Keyboard::Return) {
-      if (hasSelection()) {
-        children[selectedChild]->activate();
-      }
     }
-  } else if(event.type == sf::Event::MouseMoved) {
-    auto transform = getTransform();
-    for(std::size_t i = 0; i < children.size(); i++) {
-      const auto& child = children[i];
-      if(transform.transformRect(child->getBounds()).contains(event.mouseMove.x, event.mouseMove.y)) {
-        child->select();
-        selectedChild = i;
-        break;
-      } else {
-        child->deselect();
-        selectedChild = -1;
-      }
-    }
-  } else if(event.type == sf::Event::MouseButtonPressed) {
-    if (hasSelection()) {
-      children[selectedChild]->activate();
-    }
+  }
+  for(auto& child : children) {
+    child->handleEvent(event);
   }
 }
 

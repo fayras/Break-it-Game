@@ -24,7 +24,7 @@ namespace gui {
       void setSize(float width, float height);
 
     protected:
-      void draw(RenderTarget &target, sf::RenderStates states) const override;
+      void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     private:
       bool hasFocus;

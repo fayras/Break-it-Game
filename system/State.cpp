@@ -7,9 +7,10 @@ State::Context::Context(
   FontHolder& fonts,
   MusicPlayer& music,
   SoundPlayer& sounds,
-  Player& player
+  Player& player,
+  ScoreBoard& scoreBoard
 ) 
-  : window(&window), textures(&textures), fonts(&fonts), music(&music), sounds(&sounds), player(&player)
+  : window(&window), textures(&textures), fonts(&fonts), music(&music), sounds(&sounds), player(&player), scoreBoard(&scoreBoard)
 {} 
 
 State::State(StateStack& stack, Context context) 

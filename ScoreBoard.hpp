@@ -3,15 +3,18 @@
 
 #include <string>
 #include <set>
+#include <utility>
 
 class ScoreBoard {
   public:
     struct Entry {
-      char name[3];
+      std::string name;
       int score;
 
-      bool operator<(const Entry& e1, const Entry& e2) {
-        return e1.score > e2.score;
+      Entry(std::string name, int score) : name(std::move(name)), score(score) {}
+
+      bool operator<(const Entry& entry) const {
+        return score > entry.score;
       }
     };
 
@@ -19,7 +22,7 @@ class ScoreBoard {
 
     void load();
     void save() const;
-    void addEntry(char name[3], int score);
+    void addEntry(std::string, int score);
     bool worthInsert(int score) const;
 
   private:

@@ -40,7 +40,8 @@ void gui::TextInput::activate() {
 }
 
 sf::FloatRect gui::TextInput::getBounds() const {
-  return background.getGlobalBounds();
+  sf::Transform transform = parent ? getTransform() * parent->getTransform() : getTransform();
+  return transform.transformRect(background.getGlobalBounds());;
 }
 
 void gui::TextInput::setCallback(gui::TextInput::Callback callback) {
@@ -52,12 +53,9 @@ void gui::TextInput::setSize(float width, float height) {
 }
 
 void gui::TextInput::handleEvent(const sf::Event &event) {
-  auto pos = getPosition();
-  auto rect = background.getLocalBounds();
-
   if(event.type == sf::Event::MouseButtonPressed) {
     if(event.mouseButton.button == sf::Mouse::Left) {
-      if(rect.contains(event.mouseButton.x - pos.x, event.mouseButton.y - pos.y)) {
+      if(getBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
         select();
       } else {
         deselect();

@@ -67,7 +67,19 @@ void gui::Button::deactivate() {
 }
 
 void gui::Button::handleEvent(const sf::Event &event) {
+  if(event.type == sf::Event::MouseMoved) {
+    if(getBounds().contains(event.mouseMove.x, event.mouseMove.y)) {
+      select();
+    } else {
+      deselect();
+    }
+  }
 
+  if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+    if(getBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+      activate();
+    }
+  }
 }
 
 void gui::Button::draw(sf::RenderTarget &target, sf::RenderStates states) const {
@@ -77,5 +89,6 @@ void gui::Button::draw(sf::RenderTarget &target, sf::RenderStates states) const 
 }
 
 sf::FloatRect gui::Button::getBounds() const {
-  return getTransform().transformRect(sprite.getGlobalBounds());
+  sf::Transform transform = parent ? getTransform() * parent->getTransform() : getTransform();
+  return transform.transformRect(sprite.getGlobalBounds());
 }

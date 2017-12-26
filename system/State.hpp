@@ -4,6 +4,7 @@
 #include "../states/StateIdentifiers.hpp"
 #include "../ResourceIdentifiers.hpp"
 #include "../Player.hpp"
+#include "../ScoreBoard.hpp"
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
@@ -22,13 +23,14 @@ class State {
     typedef std::unique_ptr<State> Ptr;
 
     struct Context {
-      Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, MusicPlayer& music, SoundPlayer& sounds, Player& player);
+      Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, MusicPlayer& music, SoundPlayer& sounds, Player& player, ScoreBoard& scoreBoard);
       sf::RenderWindow* window;
       TextureHolder* textures;
       FontHolder* fonts;
       MusicPlayer* music;
       SoundPlayer* sounds;
       Player* player;
+      ScoreBoard* scoreBoard;
     };
 
     State(StateStack& stack, Context context);

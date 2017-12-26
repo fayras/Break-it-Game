@@ -19,6 +19,7 @@ namespace gui {
 
       Component();
       ~Component() override;
+      void setParent(Component* parent);
 
       bool selected() const;
       virtual bool selectable() const = 0;
@@ -32,10 +33,12 @@ namespace gui {
 
       virtual void handleEvent(const sf::Event& event) = 0;
 
+    protected:
+      Component* parent{nullptr};
+
     private:
       bool isSelected;
       bool isActive;
-
   };
 }
 

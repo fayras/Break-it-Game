@@ -33,6 +33,7 @@ class Application {
     SoundPlayer	sounds;
     StateStack stateStack;
     Player player;
+    ScoreBoard scoreBoard;
 
     static const sf::Time	TimePerFrame;
 

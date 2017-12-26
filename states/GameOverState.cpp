@@ -4,6 +4,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include "../system/MusicPlayer.hpp"
 #include "../gui/Button.hpp"
+#include "../gui/TextInput.hpp"
 #include <cmath>
 
 GameOverState::GameOverState(StateStack &stack, State::Context context)
@@ -34,8 +35,19 @@ GameOverState::GameOverState(StateStack &stack, State::Context context)
     requestStackClear();
   });
 
+  auto nameInput = std::make_shared<gui::TextInput>(*context.fonts);
+  nameInput->setSize(200, 30);
+  nameInput->setPosition(0.5f * windowSize.x - 100, 0.6f * windowSize.y);
+  nameInput->setCallback([this, context] (std::string input) {
+    context.scoreBoard->addEntry(input, context.player->getScore());
+    context.scoreBoard->save();
+  });
+
   guiContainer.pack(returnButton);
   guiContainer.pack(backToMenuButton);
+  if(context.scoreBoard->worthInsert(context.player->getScore())) {
+    guiContainer.pack(nameInput);
+  }
 
   if(context.player->getLevel() < 0) {
     background.setTexture(context.textures->get(Textures::GAME_WIN_SCREEN));

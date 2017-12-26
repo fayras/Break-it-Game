@@ -33,3 +33,7 @@ void gui::Component::deactivate() {
 sf::FloatRect gui::Component::getBounds() const {
   return sf::FloatRect();
 }
+
+void gui::Component::setParent(gui::Component *parent) {
+  this->parent = parent;
+}

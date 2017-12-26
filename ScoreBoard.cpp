@@ -2,14 +2,14 @@
 #include <fstream>
 
 ScoreBoard::ScoreBoard()
-    : filePath("saves/score.dat"), maxEntries(5)
+    : filePath("score.dat"), maxEntries(5)
 {
   load();
 }
 
 void ScoreBoard::load() {
   std::ifstream file;
-  char name[3];
+  std::string name;
   int score;
   file.open(filePath, std::ios::binary);
 
@@ -31,7 +31,7 @@ void ScoreBoard::save() const {
   file.close();
 }
 
-void ScoreBoard::addEntry(char *name, int score) {
+void ScoreBoard::addEntry(std::string name, int score) {
   if(entries.size() >= maxEntries) {
     entries.erase(std::prev(entries.end()));
   }

@@ -18,7 +18,6 @@ namespace gui {
   class Button : public Component {
     public:
       typedef std::shared_ptr<Button> Ptr;
-      typedef std::function<void()> Callback;
 
       explicit Button(State::Context context);
       void setCallback(Callback callback);
