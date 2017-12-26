@@ -20,3 +20,8 @@ void Life::decrease() {
   rect.width *= lives;
   sprite.setTextureRect(rect);
 }
+
+void Life::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
+  states.transform = sf::Transform::Identity * getTransform();
+  SpriteNode::drawCurrent(target, states);
+}

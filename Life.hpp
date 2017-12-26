@@ -7,6 +7,11 @@ class Life : public SpriteNode {
   public:
     explicit Life(const sf::Texture &texture);
     int getLives() const;
+
+  protected:
+    void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const override;
+
+  public:
     void decrease();
     unsigned int getCategory() const override;
 
