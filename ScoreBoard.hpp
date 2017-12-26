@@ -20,7 +20,6 @@ class ScoreBoard {
     void load();
     void save() const;
     void addEntry(char name[3], int score);
-    void newEntry(int score);
     bool worthInsert(int score) const;
 
   private:

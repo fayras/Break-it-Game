@@ -3,7 +3,9 @@
 
 ScoreBoard::ScoreBoard()
     : filePath("saves/score.dat"), maxEntries(5)
-{}
+{
+  load();
+}
 
 void ScoreBoard::load() {
   std::ifstream file;
@@ -35,10 +37,6 @@ void ScoreBoard::addEntry(char *name, int score) {
   }
 
   entries.emplace(name, score);
-}
-
-void ScoreBoard::newEntry(int score) {
-
 }
 
 bool ScoreBoard::worthInsert(int score) const {
