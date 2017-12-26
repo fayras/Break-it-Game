@@ -87,6 +87,6 @@ void Application::loadAssets() {
   textures.load(Textures::BUTTON_PRESSED, "assets/textures/buttonDefault.png");
   textures.load(Textures::BUTTON_SELECTED, "assets/textures/buttonSelected.png");
   textures.load(Textures::TITLE, "assets/textures/title.png");
-  textures.load(Textures::GAME_OVER_SCREEN, "assets/textures/game_over_screen.png");
+  textures.load(Textures::GAME_OVER_SCREEN, "assets/textures/game_over_screen_2.png");
   textures.load(Textures::GAME_WIN_SCREEN, "assets/textures/win_screen.png");
 }

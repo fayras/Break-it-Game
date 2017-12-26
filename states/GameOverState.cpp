@@ -52,7 +52,7 @@ void GameOverState::updateScore() {
   scoreText.setCharacterSize(35);
   sf::FloatRect bounds = scoreText.getLocalBounds();
   scoreText.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
-  scoreText.setPosition(0.5f * windowSize.x, 0.6f * windowSize.y);
+  scoreText.setPosition(0.5f * windowSize.x, 0.4f * windowSize.y);
 }
 
 GameOverState::~GameOverState() {
