@@ -170,11 +170,12 @@ void World::handleCollisions() {
       }
 
       if(wall.isDeadly()) {
-        resetPositions();
         Command command1;
         command1.category = Category::PADDLE;
-        command1.action = derivedAction<Paddle>([](Paddle& paddle, sf::Time) {
+        command1.action = derivedAction<Paddle>([this](Paddle& paddle, sf::Time) {
           paddle.damage(1);
+          if(!paddle.isDestroyed())
+            resetPositions();
         });
         Command command2;
         command2.category = Category::LIFE;
@@ -237,7 +238,7 @@ void World::buildScene() {
   walls->attachChild(std::move(wall3));
 
   auto wall4 = std::make_unique<Wall>(worldView.getSize().x + wallWidth, halfWallWidth);
-  wall4->setPosition(-halfWallWidth, worldView.getSize().y);
+  wall4->setPosition(-halfWallWidth, worldView.getSize().y + wallWidth);
   wall4->setDeadly(true);
   walls->attachChild(std::move(wall4));
 
