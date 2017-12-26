@@ -20,7 +20,7 @@ void ScoreBoard::load() {
 
 void ScoreBoard::save() const {
   std::ofstream file;
-  file.open(filePath, std::ios::binary | std::ios::out);
+  file.open(filePath, std::ios::binary | std::ios::out | std::ios::trunc);
 
   for(const auto& entry : entries) {
     file << entry.name << entry.score << "\n";
