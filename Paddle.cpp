@@ -7,7 +7,7 @@
 const int SPEED = 500;
 
 Paddle::Paddle(const TextureHolder& textures)
-  : Entity(3),
+  : Entity(1),
     sprite(textures.get(Textures::PADDLE))
 {
   centerOrigin(sprite);

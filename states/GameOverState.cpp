@@ -14,15 +14,6 @@ GameOverState::GameOverState(StateStack &stack, State::Context context)
   sf::Vector2f windowSize(context.window->getSize());
 
   scoreText.setFont(font);
-  std::string scoreString;
-  for(const auto& score : context.scoreBoard->getEntries()) {
-    scoreString += score.name + " " + std::to_string(score.score) + "\n";
-  }
-  scoreText.setString(scoreString);
-  scoreText.setCharacterSize(35);
-  sf::FloatRect bounds = scoreText.getLocalBounds();
-  scoreText.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
-  scoreText.setPosition(0.5f * windowSize.x, 0.6f * windowSize.y);
 
   auto returnButton = std::make_shared<gui::Button>(context);
   returnButton->setPosition(0.5f * windowSize.x - 200, 0.6f * windowSize.y + 125);
@@ -39,23 +30,8 @@ GameOverState::GameOverState(StateStack &stack, State::Context context)
     requestStackClear();
   });
 
-  auto nameInput = std::make_shared<gui::TextInput>(*context.fonts);
-  nameInput->setSize(200, 30);
-  nameInput->setPosition(0.5f * windowSize.x - 100, 0.6f * windowSize.y);
-  nameInput->setCallback([this, context] (std::string input) {
-    if(input.empty()) {
-      return;
-    }
-
-    context.scoreBoard->addEntry(input, context.player->getScore());
-    context.scoreBoard->save();
-  });
-
   guiContainer.pack(returnButton);
   guiContainer.pack(backToMenuButton);
-  if(context.scoreBoard->worthInsert(context.player->getScore())) {
-    guiContainer.pack(nameInput);
-  }
 
   if(context.player->getLevel() < 0) {
     background.setTexture(context.textures->get(Textures::GAME_WIN_SCREEN));
@@ -64,6 +40,19 @@ GameOverState::GameOverState(StateStack &stack, State::Context context)
   }
 
   getContext().music->setPaused(true);
+}
+
+void GameOverState::updateScore() {
+  sf::Vector2f windowSize(context.window->getSize());
+  std::string scoreString;
+  for(const auto& score : context.scoreBoard->getEntries()) {
+    scoreString += score.name + " " + std::to_string(score.score) + "\n";
+  }
+  scoreText.setString(scoreString);
+  scoreText.setCharacterSize(35);
+  sf::FloatRect bounds = scoreText.getLocalBounds();
+  scoreText.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
+  scoreText.setPosition(0.5f * windowSize.x, 0.6f * windowSize.y);
 }
 
 GameOverState::~GameOverState() {
@@ -80,6 +69,11 @@ void GameOverState::draw() {
 }
 
 bool GameOverState::update(sf::Time dt) {
+  if(!showedHighscore && context.scoreBoard->worthInsert(context.player->getScore())) {
+    requestStackPush(States::NEW_HIGHSCORE);
+    showedHighscore = true;
+  }
+  updateScore();
   return false;
 }
 

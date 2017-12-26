@@ -8,7 +8,8 @@ namespace States {
     GAME,
     PAUSE,
     GAME_OVER,
-    LEVEL_INTRO
+    LEVEL_INTRO,
+    NEW_HIGHSCORE
   };
 }
 

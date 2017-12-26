@@ -5,6 +5,7 @@
 #include "../states/PauseState.hpp"
 #include "../states/GameOverState.hpp"
 #include "../states/LevelIntroState.hpp"
+#include "../states/NewHighscoreState.hpp"
 
 const int FPS = 60;
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / FPS);
@@ -76,6 +77,7 @@ void Application::registerStates() {
   stateStack.registerState<PauseState>(States::ID::PAUSE);
   stateStack.registerState<GameOverState>(States::ID::GAME_OVER);
   stateStack.registerState<LevelIntroState>(States::ID::LEVEL_INTRO);
+  stateStack.registerState<NewHighscoreState>(States::ID::NEW_HIGHSCORE);
 }
 
 void Application::loadAssets() {

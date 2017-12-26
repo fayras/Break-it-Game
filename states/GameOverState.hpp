@@ -17,9 +17,11 @@ class GameOverState : public State {
 
   private:
     sf::Sprite background;
-    sf::Text pausedText;
     sf::Text scoreText;
     gui::Container guiContainer;
+    bool showedHighscore{false};
+
+    void updateScore();
 };
 
 
