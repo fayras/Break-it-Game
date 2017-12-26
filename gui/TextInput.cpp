@@ -7,14 +7,15 @@ gui::TextInput::TextInput(const FontHolder &fonts)
   : hasFocus(false), inputString(), text(inputString, fonts.get(Fonts::ARCADE), 16),
     background(), caret(sf::Vector2f(1, 16))
 {
-  background.setFillColor(sf::Color::White);
-  background.setOutlineColor(sf::Color::Blue);
+  background.setFillColor(sf::Color::Transparent);
+  background.setOutlineColor(sf::Color(255, 255, 255, 100));
   background.setOutlineThickness(1.0f);
   caret.setFillColor(sf::Color::White);
-  text.setFillColor(sf::Color::Black);
+  text.setFillColor(sf::Color::White);
 
   sf::FloatRect bounds = background.getLocalBounds();
   text.setPosition(bounds.left + 10, bounds.top + 5);
+  caret.setPosition(bounds.left + 10, bounds.top + 10);
 }
 
 bool gui::TextInput::selectable() const {
@@ -23,12 +24,12 @@ bool gui::TextInput::selectable() const {
 
 void gui::TextInput::select() {
   Component::select();
-  background.setOutlineColor(sf::Color::Red);
+  background.setOutlineColor(sf::Color::Blue);
 }
 
 void gui::TextInput::deselect() {
   Component::deselect();
-  background.setOutlineColor(sf::Color::Blue);
+  background.setOutlineColor(sf::Color(255, 255, 255, 100));
 }
 
 void gui::TextInput::activate() {
@@ -73,6 +74,8 @@ void gui::TextInput::handleEvent(const sf::Event &event) {
         inputString.push_back(static_cast<char>(event.text.unicode));
       }
       text.setString(inputString);
+      auto textBounds = text.getGlobalBounds();
+      caret.setPosition(textBounds.left + textBounds.width, caret.getPosition().y);
     }
     if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return) {
       activate();
@@ -84,4 +87,5 @@ void gui::TextInput::draw(sf::RenderTarget &target, sf::RenderStates states) con
   states.transform *= getTransform();
   target.draw(background, states);
   target.draw(text, states);
+  if(selected()) target.draw(caret, states);
 }
