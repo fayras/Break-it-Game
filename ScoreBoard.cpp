@@ -1,5 +1,7 @@
 #include "ScoreBoard.hpp"
 #include <fstream>
+#include <algorithm>
+#include <regex>
 
 ScoreBoard::ScoreBoard()
     : filePath("score.dat"), maxEntries(5)
@@ -14,7 +16,7 @@ void ScoreBoard::load() {
   file.open(filePath, std::ios::binary);
 
   while (file >> name >> score) {
-    addEntry(name, score);
+    addEntry(std::regex_replace(name, std::regex("__WS__"), " "), score);
   }
 
   file.close();
@@ -25,7 +27,7 @@ void ScoreBoard::save() const {
   file.open(filePath, std::ios::binary | std::ios::out | std::ios::trunc);
 
   for(const auto& entry : entries) {
-    file << entry.name << " " << entry.score << std::endl;
+    file << std::regex_replace(entry.name, std::regex(" "), "__WS__") << " " << entry.score << std::endl;
   }
 
   file.close();
