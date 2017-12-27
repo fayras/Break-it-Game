@@ -1,6 +1,7 @@
 #include "Level.hpp"
 #include "nodes/ParticleNode.hpp"
 #include "system/Utility.hpp"
+#include "tween/LinearTween.hpp"
 
 namespace {
   const std::vector<LevelData> LevelTable = initializeLevelData();
@@ -35,8 +36,13 @@ void Level::load() {
   for(auto const &pair : levelData.blockColors) {
     std::unique_ptr<Block> block(new Block(textures, pair.second));
     block->setPosition(pair.first.x * 70 + 80, -40);
-    block->tweenPositionTo(sf::Vector2f(pair.first.x * 70 + 80, pair.first.y * 40 + 110));
-    block->tweenDelay(sf::milliseconds(Random::integer(100)));
+    sf::Vector2f to{pair.first.x * 70.0f + 80.0f, pair.first.y * 40.0f + 110.0f};
+    Block* bPointer = block.get();
+    auto tween = std::make_unique<LinearTween<sf::Vector2f>>(block->getPosition(), to, sf::milliseconds(300), [bPointer](sf::Vector2f pos) {
+      bPointer->setPosition(pos);
+    });
+    block->tween(std::move(tween), sf::milliseconds(Random::integer(50, 200)));
+    // block->tweenDelay(sf::milliseconds(Random::integer(100)));
     attachChild(std::move(block));
   }
 }

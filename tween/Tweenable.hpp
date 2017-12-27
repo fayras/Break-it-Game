@@ -3,15 +3,16 @@
 
 #include <SFML/System.hpp>
 #include <SFML/Graphics/Transformable.hpp>
-#include "Tween.hpp"
+#include "TweenDummy.hpp"
 
 class Tweenable {
   public:
-    void tween(Tween::Ptr tween);
+    void tween(std::unique_ptr<TweenDummy> tween, sf::Time delay = sf::Time::Zero);
     void update(sf::Time dt);
 
   private:
-    Tween::Ptr tweenObject{nullptr};
+    std::unique_ptr<TweenDummy> tweenObject{nullptr};
+    sf::Time delayTween;
 };
 
 #endif //BREAK_IT_TWEENABLE_HPP

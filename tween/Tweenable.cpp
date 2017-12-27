@@ -1,14 +1,16 @@
 #include "Tweenable.hpp"
 
-void Tweenable::tween(Tween::Ptr tween) {
+void Tweenable::tween(std::unique_ptr<TweenDummy> tween, sf::Time delay) {
+  delayTween = delay;
   tweenObject = std::move(tween);
 }
 
 void Tweenable::update(sf::Time dt) {
-  if(tweenObject != nullptr) {
-    if(tweenObject->done()) {
-      tweenObject = nullptr;
-    }
+  delayTween -= dt;
+  if(tweenObject && delayTween <= sf::Time::Zero) {
     tweenObject->update(dt);
+    if(tweenObject->done()) {
+      tweenObject.reset(nullptr);
+    }
   }
 }

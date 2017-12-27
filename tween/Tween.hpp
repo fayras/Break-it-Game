@@ -4,17 +4,18 @@
 #include <SFML/System/Time.hpp>
 #include <functional>
 #include <memory>
+#include "TweenDummy.hpp"
 
 template <typename T>
-class Tween {
+class Tween : public TweenDummy {
   public:
-    typedef std::unique_ptr<Tween> Ptr;
     typedef std::function<void(T)> Callback;
 
     Tween(T from, T to, sf::Time duration, Callback cb);
-    bool done() const;
+    ~Tween() override = default;
 
-    virtual void update(sf::Time dt) = 0;
+    void update(sf::Time dt) override = 0;
+    bool done() const final;
 
   protected:
     T from;
