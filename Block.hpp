@@ -5,7 +5,7 @@
 #include "entities/Entity.hpp"
 #include "ResourceIdentifiers.hpp"
 #include "system/Animation.hpp"
-#include "system/Tweenable.hpp"
+#include "tween/Tweenable.hpp"
 
 class Block : public Entity, public virtual Tweenable {
   public:
