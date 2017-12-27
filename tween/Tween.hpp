@@ -9,7 +9,7 @@
 template <typename T>
 class Tween : public TweenDummy {
   public:
-    typedef std::function<void(T)> Callback;
+    typedef std::function<void(const T&)> Callback;
 
     Tween(T from, T to, sf::Time duration, Callback cb);
     ~Tween() override = default;

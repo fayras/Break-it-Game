@@ -5,8 +5,9 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include "../system/State.hpp"
+#include "../tween/Tweenable.hpp"
 
-class LevelIntroState : public State {
+class LevelIntroState : public State, public Tweenable {
   public:
     LevelIntroState(StateStack& stack, Context context);
 
