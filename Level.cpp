@@ -1,5 +1,6 @@
 #include "Level.hpp"
 #include "nodes/ParticleNode.hpp"
+#include "system/Utility.hpp"
 
 namespace {
   const std::vector<LevelData> LevelTable = initializeLevelData();
@@ -33,7 +34,9 @@ void Level::load() {
   levelData = LevelTable[getID()];
   for(auto const &pair : levelData.blockColors) {
     std::unique_ptr<Block> block(new Block(textures, pair.second));
-    block->move(pair.first.x * 70 + 80, pair.first.y * 40 + 110);
+    block->setPosition(pair.first.x * 70 + 80, -40);
+    block->tweenPositionTo(sf::Vector2f(pair.first.x * 70 + 80, pair.first.y * 40 + 110));
+    block->tweenDelay(sf::milliseconds(Random::integer(100)));
     attachChild(std::move(block));
   }
 }

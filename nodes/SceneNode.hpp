@@ -20,7 +20,7 @@ enum CollisionSide {
   NONE = 0, LEFT = 1, RIGHT = 1<<1, TOP = 1<<2, BOTTOM = 1<<3
 };
 
-class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable {
+class SceneNode : public virtual sf::Transformable, public sf::Drawable, private sf::NonCopyable {
   public:
     typedef std::unique_ptr<SceneNode> Ptr;
     typedef std::pair<SceneNode*, SceneNode*> Pair;

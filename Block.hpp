@@ -5,8 +5,9 @@
 #include "entities/Entity.hpp"
 #include "ResourceIdentifiers.hpp"
 #include "system/Animation.hpp"
+#include "system/Tweenable.hpp"
 
-class Block : public Entity {
+class Block : public Entity, public virtual Tweenable {
   public:
     typedef std::unique_ptr<Block> Ptr;
 
