@@ -1,9 +1,10 @@
 #include "EaseOutElastic.hpp"
 
-void EaseOutElastic::update(sf::Time dt) {
-  if(time == sf::Time::Zero) callback(0.0f);
+float EaseOutElastic::calculate(const sf::Time &dt) {
+  if(time == sf::Time::Zero) return 0.0f;
+
   float t = time / duration;
-  if(t == 1.0f) this->callback(1.0f);
+  if(t == 1.0f) return 1.0f;
 
   float p = this->duration.asMilliseconds() *  0.3f;
   float a = 1.0f;
@@ -14,5 +15,5 @@ void EaseOutElastic::update(sf::Time dt) {
               + a;
 
   this->time += dt;
-  this->callback(val);
+  return val;
 }

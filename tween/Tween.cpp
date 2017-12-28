@@ -7,3 +7,7 @@ Tween::Tween(sf::Time duration, Tween::Callback cb)
 bool Tween::done() const {
   return time > duration;
 }
+
+Tween::Callback &Tween::getCallback() const {
+  return callback;
+}

@@ -7,7 +7,7 @@
 class EaseOutElastic : public Tween {
   public:
     using Tween::Tween;
-    void update(sf::Time dt) override;
+    float calculate(const sf::Time &dt) override;
 };
 
 #endif //BREAK_IT_EASEOUTELASTIC_HPP

@@ -1,6 +1,6 @@
 #include "LinearTween.hpp"
 
-void LinearTween::update(sf::Time dt) {
+float LinearTween::calculate(const sf::Time &dt) {
   this->time += dt;
-  this->callback((float) this->time.asMilliseconds() / (float) this->duration.asMilliseconds());
+  return (float) this->time.asMilliseconds() / (float) this->duration.asMilliseconds();
 }

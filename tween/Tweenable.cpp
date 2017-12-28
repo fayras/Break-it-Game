@@ -8,7 +8,7 @@ void Tweenable::tween(std::unique_ptr<Tween> tween, sf::Time delay) {
 void Tweenable::update(sf::Time dt) {
   delayTween -= dt;
   if(tweenObject && delayTween <= sf::Time::Zero) {
-    tweenObject->update(dt);
+    tweenObject->getCallback()(tweenObject->calculate(dt));
     if(tweenObject->done()) {
       tweenObject.reset(nullptr);
     }

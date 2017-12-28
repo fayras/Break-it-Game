@@ -12,8 +12,9 @@ class Tween {
     Tween(sf::Time duration, Callback cb);
     ~Tween() = default;
 
-    virtual void update(sf::Time dt) = 0;
+    virtual float calculate(const sf::Time &dt) = 0;
     bool done() const;
+    Callback& getCallback() const;
 
   protected:
     sf::Time duration;
