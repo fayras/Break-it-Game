@@ -2,6 +2,8 @@
 #include "nodes/ParticleNode.hpp"
 #include "system/Utility.hpp"
 #include "tween/EaseOutElastic.hpp"
+#include "Ball.hpp"
+#include "Paddle.hpp"
 
 namespace {
   const std::vector<LevelData> LevelTable = initializeLevelData();
@@ -63,19 +65,21 @@ void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
   if(done()) {
     loadNext();
     Command command;
-    command.category = Category::PADDLE | Category::BALL;
-    command.action = derivedAction<Entity>([this](Entity& node, sf::Time) {
+    command.category = Category::PADDLE;
+    command.action = derivedAction<Paddle>([this](Paddle& node, sf::Time) {
       sf::Vector2f spawnPosition{levelData.spawnPosition.x * bounds->width, levelData.spawnPosition.y * bounds->height};
-      if(node.getCategory() == Category::PADDLE) {
-        node.setPosition(spawnPosition);
-      }
-
-      if(node.getCategory() == Category::BALL) {
-        node.setPosition(spawnPosition.x, spawnPosition.y - 50);
-        node.setVelocity(0, -300 * getBallSpeedMultiplier());
-      }
+      node.setPosition(spawnPosition);
     });
     commands.push(command);
+
+    Command command1;
+    command1.category = Category::BALL;
+    command1.action = derivedAction<Ball>([this](Ball& ball, sf::Time) {
+      sf::Vector2f spawnPosition{levelData.spawnPosition.x * bounds->width, levelData.spawnPosition.y * bounds->height};
+      ball.reset(spawnPosition);
+      ball.setVelocity(0, -Ball::SPEED * getBallSpeedMultiplier());
+    });
+    commands.push(command1);
 
     Command command2;
     command2.category = Category::PARTICLE_SYSTEM;

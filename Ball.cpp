@@ -30,3 +30,7 @@ void Ball::updateCurrent(sf::Time dt, CommandQueue &commands) {
 void Ball::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
   target.draw(sprite, states);
 }
+
+void Ball::reset(sf::Vector2f pos) {
+  setPosition(pos.x, pos.y - getBoundingRect().height - 20);
+}

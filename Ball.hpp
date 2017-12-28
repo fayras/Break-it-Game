@@ -7,9 +7,13 @@
 
 class Ball : public Entity {
   public:
+    static constexpr float SPEED = 300.0f;
+
     explicit Ball(const TextureHolder& textures);
     unsigned int getCategory() const override;
     sf::FloatRect getBoundingRect() const override;
+
+    void reset(sf::Vector2f pos);
 
   protected:
     void updateCurrent(sf::Time dt, CommandQueue &commands) override;

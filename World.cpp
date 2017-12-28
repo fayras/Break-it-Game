@@ -279,8 +279,8 @@ void World::resetPositions() {
   Command command2;
   command2.category = Category::BALL;
   command2.action = derivedAction<Ball>([this](Ball& ball, sf::Time) {
-    ball.setPosition(spawnPosition.x, spawnPosition.y - 50);
-    ball.setVelocity(0, -300 * currentLevel->getBallSpeedMultiplier());
+    ball.reset(spawnPosition);
+    ball.setVelocity(0, -Ball::SPEED * currentLevel->getBallSpeedMultiplier());
   });
   Command command3;
   command3.category = Category::PARTICLE_SYSTEM;
