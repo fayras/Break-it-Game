@@ -41,7 +41,7 @@ void World::update(sf::Time dt) {
 
   Command bgCommand;
   bgCommand.category = Category::BACKGROUND;
-  bgCommand.action = [this, &dt](SceneNode& background, sf::Time) {
+  bgCommand.action = [this](SceneNode& background, sf::Time dt) {
     background.move(0, 100 * dt.asSeconds());
     // keep bg repeating. 1400 = size of texture
     if(background.getPosition().y > 0) {
