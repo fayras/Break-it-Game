@@ -1,7 +1,7 @@
 #include "Level.hpp"
 #include "nodes/ParticleNode.hpp"
 #include "system/Utility.hpp"
-#include "tween/LinearTween.hpp"
+#include "tween/EaseOutElastic.hpp"
 
 namespace {
   const std::vector<LevelData> LevelTable = initializeLevelData();
@@ -38,7 +38,7 @@ void Level::load() {
     block->setPosition(pair.first.x * 70 + 80, -40);
     sf::Vector2f to{pair.first.x * 70.0f + 80.0f, pair.first.y * 40.0f + 110.0f};
     Block* bPointer = block.get();
-    auto tween = std::make_unique<LinearTween<sf::Vector2f>>(block->getPosition(), to, sf::milliseconds(200), [bPointer](const sf::Vector2f& pos) {
+    auto tween = std::make_unique<EaseOutElastic<sf::Vector2f>>(block->getPosition(), to, sf::milliseconds(200), [bPointer](const sf::Vector2f& pos) {
       bPointer->setPosition(pos);
     });
     block->tween(std::move(tween), sf::milliseconds(Random::integer(20, 100)));
