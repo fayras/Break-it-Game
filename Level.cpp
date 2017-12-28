@@ -39,11 +39,11 @@ void Level::load() {
     sf::Vector2f from{block->getPosition()};
     sf::Vector2f to{pair.first.x * 70.0f + 80.0f, pair.first.y * 40.0f + 110.0f};
     Block* bPointer = block.get();
-    auto tween = std::make_unique<EaseOutElastic>(sf::milliseconds(300), [bPointer, from, to](const float& t) {
+    auto tween = std::make_unique<EaseOutElastic>(sf::milliseconds(500), [bPointer, from, to](const float& t) {
       sf::Vector2f diff = to - from;
       bPointer->setPosition(diff * t + from);
     });
-    block->tween(std::move(tween), sf::milliseconds(Random::integer(20, 100)));
+    block->tween(std::move(tween), sf::milliseconds(Random::integer(20, 70)));
     // block->tweenDelay(sf::milliseconds(Random::integer(100)));
     attachChild(std::move(block));
   }

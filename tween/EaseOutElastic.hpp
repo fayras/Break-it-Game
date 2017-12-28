@@ -6,8 +6,7 @@
 
 class EaseOutElastic : public Tween {
   public:
-    EaseOutElastic(sf::Time duration, Callback cb) : Tween(duration, std::move(cb)) {}
-
+    using Tween::Tween;
     void update(sf::Time dt) override;
 };
 

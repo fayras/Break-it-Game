@@ -5,8 +5,7 @@
 
 class LinearTween : public Tween {
   public:
-    LinearTween(sf::Time duration, Callback cb) : Tween(duration, std::move(cb)) {}
-
+    using Tween::Tween;
     void update(sf::Time dt) override;
 };
 
