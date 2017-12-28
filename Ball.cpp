@@ -24,6 +24,10 @@ sf::FloatRect Ball::getBoundingRect() const {
 }
 
 void Ball::updateCurrent(sf::Time dt, CommandQueue &commands) {
+  if(waitingTime > sf::Time::Zero) {
+    waitingTime -= dt;
+    return;
+  }
   Entity::updateCurrent(dt, commands);
 }
 
@@ -33,4 +37,9 @@ void Ball::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const 
 
 void Ball::reset(sf::Vector2f pos) {
   setPosition(pos.x, pos.y - getBoundingRect().height - 20);
+  wait(sf::Time(sf::seconds(1.5f)));
+}
+
+void Ball::wait(sf::Time wait) {
+  waitingTime = wait;
 }

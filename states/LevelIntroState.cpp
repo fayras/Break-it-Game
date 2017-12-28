@@ -46,7 +46,7 @@ bool LevelIntroState::update(sf::Time dt) {
   if(timer.getElapsedTime().asSeconds() > 1.5f) {
     requestStackPop();
   }
-  return false;
+  return true;
 }
 
 bool LevelIntroState::handleEvent(const sf::Event &event) {
