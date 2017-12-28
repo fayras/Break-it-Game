@@ -36,10 +36,12 @@ void Level::load() {
   for(auto const &pair : levelData.blockColors) {
     std::unique_ptr<Block> block(new Block(textures, pair.second));
     block->setPosition(pair.first.x * 70 + 80, -40);
+    sf::Vector2f from{block->getPosition()};
     sf::Vector2f to{pair.first.x * 70.0f + 80.0f, pair.first.y * 40.0f + 110.0f};
     Block* bPointer = block.get();
-    auto tween = std::make_unique<EaseOutElastic<sf::Vector2f>>(block->getPosition(), to, sf::milliseconds(200), [bPointer](const sf::Vector2f& pos) {
-      bPointer->setPosition(pos);
+    auto tween = std::make_unique<EaseOutElastic>(sf::milliseconds(300), [bPointer, from, to](const float& t) {
+      sf::Vector2f diff = to - from;
+      bPointer->setPosition(diff * t + from);
     });
     block->tween(std::move(tween), sf::milliseconds(Random::integer(20, 100)));
     // block->tweenDelay(sf::milliseconds(Random::integer(100)));

@@ -4,35 +4,21 @@
 #include <SFML/System/Time.hpp>
 #include <functional>
 #include <memory>
-#include "TweenDummy.hpp"
 
-template <typename T>
-class Tween : public TweenDummy {
+class Tween {
   public:
-    typedef std::function<void(const T&)> Callback;
+    typedef std::function<void(const float&)> Callback;
 
-    Tween(T from, T to, sf::Time duration, Callback cb);
-    ~Tween() override = default;
+    Tween(sf::Time duration, Callback cb);
+    ~Tween() = default;
 
-    void update(sf::Time dt) override = 0;
-    bool done() const final;
+    virtual void update(sf::Time dt) = 0;
+    bool done() const;
 
   protected:
-    T from;
-    T to;
     sf::Time duration;
     sf::Time time;
     Callback callback;
 };
-
-template<typename T>
-Tween<T>::Tween(T from, T to, sf::Time duration, Tween::Callback cb)
-    : from(from), to(to), duration(duration), callback(cb), time(sf::Time::Zero)
-{}
-
-template<typename T>
-bool Tween<T>::done() const {
-  return time > duration;
-}
 
 #endif //BREAK_IT_TWEEN_HPP

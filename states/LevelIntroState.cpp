@@ -21,12 +21,14 @@ LevelIntroState::LevelIntroState(StateStack &stack, State::Context context) : St
   backgroundShape.setOrigin(windowSize.x * 0.5f, 50);
   backgroundShape.setPosition(0.5f * windowSize.x, 0.3f * windowSize.y);
 
-  tween(std::make_unique<LinearTween<sf::Vector2f>>(
-      sf::Vector2f(windowSize.x + bounds.width / 2, 0.3f * windowSize.y),
-      sf::Vector2f(-bounds.width / 2, 0.3f * windowSize.y),
+  sf::Vector2f from(windowSize.x + bounds.width / 2, 0.3f * windowSize.y);
+  sf::Vector2f to(-bounds.width / 2, 0.3f * windowSize.y);
+
+  tween(std::make_unique<LinearTween>(
       sf::seconds(1.5f),
-      [this](const sf::Vector2f& pos) {
-        pausedText.setPosition(pos);
+      [this, from, to](const float& t) {
+        sf::Vector2f diff = to - from;
+        pausedText.setPosition(diff * t + from);
       }
   ));
 }
