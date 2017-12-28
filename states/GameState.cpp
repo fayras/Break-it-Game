@@ -32,7 +32,7 @@ bool GameState::update(sf::Time dt) {
     requestStackPush(States::GAME_OVER);
   }
 
-  if(world.showNewLevelMessage && !world.destroyed()) {
+  if((player.getLevel() != world.getLevel() || world.showNewLevelMessage) && !world.destroyed()) {
     world.showNewLevelMessage = false;
     player.setLevel(world.getLevel());
     requestStackPush(States::LEVEL_INTRO);

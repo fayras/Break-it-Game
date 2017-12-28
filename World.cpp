@@ -34,10 +34,10 @@ World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sou
 
 void World::update(sf::Time dt) {
   paddle->setVelocity(paddle->getVelocity() / 2.f);
-  while(!commandQueue.empty()) {
-    Command command = commandQueue.pop();
-    sceneGraph.onCommand(command, dt);
-  }
+
+  // Collision detection and response (may destroy entities)
+  handleCollisions();
+  sceneGraph.update(dt, commandQueue);
 
   Command bgCommand;
   bgCommand.category = Category::BACKGROUND;
@@ -50,10 +50,10 @@ void World::update(sf::Time dt) {
   };
   commandQueue.push(bgCommand);
 
-  // Collision detection and response (may destroy entities)
-  handleCollisions();
-
-  sceneGraph.update(dt, commandQueue);
+  while(!commandQueue.empty()) {
+    Command command = commandQueue.pop();
+    sceneGraph.onCommand(command, dt);
+  }
 
   adaptPlayerPosition();
   updateSounds();
