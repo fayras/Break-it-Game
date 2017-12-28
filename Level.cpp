@@ -43,7 +43,8 @@ void Level::load() {
       sf::Vector2f diff = to - from;
       bPointer->setPosition(diff * t + from);
     });
-    block->tween(std::move(tween), sf::milliseconds(Random::integer(20, 70)));
+    tween->delay(sf::milliseconds(Random::integer(20, 70)));
+    block->tween(std::move(tween));
     // block->tweenDelay(sf::milliseconds(Random::integer(100)));
     attachChild(std::move(block));
   }

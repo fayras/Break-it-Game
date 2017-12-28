@@ -13,11 +13,13 @@ class Tween {
     ~Tween() = default;
 
     virtual float calculate(const sf::Time &dt) = 0;
+    void update(const sf::Time &dt);
+    void delay(sf::Time delay);
     bool done() const;
-    Callback& getCallback() const;
 
   protected:
     sf::Time duration;
+    sf::Time delayTween;
     sf::Time time;
     Callback callback;
 };

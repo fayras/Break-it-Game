@@ -6,14 +6,13 @@ float EaseOutElastic::calculate(const sf::Time &dt) {
   float t = time / duration;
   if(t == 1.0f) return 1.0f;
 
-  float p = this->duration.asMilliseconds() *  0.3f;
+  float p = duration.asMilliseconds() *  0.3f;
   float a = 1.0f;
   float s = p / 4.0f;
 
   float val = a * (float) std::pow(2, -10.0f * t)
-              * (float) std::sin((t * (float) this->duration.asMilliseconds() - s) * (2 * 3.1415927) / p)
+              * (float) std::sin((t * (float) duration.asMilliseconds() - s) * (2 * 3.1415927) / p)
               + a;
 
-  this->time += dt;
   return val;
 }
