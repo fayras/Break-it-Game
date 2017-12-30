@@ -54,5 +54,7 @@ bool Entity::isDestroyed() const {
 }
 
 void Entity::updateCurrent(sf::Time dt, CommandQueue &commands) {
-  move(velocity * dt.asSeconds());
+  if(recieveEvents) {
+    move(velocity * dt.asSeconds());
+  }
 }

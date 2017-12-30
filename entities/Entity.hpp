@@ -21,6 +21,8 @@ class Entity : public SceneNode {
     virtual void remove();
     bool isDestroyed() const override;
 
+    bool recieveEvents{true};
+
   protected:
     void updateCurrent(sf::Time dt, CommandQueue& commands) override;
 
