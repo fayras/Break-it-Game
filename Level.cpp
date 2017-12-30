@@ -4,19 +4,26 @@
 #include "tween/EaseOutElastic.hpp"
 #include "Ball.hpp"
 #include "Paddle.hpp"
+#include "LevelInfo.hpp"
+#include "system/ResourceHolder.hpp"
 
 namespace {
   const std::vector<LevelData> LevelTable = initializeLevelData();
 }
 
-Level::Level(const TextureHolder &textures)
+Level::Level(const TextureHolder &textures, const FontHolder& fonts)
   : textures(textures), levelData(), bounds(nullptr)
 {
-  loadNext();
+  auto blocks = std::make_unique<SceneNode>();
+  blocksLayer = blocks.get();
+  attachChild(std::move(blocks));
+
+  auto levelInfo = std::make_unique<LevelInfo>(fonts.get(Fonts::ARCADE));
+  attachChild(std::move(levelInfo));
 }
 
 bool Level::done() const {
-  return children.empty();
+  return !blocksLayer->hasChildren();
 }
 
 int Level::getID() const {
@@ -47,7 +54,7 @@ void Level::load() {
     });
     tween->delay(sf::milliseconds(Random::integer(70)));
     block->tween(std::move(tween));
-    attachChild(std::move(block));
+    blocksLayer->attachChild(std::move(block));
   }
 }
 
@@ -69,6 +76,7 @@ void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
     command.action = derivedAction<Paddle>([this](Paddle& node, sf::Time) {
       sf::Vector2f spawnPosition{levelData.spawnPosition.x * bounds->width, levelData.spawnPosition.y * bounds->height};
       node.setPosition(spawnPosition);
+      node.recieveEvents = false;
     });
     commands.push(command);
 
@@ -87,18 +95,14 @@ void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
       particles.clearParticles();
     });
     commands.push(command2);
+
+    Command command3;
+    command3.category = Category::LEVEL_INFO;
+    command3.action = derivedAction<LevelInfo>([this](LevelInfo& info, sf::Time) {
+      info.show(getID() + 1, sf::milliseconds(1300));
+    });
+    commands.push(command3);
   }
-}
-
-std::vector<Block*> Level::getBlocks() const {
-  std::vector<Block*> blocks;
-
-  for (auto& item : children) {
-    auto t = dynamic_cast<Block*>(item.get());
-    blocks.push_back(t);
-  }
-
-  return blocks;
 }
 
 void Level::setBounds(sf::FloatRect* bounds) {

@@ -1,6 +1,7 @@
 #include <iostream>
 #include "World.hpp"
 #include "system/Utility.hpp"
+#include "LevelInfo.hpp"
 #include <cmath>
 #include <algorithm>
 
@@ -246,7 +247,8 @@ void World::buildScene() {
 
   auto particles = std::make_unique<ParticleNode>(Particle::Propellant, textures);
   sceneGraph.attachChild(std::move(particles));
-  auto level = std::make_unique<Level>(textures);
+
+  auto level = std::make_unique<Level>(textures, fonts);
   level->setBounds(&worldBounds);
   currentLevel = level.get();
   sceneGraph.attachChild(std::move(level));
@@ -255,6 +257,13 @@ void World::buildScene() {
   score->setPosition(worldView.getSize().x - 295, 10);
   this->score = score.get();
   sceneGraph.attachChild(std::move(score));
+
+  Command command;
+  command.category = Category::LEVEL_INFO;
+  command.action = derivedAction<LevelInfo>([this](LevelInfo& info, sf::Time) {
+    info.setView(worldView.getSize());
+  });
+  commandQueue.push(command);
 }
 
 sf::FloatRect World::getViewBounds() const {

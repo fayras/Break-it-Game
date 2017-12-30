@@ -7,10 +7,9 @@
 
 class Level : public SceneNode {
   public:
-    explicit Level(const TextureHolder& textures);
+    explicit Level(const TextureHolder& textures, const FontHolder& fonts);
     void loadNext();
     void setBounds(sf::FloatRect* bounds);
-    std::vector<Block*> getBlocks() const;
 
     bool done() const;
     bool isLast() const;
@@ -24,11 +23,11 @@ class Level : public SceneNode {
     void updateCurrent(sf::Time dt, CommandQueue &commands) override;
 
   private:
-
     int currentID{-1};
     LevelData levelData;
     sf::FloatRect* bounds;
     const TextureHolder& textures;
+    SceneNode* blocksLayer;
 };
 
 #endif //BREAK_IT_LEVEL_HPP
