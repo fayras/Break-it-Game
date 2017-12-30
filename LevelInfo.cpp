@@ -27,6 +27,9 @@ void LevelInfo::show(int level, sf::Time delay) {
     pausedText.setPosition(diff * t + from);
   });
   t->delay(delay);
+  t->attachObserver([this]() {
+    backgroundShape.setFillColor(sf::Color(0, 0, 0, 0));
+  });
   tween(std::move(t));
 }
 

@@ -4,8 +4,9 @@
 #include <SFML/System/Time.hpp>
 #include <functional>
 #include <memory>
+#include "../system/Observable.hpp"
 
-class Tween {
+class Tween : public Observable {
   public:
     typedef std::function<void(const float&)> Callback;
 
