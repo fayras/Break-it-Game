@@ -14,7 +14,6 @@ class LevelInfo : public SceneNode {
     unsigned int getCategory() const override;
 
   protected:
-    void updateCurrent(sf::Time dt, CommandQueue &commands) override;
     void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const override;
 
   private:

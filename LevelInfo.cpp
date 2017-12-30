@@ -34,10 +34,6 @@ unsigned int LevelInfo::getCategory() const {
   return Category::LEVEL_INFO;
 }
 
-void LevelInfo::updateCurrent(sf::Time dt, CommandQueue &commands) {
-  Tweenable::update(dt);
-}
-
 void LevelInfo::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
   target.draw(backgroundShape);
   target.draw(pausedText);
