@@ -1,15 +1,17 @@
 #include "Tweenable.hpp"
 
 void Tweenable::tween(std::unique_ptr<Tween> tween) {
-  tweenObject = std::move(tween);
+  tweens.push_back(std::move(tween));
 }
 
 void Tweenable::update(sf::Time dt) {
-  if(tweenObject) {
-    tweenObject->update(dt);
-    if(tweenObject->done()) {
-      tweenObject->notify();
-      tweenObject.reset(nullptr);
+  for(auto tweenIterator = tweens.begin(); tweenIterator != tweens.end();) {
+    (*tweenIterator)->update(dt);
+    if((*tweenIterator)->done()) {
+      (*tweenIterator)->notify();
+      tweenIterator = tweens.erase(tweenIterator);
+    } else {
+      ++tweenIterator;
     }
   }
 }

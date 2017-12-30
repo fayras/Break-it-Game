@@ -11,7 +11,8 @@ class Tweenable {
     void update(sf::Time dt);
 
   private:
-    std::unique_ptr<Tween> tweenObject{nullptr};
+    std::vector<std::unique_ptr<Tween>> tweens;
+    // std::unique_ptr<Tween> tweenObject{nullptr};
 };
 
 #endif //BREAK_IT_TWEENABLE_HPP
