@@ -14,7 +14,6 @@ LevelInfo::LevelInfo(const sf::Font &font)
 
 void LevelInfo::show(int level, sf::Time delay) {
   pausedText.setString("Level " + std::to_string(level));
-  backgroundShape.setFillColor(sf::Color(0, 0, 0, 150));
 
   sf::FloatRect bounds = pausedText.getLocalBounds();
   pausedText.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
@@ -32,6 +31,12 @@ void LevelInfo::show(int level, sf::Time delay) {
     showInfo = false;
   });
   tween(std::move(t));
+
+  auto t2 = std::make_unique<LinearTween>(sf::seconds(0.1f), [this](const float& t) {
+    backgroundShape.setFillColor(sf::Color(0, 0, 0, (sf::Uint8) (150 * t)));
+  });
+  t2->delay(delay);
+  tween(std::move(t2));
 }
 
 unsigned int LevelInfo::getCategory() const {
