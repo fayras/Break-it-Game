@@ -27,7 +27,6 @@ unsigned int Block::getCategory() const {
 }
 
 void Block::updateCurrent(sf::Time dt, CommandQueue &commands) {
-  Tweenable::update(dt);
   if(isDestroyed()) {
     breakAnimation.update(dt);
   } else {
