@@ -27,6 +27,7 @@ class Level : public SceneNode {
     LevelData levelData;
     sf::FloatRect* bounds;
     const TextureHolder& textures;
+    const FontHolder& fonts;
     SceneNode* blocksLayer;
 };
 

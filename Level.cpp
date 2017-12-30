@@ -6,13 +6,14 @@
 #include "Paddle.hpp"
 #include "LevelInfo.hpp"
 #include "system/ResourceHolder.hpp"
+#include "tween/LinearTween.hpp"
 
 namespace {
   const std::vector<LevelData> LevelTable = initializeLevelData();
 }
 
 Level::Level(const TextureHolder &textures, const FontHolder& fonts)
-  : textures(textures), levelData(), bounds(nullptr)
+  : textures(textures), fonts(fonts), levelData(), bounds(nullptr)
 {
   auto blocks = std::make_unique<SceneNode>();
   blocksLayer = blocks.get();
@@ -86,6 +87,7 @@ void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
       sf::Vector2f spawnPosition{levelData.spawnPosition.x * bounds->width, levelData.spawnPosition.y * bounds->height};
       ball.reset(spawnPosition);
       ball.setVelocity(0, -Ball::SPEED * getBallSpeedMultiplier());
+      ball.recieveEvents = false;
     });
     commands.push(command1);
 
@@ -102,6 +104,17 @@ void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
       info.show(getID() + 1, sf::milliseconds(1300));
     });
     commands.push(command3);
+
+    auto t = std::make_unique<LinearTween>(sf::milliseconds(2900), [](const float& t) {});
+    t->attachObserver([&commands]() {
+      Command command;
+      command.category = Category::BALL | Category::PADDLE;
+      command.action = derivedAction<Entity>([](Entity& entity, sf::Time) {
+        entity.recieveEvents = true;
+      });
+      commands.push(command);
+    });
+    tween(std::move(t));
   }
 }
 

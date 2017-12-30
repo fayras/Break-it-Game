@@ -14,15 +14,12 @@ class Ball : public Entity {
     sf::FloatRect getBoundingRect() const override;
 
     void reset(sf::Vector2f pos);
-    void wait(sf::Time wait);
 
   protected:
-    void updateCurrent(sf::Time dt, CommandQueue &commands) override;
     void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const override;
 
   private:
     sf::Sprite sprite;
-    sf::Time waitingTime{sf::Time::Zero};
 };
 
 
