@@ -19,8 +19,8 @@ class LevelInfo : public SceneNode {
   private:
     sf::RectangleShape backgroundShape;
     sf::Text pausedText;
-    sf::Clock timer;
     sf::Vector2f view;
+    bool showInfo{false};
 };
 
 #endif //BREAK_IT_LEVELINFO_HPP
