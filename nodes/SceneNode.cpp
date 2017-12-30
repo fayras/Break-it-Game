@@ -60,6 +60,7 @@ unsigned int SceneNode::getCategory() const {
 }
 
 void SceneNode::update(sf::Time dt, CommandQueue& commands) {
+  Tweenable::update(dt);
   updateCurrent(dt, commands);
   updateChildren(dt, commands);
 }
@@ -130,6 +131,10 @@ bool SceneNode::isMarkedForRemoval() const {
 bool SceneNode::isDestroyed() const {
   // By default, scene node needn't be removed
   return false;
+}
+
+bool SceneNode::hasChildren() const {
+  return !children.empty();
 }
 
 CollisionSide collision(const SceneNode &lhs, const SceneNode &rhs) {

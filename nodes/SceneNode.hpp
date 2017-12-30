@@ -12,6 +12,7 @@
 
 #include "Category.hpp"
 #include "../system/CommandQueue.hpp"
+#include "../tween/Tweenable.hpp"
 
 struct Command;
 class CommandQueue;
@@ -20,7 +21,7 @@ enum CollisionSide {
   NONE = 0, LEFT = 1, RIGHT = 1<<1, TOP = 1<<2, BOTTOM = 1<<3
 };
 
-class SceneNode : public virtual sf::Transformable, public sf::Drawable, private sf::NonCopyable {
+class SceneNode : public virtual sf::Transformable, public sf::Drawable, private sf::NonCopyable, public virtual Tweenable {
   public:
     typedef std::unique_ptr<SceneNode> Ptr;
     typedef std::pair<SceneNode*, SceneNode*> Pair;
@@ -32,6 +33,7 @@ class SceneNode : public virtual sf::Transformable, public sf::Drawable, private
 
     sf::Vector2f getWorldPosition() const;
     sf::Transform getWorldTransform() const;
+    bool hasChildren() const;
 
     void onCommand(const Command& command, sf::Time dt);
     void setCategory(Category::Type category);
