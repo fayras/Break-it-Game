@@ -16,8 +16,16 @@ TitleState::TitleState(StateStack &stack, State::Context context)
     requestStackPush(States::ID::GAME);
   });
 
+  auto btSettings = std::make_shared<gui::Button>(context);
+  btSettings->setPosition(200, 0);
+  btSettings->setText("Einstellungen");
+  btSettings->setCallback([this] () {
+    requestStackPop();
+    requestStackPush(States::ID::SETTINGS);
+  });
+
   auto btExit = std::make_shared<gui::Button>(context);
-  btExit->setPosition(200, 0);
+  btExit->setPosition(400, 0);
   btExit->setText("Beenden");
   btExit->setCallback([this] () {
     requestStackPop();
@@ -25,6 +33,7 @@ TitleState::TitleState(StateStack &stack, State::Context context)
 
   guiContainer.move(300, 500);
   guiContainer.pack(btPlay);
+  guiContainer.pack(btSettings);
   guiContainer.pack(btExit);
 }
 
