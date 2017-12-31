@@ -33,10 +33,7 @@ class World : private sf::NonCopyable {
 
     bool reachedEnd() const;
     int getScore() const;
-    int getLevel() const;
     void resetPositions();
-
-    bool showNewLevelMessage{false};
 
     bool destroyed();
 

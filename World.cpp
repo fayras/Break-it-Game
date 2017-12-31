@@ -171,6 +171,11 @@ void World::handleCollisions() {
       }
 
       if(wall.isDeadly()) {
+        Command command0;
+        command0.category = Category::LEVEL_INFO;
+        command0.action = derivedAction<LevelInfo>([this](LevelInfo& info, sf::Time) {
+          info.show(currentLevel->getID() + 1);
+        });
         Command command1;
         command1.category = Category::PADDLE;
         command1.action = derivedAction<Paddle>([this](Paddle& paddle, sf::Time) {
@@ -189,6 +194,7 @@ void World::handleCollisions() {
           score.resetMultiplier();
           score.increase(-score.get() / 2);
         });
+        commandQueue.push(command0);
         commandQueue.push(command1);
         commandQueue.push(command2);
         commandQueue.push(command3);
@@ -274,12 +280,7 @@ int World::getScore() const {
   return score->get();
 }
 
-int World::getLevel() const {
-  return currentLevel->getID() + 1;
-}
-
 void World::resetPositions() {
-  showNewLevelMessage = true;
   Command command1;
   command1.category = Category::PADDLE;
   command1.action = derivedAction<Paddle>([this](Paddle& paddle, sf::Time) {
