@@ -17,7 +17,7 @@ class SettingsParser {
     bool isChanged() const;
 
     template<typename T>
-    void get(const std::string& key, T & value) const;
+    const T& get(const std::string& key, T defaultValue) const;
     template<typename T>
     void get(const std::string& key, std::vector<T> &value) const;
 
@@ -176,12 +176,14 @@ inline std::string SettingsParser::convertToType<std::string>(const std::string 
 }
 
 template<typename T>
-inline void SettingsParser::get(const std::string& key, T &value) const {
+inline const T& SettingsParser::get(const std::string& key, T defaultValue) const {
   auto it = m_data.find(key);
 
   if (it != m_data.end()){
-    value = convertToType<T>(it->second);
+    return convertToType<T>(it->second);
   }
+
+  return defaultValue;
 }
 
 /**
