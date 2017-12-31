@@ -27,16 +27,22 @@ void LevelInfo::show(int level, sf::Time delay) {
     pausedText.setPosition(diff * t + from);
   });
   t->delay(delay);
-  t->attachObserver([this]() {
-    showInfo = false;
-  });
   tween(std::move(t));
 
-  auto t2 = std::make_unique<LinearTween>(sf::seconds(0.1f), [this](const float& t) {
+  auto t2 = std::make_unique<LinearTween>(sf::milliseconds(200), [this](const float& t) {
     backgroundShape.setFillColor(sf::Color(0, 0, 0, (sf::Uint8) (150 * t)));
   });
-  t2->delay(delay);
+  t2->delay(delay - sf::milliseconds(100));
   tween(std::move(t2));
+
+  auto t3 = std::make_unique<LinearTween>(sf::milliseconds(200), [this](const float& t) {
+    backgroundShape.setFillColor(sf::Color(0, 0, 0, (sf::Uint8) (150 - (150 * t))));
+  });
+  t3->delay(delay + sf::seconds(1.5f));
+  t3->attachObserver([this]() {
+    showInfo = false;
+  });
+  tween(std::move(t3));
 }
 
 unsigned int LevelInfo::getCategory() const {
