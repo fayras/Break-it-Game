@@ -13,9 +13,10 @@ const sf::Time Application::TimePerFrame = sf::seconds(1.f / FPS);
 Application::Application()
   : window(sf::VideoMode(1000, 740), "Break it!"),
     isPaused(false),
-    stateStack(State::Context(window, textures, fonts, music, sounds, player, scoreBoard))
+    stateStack(State::Context(window, textures, fonts, music, sounds, player, scoreBoard, settings))
 {
   // window.setFramerateLimit(FPS);
+  settings.loadFromFile("settings.dat");
 
   loadAssets();
   registerStates();

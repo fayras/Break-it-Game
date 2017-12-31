@@ -34,6 +34,7 @@ class Application {
     StateStack stateStack;
     Player player;
     ScoreBoard scoreBoard;
+    SettingsParser settings;
 
     static const sf::Time	TimePerFrame;
 
