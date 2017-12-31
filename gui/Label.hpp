@@ -6,7 +6,7 @@
 #include "../ResourceIdentifiers.hpp"
 
 namespace gui {
-  class Label : public Component{
+  class Label : public Component {
     public:
       typedef std::shared_ptr<Label> Ptr;
 

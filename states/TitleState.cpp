@@ -20,7 +20,6 @@ TitleState::TitleState(StateStack &stack, State::Context context)
   btSettings->setPosition(200, 0);
   btSettings->setText("Einstellungen");
   btSettings->setCallback([this] () {
-    requestStackPop();
     requestStackPush(States::ID::SETTINGS);
   });
 

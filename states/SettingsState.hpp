@@ -4,6 +4,8 @@
 #include <SFML/Graphics/Text.hpp>
 #include "../system/State.hpp"
 #include "../gui/Container.hpp"
+#include "../gui/Button.hpp"
+#include "../gui/Label.hpp"
 
 class SettingsState : public State {
   public:
@@ -17,6 +19,8 @@ class SettingsState : public State {
   private:
     sf::Text pausedText;
     gui::Container guiContainer;
+    std::map<gui::Button::Ptr, std::function<void(const sf::Event&)>> options;
+    std::vector<gui::Label::Ptr> bindingLabels;
 };
 
 #endif //BREAK_IT_SETTINGSSTATE_HPP
