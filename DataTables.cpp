@@ -1,5 +1,80 @@
+#include <map>
 #include "DataTables.hpp"
 #include "system/Particle.hpp"
+
+namespace {
+  const std::map<char, sf::Color> colors {
+      { 'a', sf::Color(255, 100, 100) },
+      { 'b', sf::Color(150, 255, 0) },
+      { 'c', sf::Color(100, 100, 255) },
+      { '-', sf::Color(0, 0, 0) },
+      { '+', sf::Color(255, 255, 255) },
+      { 'g', sf::Color(150, 150, 150) }
+  };
+
+  const std::vector<std::vector<std::string>> levels {
+      {
+          "             ",
+          "             ",
+          "             ",
+          "             ",
+          "             ",
+          "             ",
+          "      a      "
+      },
+      {
+          "aaaaaaaaaaaaa",
+          "bbbbbbbbbbbbb",
+          "ccccccccccccc",
+          "aaaaaaaaaaaaa",
+          "bbbbbbbbbbbbb",
+          "ccccccccccccc"
+      },
+      {
+          "a a a a a a a",
+          "             ",
+          "a a a a a a a",
+          "             ",
+          "b b b b b b b",
+          "             ",
+          "c c c c c c c"
+      },
+      {
+          "  g       g  ",
+          " ggg     ggg ",
+          " ggggggggggg ",
+          "ggg ggggg ggg",
+          "ggggggggggggg",
+          "gggggg gggggg",
+          " g gg g gg g ",
+          "  g  ggg  g  ",
+          "  ggggggggg  ",
+          "    ggggg    "
+      }
+  };
+}
+
+std::vector<LevelData> initializeLevelData() {
+  std::vector<LevelData> data(levels.size());
+
+  for(int i = 0; i < levels.size(); i++) {
+    std::size_t levelSize = levels[i].size();
+    for(int y = 0; y < levelSize; y++) {
+      std::size_t rowLength = levels[i][y].size();
+      for(int x = 0; x < rowLength; x++) {
+        char colorKey = levels[i][y].at(static_cast<unsigned long>(x));
+        if(colorKey != ' ') {
+          const sf::Color& color = colors.at(colorKey);
+          data[i].blockColors.emplace_back(std::make_pair(sf::Vector2i(x, y), color));
+        }
+      }
+    }
+  }
+
+  data[1].ballSpeedMultiplier = 1.5f;
+
+  return data;
+}
 
 std::vector<ParticleData> initializeParticleData() {
   std::vector<ParticleData> data(Particle::ParticleCount);
@@ -9,33 +84,6 @@ std::vector<ParticleData> initializeParticleData() {
 
   data[Particle::Smoke].color = sf::Color(50, 50, 50);
   data[Particle::Smoke].lifetime = sf::seconds(4.f);
-
-  return data;
-}
-
-std::vector<LevelData> initializeLevelData() {
-  std::vector<LevelData> data(2);
-
-  for(int x = 0; x < 13; x++) {
-    for(int y = 0; y < 7; y++) {
-      sf::Color color;
-      if(y < 7) { color.r = 255; color.g = 100; color.b = 100; }
-      if(y < 4) { color.r = 150; color.g = 255; color.b = 0; }
-      if(y < 2) { color.r = 100; color.g = 100; color.b = 255; }
-      data[0].blockColors.emplace_back(std::make_pair(sf::Vector2i(x, y), color));
-    }
-  }
-
-  data[1].ballSpeedMultiplier = 1.5f;
-  for(int x = 0; x < 13; x += 2) {
-    for(int y = 0; y < 7; y += 2) {
-      sf::Color color;
-      if(y < 7) { color.r = 255; color.g = 100; color.b = 100; }
-      if(y < 4) { color.r = 150; color.g = 255; color.b = 0; }
-      if(y < 2) { color.r = 100; color.g = 100; color.b = 255; }
-      data[1].blockColors.emplace_back(std::make_pair(sf::Vector2i(x, y), color));
-    }
-  }
 
   return data;
 }
