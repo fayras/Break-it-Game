@@ -2,6 +2,7 @@
 #include "World.hpp"
 #include "system/Utility.hpp"
 #include "LevelInfo.hpp"
+#include "tween/LinearTween.hpp"
 #include <cmath>
 #include <algorithm>
 
@@ -36,7 +37,11 @@ World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sou
 void World::update(sf::Time dt) {
   paddle->setVelocity(paddle->getVelocity() / 2.f);
 
-  // Collision detection and response (may destroy entities)
+  while(!commandQueue.empty()) {
+    Command command = commandQueue.pop();
+    sceneGraph.onCommand(command, dt);
+  }
+
   handleCollisions();
   sceneGraph.update(dt, commandQueue);
 
@@ -50,11 +55,6 @@ void World::update(sf::Time dt) {
     }
   };
   commandQueue.push(bgCommand);
-
-  while(!commandQueue.empty()) {
-    Command command = commandQueue.pop();
-    sceneGraph.onCommand(command, dt);
-  }
 
   adaptPlayerPosition();
   updateSounds();
@@ -144,6 +144,11 @@ void World::handleCollisions() {
       ball.setVelocity(Vector::unit(newVel) * ballSpeed);
       sounds.play(SoundEffect::HIT_GENERAL);
       score->resetMultiplier();
+
+      paddle.tween(std::make_unique<LinearTween>(sf::milliseconds(100), [&paddle](const float& t) {
+        float y = 10.0f * (0.5f - t);
+        paddle.move(0, y);
+      }));
     } else if(matchesCategories(collisionPair, Category::BALL, Category::BLOCK)) {
       auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
       auto& block = dynamic_cast<Block&>(*collisionPair.second);
