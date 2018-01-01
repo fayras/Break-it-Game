@@ -54,3 +54,7 @@ sf::Vector2f SoundPlayer::getListenerPosition() const {
 void SoundPlayer::setMasterVolume(float volume) {
   this->volume = volume / 100;
 }
+
+float SoundPlayer::getMasterVolume() const {
+  return volume * 100;
+}

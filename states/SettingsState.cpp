@@ -1,6 +1,9 @@
 #include "SettingsState.hpp"
 #include "../system/Utility.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
+#include "../system/MusicPlayer.hpp"
+#include "../system/SoundPlayer.hpp"
+#include <algorithm>
 
 SettingsState::SettingsState(StateStack &stack, State::Context context)
     : State(stack, context), background(sf::Vector2f(context.window->getSize().x, context.window->getSize().y))
@@ -21,6 +24,40 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
     button->deactivate();
   }, [context](gui::Label* label) {
     label->setText(String::from(context.player->getAssignedKey(Player::MOVE_RIGHT)));
+  });
+
+  addOption("Musik", [context](const sf::Event& event, gui::Button* button) {
+    if(event.type == sf::Event::KeyReleased) {
+      float newVolume = context.music->getVolume();
+      if(event.key.code == sf::Keyboard::Left) {
+        newVolume -= 10;
+      } else if(event.key.code == sf::Keyboard::Right) {
+        newVolume += 10;
+      } else if(event.key.code == sf::Keyboard::Escape) {
+        button->deactivate();
+      }
+      context.music->setVolume(std::clamp(newVolume, 0.0f, 100.0f));
+    }
+    context.settings->set("music_volume", context.music->getVolume());
+  }, [context](gui::Label* label) {
+    label->setText(std::to_string(context.music->getVolume()));
+  });
+
+  addOption("Sounds", [context](const sf::Event& event, gui::Button* button) {
+    if(event.type == sf::Event::KeyReleased) {
+      float newVolume = context.sounds->getMasterVolume();
+      if(event.key.code == sf::Keyboard::Left) {
+        newVolume -= 10;
+      } else if(event.key.code == sf::Keyboard::Right) {
+        newVolume += 10;
+      } else if(event.key.code == sf::Keyboard::Escape) {
+        button->deactivate();
+      }
+      context.sounds->setMasterVolume(std::clamp(newVolume, 0.0f, 100.0f));
+    }
+    context.settings->set("sounds_volume", context.sounds->getMasterVolume());
+  }, [context](gui::Label* label) {
+    label->setText(std::to_string(context.sounds->getMasterVolume()));
   });
 
   auto backButton = std::make_shared<gui::Button>(context);

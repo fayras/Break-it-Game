@@ -30,3 +30,7 @@ void MusicPlayer::setPaused(bool paused)
   if (paused) music.pause();
   else music.play();
 }
+
+float MusicPlayer::getVolume() const {
+  return volume;
+}
