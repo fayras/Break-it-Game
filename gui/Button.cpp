@@ -27,6 +27,12 @@ void gui::Button::setText(const std::string &text) {
   this->text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
 }
 
+void gui::Button::setText(const std::wstring &text) {
+  this->text.setString(text);
+  sf::FloatRect bounds = this->text.getLocalBounds();
+  this->text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
+}
+
 void gui::Button::setToggle(bool flag) {
   isToggle = flag;
 }

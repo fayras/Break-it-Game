@@ -22,6 +22,7 @@ namespace gui {
       explicit Button(State::Context context);
       void setCallback(Callback callback);
       void setText(const std::string& text);
+      void setText(const std::wstring& text);
       void setToggle(bool flag);
 
       bool selectable() const override;
