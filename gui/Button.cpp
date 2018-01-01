@@ -80,6 +80,10 @@ void gui::Button::handleEvent(const sf::Event &event) {
       activate();
     }
   }
+
+  if(selected() && event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Return) {
+    activate();
+  }
 }
 
 void gui::Button::draw(sf::RenderTarget &target, sf::RenderStates states) const {
