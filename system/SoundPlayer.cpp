@@ -31,6 +31,7 @@ void SoundPlayer::play(SoundEffect::ID effect, sf::Vector2f position) {
   sound.setPosition(position.x, -position.y, 0.f);
   sound.setAttenuation(Attenuation);
   sound.setMinDistance(MinDistance3D);
+  sound.setVolume(sound.getVolume() * volume);
 
   sound.play();
 }
@@ -48,4 +49,8 @@ void SoundPlayer::setListenerPosition(sf::Vector2f position) {
 sf::Vector2f SoundPlayer::getListenerPosition() const {
   sf::Vector3f position = sf::Listener::getPosition();
   return {position.x, -position.y};
+}
+
+void SoundPlayer::setMasterVolume(float volume) {
+  this->volume = volume / 100;
 }

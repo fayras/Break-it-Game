@@ -21,6 +21,9 @@ Application::Application()
   player.assignKey(Player::MOVE_LEFT, (sf::Keyboard::Key) settings.get("key_left", (int) sf::Keyboard::Left));
   player.assignKey(Player::MOVE_RIGHT, (sf::Keyboard::Key) settings.get("key_right", (int) sf::Keyboard::Right));
 
+  music.setVolume(settings.get("music_volume", 100.0f));
+  sounds.setMasterVolume(settings.get("sounds_volume", 100.0f));
+
   loadAssets();
   registerStates();
   stateStack.push(States::ID::TITLE);
