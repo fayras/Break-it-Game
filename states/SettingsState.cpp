@@ -3,8 +3,10 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 SettingsState::SettingsState(StateStack &stack, State::Context context)
-    : State(stack, context)
+    : State(stack, context), background(sf::Vector2f(context.window->getSize().x, context.window->getSize().y))
 {
+  background.setFillColor(sf::Color(0, 0, 0, 170));
+
   addOption("Links", [context](const sf::Event& event, gui::Button* button) {
     context.player->assignKey(Player::MOVE_LEFT, event.key.code);
     button->deactivate();
@@ -32,6 +34,7 @@ SettingsState::~SettingsState() = default;
 
 void SettingsState::draw() {
   sf::RenderWindow& window = *getContext().window;
+  window.draw(background);
   window.draw(guiContainer);
 }
 

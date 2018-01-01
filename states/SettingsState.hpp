@@ -2,6 +2,7 @@
 #define BREAK_IT_SETTINGSSTATE_HPP
 
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include "../system/State.hpp"
 #include "../gui/Container.hpp"
 #include "../gui/Button.hpp"
@@ -17,7 +18,7 @@ class SettingsState : public State {
     bool handleEvent(const sf::Event& event) override;
 
   private:
-    sf::Text pausedText;
+    sf::RectangleShape background;
     gui::Container guiContainer;
     std::map<
         gui::Button::Ptr,
