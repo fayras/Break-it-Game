@@ -20,14 +20,22 @@ class SettingsState : public State {
     sf::Text pausedText;
     gui::Container guiContainer;
     std::map<
-        std::pair<gui::Button::Ptr, gui::Label::Ptr>,
-        std::function<void(const sf::Event&, gui::Button*, gui::Label*)>
+        gui::Button::Ptr,
+        std::function<void(const sf::Event&, gui::Button*)>
     > options;
+
+    std::map<
+        gui::Label::Ptr,
+        std::function<void(gui::Label*)>
+    > optionLabels;
 
     void addOption(
         const std::string &label,
-        const std::function<void(const sf::Event&, gui::Button*, gui::Label*)>& func
+        const std::function<void(const sf::Event&, gui::Button*)>& func,
+        const std::function<void(gui::Label*)>& func2
     );
+
+    void updateLabels();
 };
 
 #endif //BREAK_IT_SETTINGSSTATE_HPP

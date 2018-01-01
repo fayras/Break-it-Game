@@ -5,17 +5,17 @@
 SettingsState::SettingsState(StateStack &stack, State::Context context)
     : State(stack, context)
 {
-  addOption("Links", [context](const sf::Event& event, gui::Button* button, gui::Label* label) {
-    // sf::Keyboard::Key key = context.player->getAssignedKey(Player::MOVE_LEFT);
+  addOption("Links", [context](const sf::Event& event, gui::Button* button) {
     context.player->assignKey(Player::MOVE_LEFT, event.key.code);
     button->deactivate();
+  }, [context](gui::Label* label) {
     label->setText(String::from(context.player->getAssignedKey(Player::MOVE_LEFT)));
   });
 
-  addOption("Rechts", [context](const sf::Event& event, gui::Button* button, gui::Label* label) {
-    // sf::Keyboard::Key key = context.player->getAssignedKey(Player::MOVE_LEFT);
+  addOption("Rechts", [context](const sf::Event& event, gui::Button* button) {
     context.player->assignKey(Player::MOVE_RIGHT, event.key.code);
     button->deactivate();
+  }, [context](gui::Label* label) {
     label->setText(String::from(context.player->getAssignedKey(Player::MOVE_RIGHT)));
   });
 
@@ -25,6 +25,7 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
   backButton->setCallback(std::bind(&SettingsState::requestStackPop, this));
 
   guiContainer.pack(backButton);
+  updateLabels();
 }
 
 SettingsState::~SettingsState() = default;
@@ -42,21 +43,21 @@ bool SettingsState::handleEvent(const sf::Event &event) {
   bool isKeyBinding = false;
 
   for(const auto& option : options) {
-    if(option.first.first->active()) {
+    if(option.first->active()) {
       isKeyBinding = true;
       if(event.type == sf::Event::KeyReleased) {
         if(event.key.code == sf::Keyboard::Escape) {
-          option.first.first->deactivate();
+          option.first->deactivate();
           break;
         }
-        option.second(event, option.first.first.get(), option.first.second.get());
+        option.second(event, option.first.get());
       }
       break;
     }
   }
 
   if(isKeyBinding) {
-    // update labels
+    updateLabels();
   } else {
     guiContainer.handleEvent(event);
   }
@@ -64,16 +65,27 @@ bool SettingsState::handleEvent(const sf::Event &event) {
   return false;
 }
 
-void SettingsState::addOption(const std::string &title, const std::function<void(const sf::Event&, gui::Button*, gui::Label*)>& func) {
+void SettingsState::addOption(
+    const std::string &title,
+    const std::function<void(const sf::Event&, gui::Button*)>& func,
+    const std::function<void(gui::Label*)>& func2
+) {
   auto button = std::make_shared<gui::Button>(context);
   button->setPosition(80.0f, options.size() * 60 + 300);
   button->setText(title);
   button->setToggle(true);
 
   auto label = std::make_shared<gui::Label>("", *getContext().fonts);
-  label->setPosition(300.0f, options.size() * 60 + 300);
+  label->setPosition(300.0f, options.size() * 60 + 300 + 15);
 
-  options.insert(std::make_pair(std::make_pair(button, label), func));
+  options.insert(std::make_pair(button, func));
+  optionLabels.insert(std::make_pair(label, func2));
   guiContainer.pack(button);
   guiContainer.pack(label);
+}
+
+void SettingsState::updateLabels() {
+  for(const auto& label : optionLabels) {
+    label.second(label.first.get());
+  }
 }
