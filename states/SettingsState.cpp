@@ -9,6 +9,7 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
 
   addOption("Links", [context](const sf::Event& event, gui::Button* button) {
     context.player->assignKey(Player::MOVE_LEFT, event.key.code);
+    context.settings->set("key_left", (int) event.key.code);
     button->deactivate();
   }, [context](gui::Label* label) {
     label->setText(String::from(context.player->getAssignedKey(Player::MOVE_LEFT)));
@@ -16,6 +17,7 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
 
   addOption("Rechts", [context](const sf::Event& event, gui::Button* button) {
     context.player->assignKey(Player::MOVE_RIGHT, event.key.code);
+    context.settings->set("key_right", (int) event.key.code);
     button->deactivate();
   }, [context](gui::Label* label) {
     label->setText(String::from(context.player->getAssignedKey(Player::MOVE_RIGHT)));
@@ -30,7 +32,9 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
   updateLabels();
 }
 
-SettingsState::~SettingsState() = default;
+SettingsState::~SettingsState() {
+  context.settings->saveToFile();
+};
 
 void SettingsState::draw() {
   sf::RenderWindow& window = *getContext().window;

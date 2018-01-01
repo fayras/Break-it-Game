@@ -18,6 +18,9 @@ Application::Application()
   // window.setFramerateLimit(FPS);
   settings.loadFromFile("settings.dat");
 
+  player.assignKey(Player::MOVE_LEFT, (sf::Keyboard::Key) settings.get("key_left", (int) sf::Keyboard::Left));
+  player.assignKey(Player::MOVE_RIGHT, (sf::Keyboard::Key) settings.get("key_right", (int) sf::Keyboard::Right));
+
   loadAssets();
   registerStates();
   stateStack.push(States::ID::TITLE);
