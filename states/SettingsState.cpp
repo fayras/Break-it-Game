@@ -3,7 +3,10 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "../system/MusicPlayer.hpp"
 #include "../system/SoundPlayer.hpp"
-#include <algorithm>
+
+float clamp(float n, float lower, float upper) {
+  return std::max(lower, std::min(n, upper));
+}
 
 SettingsState::SettingsState(StateStack &stack, State::Context context)
     : State(stack, context), background(sf::Vector2f(context.window->getSize().x, context.window->getSize().y))
@@ -36,7 +39,7 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
       } else if(event.key.code == sf::Keyboard::Escape) {
         button->deactivate();
       }
-      context.music->setVolume(std::clamp(newVolume, 0.0f, 100.0f));
+      context.music->setVolume(clamp(newVolume, 0.0f, 100.0f));
     }
     context.settings->set("music_volume", context.music->getVolume());
   }, [context](gui::Label* label) {
@@ -53,7 +56,7 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
       } else if(event.key.code == sf::Keyboard::Escape) {
         button->deactivate();
       }
-      context.sounds->setMasterVolume(std::clamp(newVolume, 0.0f, 100.0f));
+      context.sounds->setMasterVolume(clamp(newVolume, 0.0f, 100.0f));
     }
     context.settings->set("sounds_volume", context.sounds->getMasterVolume());
   }, [context](gui::Label* label) {
