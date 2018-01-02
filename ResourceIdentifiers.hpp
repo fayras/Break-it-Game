@@ -17,6 +17,7 @@ namespace Textures {
     PARTICLE,
     PADDLE,
     BLOCK,
+    BLOCK_SMALL,
     BALL,
     EXPLOSION,
     STARFIELD,

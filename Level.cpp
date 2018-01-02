@@ -43,12 +43,22 @@ void Level::loadNext() {
 
 void Level::load() {
   levelData = LevelTable[getID()];
+  // std::size_t columns = levelData.blockColors.size();
+
   for(auto const &pair : levelData.blockColors) {
-    std::unique_ptr<Block> block(new Block(textures, pair.second));
-    block->setPosition(pair.first.x * 70 + 80, -40);
+    std::unique_ptr<Block> block(new Block(textures, levelData.blockTexture));
+    block->setColor(pair.second);
+    sf::FloatRect blockRect = block->getBoundingRect();
+    float margin = 5;
+    blockRect.height += margin;
+    blockRect.width += margin;
+
+    block->setPosition(pair.first.x * blockRect.width + 80, -40);
+
     sf::Vector2f from{block->getPosition()};
-    sf::Vector2f to{pair.first.x * 70.0f + 80.0f, pair.first.y * 40.0f + 110.0f};
+    sf::Vector2f to{pair.first.x * blockRect.width + 80.0f, pair.first.y * blockRect.height + 110.0f};
     Block* bPointer = block.get();
+
     auto tween = std::make_unique<EaseOutElastic>(sf::milliseconds(1200), [bPointer, from, to](const float& t) {
       sf::Vector2f diff = to - from;
       bPointer->setPosition(diff * t + from);

@@ -3,9 +3,9 @@
 #include "system/ResourceHolder.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
-Block::Block(const TextureHolder& textures)
+Block::Block(const TextureHolder& textures, Textures::ID textureID)
   : Entity(100),
-    sprite(textures.get(Textures::BLOCK)),
+    sprite(textures.get(textureID)),
     breakAnimation(textures.get(Textures::EXPLOSION))
 {
   breakAnimation.setFrameSize(sf::Vector2i(256, 256));
@@ -14,12 +14,6 @@ Block::Block(const TextureHolder& textures)
 
   centerOrigin(sprite);
   centerOrigin(breakAnimation);
-}
-
-Block::Block( const TextureHolder& textures, sf::Color color)
-  : Block(textures)
-{
-  sprite.setColor(color);
 }
 
 unsigned int Block::getCategory() const {
@@ -51,4 +45,8 @@ sf::FloatRect Block::getBoundingRect() const {
 
 bool Block::isMarkedForRemoval() const {
   return isDestroyed() && breakAnimation.isFinished();
+}
+
+void Block::setColor(const sf::Color &color) {
+  sprite.setColor(color);
 }

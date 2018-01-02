@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/System.hpp>
 #include <vector>
+#include "ResourceIdentifiers.hpp"
 
 struct ParticleData {
   sf::Color color;
@@ -13,6 +14,7 @@ struct ParticleData {
 
 struct LevelData {
   std::vector<std::pair<sf::Vector2i, sf::Color>> blockColors;
+  Textures::ID blockTexture{Textures::BLOCK};
   float ballSpeedMultiplier{1.0f};
   float scoreMultiplier{1.0f};
   sf::Vector2f spawnPosition{0.5, 0.94};

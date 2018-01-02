@@ -10,8 +10,8 @@ class Block : public Entity {
   public:
     typedef std::unique_ptr<Block> Ptr;
 
-    explicit Block(const TextureHolder& textures);
-    Block(const TextureHolder& textures, sf::Color color);
+    explicit Block(const TextureHolder& textures, Textures::ID textureID = Textures::BLOCK);
+    void setColor(const sf::Color& color);
     unsigned int getCategory() const override;
     sf::FloatRect getBoundingRect() const override;
     bool isMarkedForRemoval() const override;
