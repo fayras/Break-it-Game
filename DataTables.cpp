@@ -3,56 +3,62 @@
 #include "system/Particle.hpp"
 
 namespace {
-  const std::map<char, sf::Color> colors {
-      { 'a', sf::Color(255, 100, 100) },
-      { 'b', sf::Color(150, 255, 0) },
-      { 'c', sf::Color(100, 100, 255) },
-      { '-', sf::Color(0, 0, 0) },
-      { '+', sf::Color(255, 255, 255) },
-      { 'g', sf::Color(150, 150, 150) },
+  const std::map<char, sf::Color> getColors() {
+    return {
+        { 'a', sf::Color(255, 100, 100) },
+        { 'b', sf::Color(150, 255, 0) },
+        { 'c', sf::Color(100, 100, 255) },
+        { '-', sf::Color(0, 0, 0) },
+        { '+', sf::Color(255, 255, 255) },
+        { 'g', sf::Color(150, 150, 150) },
 
-      { 'q', sf::Color(102, 78, 50) },
-      { 'w', sf::Color(208, 148, 76) },
-      { 'r', sf::Color(168, 118, 36) },
-      { 'e', sf::Color(255, 220, 205) },
-      { 'p', sf::Color(255, 153, 153) },
+        { 'q', sf::Color(102, 78, 50) },
+        { 'w', sf::Color(208, 148, 76) },
+        { 'r', sf::Color(168, 118, 36) },
+        { 'e', sf::Color(255, 220, 205) },
+        { 'p', sf::Color(255, 153, 153) },
+    };
   };
 
-  const std::vector<std::vector<std::string>> levels {
-      {
-          "aaaaaaaaaaaaa",
-          "bbbbbbbbbbbbb",
-          "ccccccccccccc",
-          "aaaaaaaaaaaaa",
-          "bbbbbbbbbbbbb",
-          "ccccccccccccc"
-      },
-      {
-        "    q        q",
-        "    qq      qq",
-        "    qeq    qeq",
-        "    qwwqqqqwwq",
-        "   qwwwwrwrwwq",
-        "   qwwqwrwwqwwq",
-        "  qqwpwwwwwwpwqq",
-        "   qrrwwwewwwrq",
-        "  qqwwweeweewwqq",
-        "    qwwrwwwrwq",
-        "     qqqqqqqq"
-      },
-      {
-          "a a a a a a a",
-          "             ",
-          "a a a a a a a",
-          "             ",
-          "b b b b b b b",
-          "             ",
-          "c c c c c c c"
-      }
-  };
+  std::vector<std::vector<std::string>> getLevels() {
+    return {
+        {
+            "aaaaaaaaaaaaa",
+            "bbbbbbbbbbbbb",
+            "ccccccccccccc",
+            "aaaaaaaaaaaaa",
+            "bbbbbbbbbbbbb",
+            "ccccccccccccc"
+        },
+        {
+            "    q        q",
+            "    qq      qq",
+            "    qeq    qeq",
+            "    qwwqqqqwwq",
+            "   qwwwwrwrwwq",
+            "   qwwqwrwwqwwq",
+            "  qqwpwwwwwwpwqq",
+            "   qrrwwwewwwrq",
+            "  qqwwweeweewwqq",
+            "    qwwrwwwrwq",
+            "     qqqqqqqq"
+        },
+        {
+            "a a a a a a a",
+            "             ",
+            "a a a a a a a",
+            "             ",
+            "b b b b b b b",
+            "             ",
+            "c c c c c c c"
+        }
+    };
+  }
 }
 
 std::vector<LevelData> initializeLevelData() {
+  auto levels = getLevels();
+  auto colors = getColors();
   std::vector<LevelData> data(levels.size());
 
   for(int i = 0; i < levels.size(); i++) {
