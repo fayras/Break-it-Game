@@ -16,7 +16,7 @@ Application::Application()
     stateStack(State::Context(window, textures, fonts, music, sounds, player, scoreBoard, settings))
 {
   // window.setFramerateLimit(FPS);
-  settings.loadFromFile("settings.dat");
+  settings.loadFromFile("assets/settings.dat");
 
   player.assignKey(Player::MOVE_LEFT, (sf::Keyboard::Key) settings.get("key_left", (int) sf::Keyboard::Left));
   player.assignKey(Player::MOVE_RIGHT, (sf::Keyboard::Key) settings.get("key_right", (int) sf::Keyboard::Right));
