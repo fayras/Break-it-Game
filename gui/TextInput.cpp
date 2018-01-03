@@ -5,8 +5,8 @@
 
 gui::TextInput::TextInput(const FontHolder &fonts)
   : hasFocus(false), inputString(),
-    text(inputString, fonts.get(Fonts::ARCADE), 16),
-    placeholder("", fonts.get(Fonts::ARCADE), 16),
+    text(inputString, fonts.get(Fonts::PIXEL), 35),
+    placeholder("", fonts.get(Fonts::PIXEL), 35),
     background(), caret(sf::Vector2f(1, 20))
 {
   background.setFillColor(sf::Color(0, 0, 0, 150));
@@ -17,8 +17,8 @@ gui::TextInput::TextInput(const FontHolder &fonts)
   placeholder.setFillColor(sf::Color(255, 255, 255, 210));
 
   sf::FloatRect bounds = background.getLocalBounds();
-  text.setPosition(bounds.left + 10, bounds.top + 5);
-  placeholder.setPosition(bounds.left + 10, bounds.top + 5);
+  text.setPosition(bounds.left + 10, bounds.top - 5);
+  placeholder.setPosition(bounds.left + 10, bounds.top - 5);
   caret.setPosition(bounds.left + 10, bounds.top + 6);
 }
 
@@ -83,7 +83,7 @@ void gui::TextInput::handleEvent(const sf::Event &event) {
       }
       text.setString(inputString);
       auto textBounds = text.getGlobalBounds();
-      caret.setPosition(textBounds.left + textBounds.width, caret.getPosition().y);
+      caret.setPosition(textBounds.left + textBounds.width + 2, caret.getPosition().y);
     }
     if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return) {
       activate();

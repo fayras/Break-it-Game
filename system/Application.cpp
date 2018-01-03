@@ -89,7 +89,7 @@ void Application::registerStates() {
 
 void Application::loadAssets() {
   fonts.load(Fonts::ID::MAIN, "./assets/fonts/Roboto.ttf");
-  fonts.load(Fonts::ID::ARCADE, "./assets/fonts/Arcade.ttf");
+  fonts.load(Fonts::ID::PIXEL, "./assets/fonts/TimesNewPixel.ttf");
   textures.load(Textures::BUTTON_NORMAL, "assets/textures/buttonDefault.png");
   textures.load(Textures::BUTTON_PRESSED, "assets/textures/buttonDefault.png");
   textures.load(Textures::BUTTON_SELECTED, "assets/textures/buttonSelected.png");

@@ -7,7 +7,7 @@
 LevelInfo::LevelInfo(const sf::Font &font)
 {
   pausedText.setFont(font);
-  pausedText.setCharacterSize(70);
+  pausedText.setCharacterSize(130);
 
   backgroundShape.setFillColor(sf::Color(0, 0, 0, 0));
 }

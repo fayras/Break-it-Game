@@ -4,9 +4,9 @@
 
 Score::Score(const sf::Texture &texture, const sf::Font& font)
   : SpriteNode(texture),
-    scoreText("Score: " + std::to_string(score), font)
+    scoreText("Score: " + std::to_string(score), font, 41)
 {
-  scoreText.move(20, 10);
+  scoreText.move(20, 0);
 }
 
 void Score::updateCurrent(sf::Time dt, CommandQueue &commands) {

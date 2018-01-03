@@ -3,7 +3,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 
 gui::Label::Label(const std::string &text, const FontHolder &fonts)
-  : text(text, fonts.get(Fonts::ARCADE), 16)
+  : text(text, fonts.get(Fonts::PIXEL), 35)
 {
 
 }

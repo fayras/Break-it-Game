@@ -10,7 +10,7 @@
 GameOverState::GameOverState(StateStack &stack, State::Context context)
   : State(stack, context)
 {
-  sf::Font& font = context.fonts->get(Fonts::ARCADE);
+  sf::Font& font = context.fonts->get(Fonts::PIXEL);
   sf::Vector2f windowSize(context.window->getSize());
 
   scoreText.setFont(font);

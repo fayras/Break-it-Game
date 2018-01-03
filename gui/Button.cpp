@@ -8,7 +8,7 @@ gui::Button::Button(State::Context context)
   : normalTexture(context.textures->get(Textures::ID::BUTTON_NORMAL)),
     selectedTexture(context.textures->get(Textures::ID::BUTTON_SELECTED)),
     pressedTexture(context.textures->get(Textures::ID::BUTTON_PRESSED)),
-    text("", context.fonts->get(Fonts::ID::ARCADE)),
+    text("", context.fonts->get(Fonts::ID::PIXEL), 35),
     isToggle(false)
 {
   sprite.setTexture(normalTexture);

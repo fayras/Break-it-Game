@@ -19,7 +19,7 @@ Level::Level(const TextureHolder &textures, const FontHolder& fonts)
   blocksLayer = blocks.get();
   attachChild(std::move(blocks));
 
-  auto levelInfo = std::make_unique<LevelInfo>(fonts.get(Fonts::ARCADE));
+  auto levelInfo = std::make_unique<LevelInfo>(fonts.get(Fonts::PIXEL));
   attachChild(std::move(levelInfo));
 }
 
