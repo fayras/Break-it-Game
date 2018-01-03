@@ -129,7 +129,7 @@ void SettingsState::addOption(
   button->setToggle(true);
 
   auto label = std::make_shared<gui::Label>("", *getContext().fonts);
-  label->setPosition(300.0f, options.size() * 60 + 300 + 15);
+  label->setPosition(350.0f, options.size() * 60 + 300);
 
   options.insert(std::make_pair(button, func));
   optionLabels.insert(std::make_pair(label, func2));
