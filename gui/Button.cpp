@@ -13,7 +13,7 @@ gui::Button::Button(State::Context context)
 {
   sprite.setTexture(normalTexture);
   sf::FloatRect bounds = sprite.getLocalBounds();
-  text.setPosition(bounds.width / 2.f, bounds.height / 2.f - 2);
+  text.setPosition(bounds.width / 2.f, 13);
   text.setFillColor(sf::Color::Black);
 }
 
@@ -24,13 +24,13 @@ void gui::Button::setCallback(gui::Button::Callback callback) {
 void gui::Button::setText(const std::string &text) {
   this->text.setString(text);
   sf::FloatRect bounds = this->text.getLocalBounds();
-  this->text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
+  this->text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top));
 }
 
 void gui::Button::setText(const std::wstring &text) {
   this->text.setString(text);
   sf::FloatRect bounds = this->text.getLocalBounds();
-  this->text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
+  this->text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top));
 }
 
 void gui::Button::setToggle(bool flag) {
