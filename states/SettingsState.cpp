@@ -36,12 +36,16 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
         newVolume -= 10;
       } else if(event.key.code == sf::Keyboard::Right) {
         newVolume += 10;
-      } else if(event.key.code == sf::Keyboard::Escape) {
+      } else if(event.key.code == sf::Keyboard::Return) {
+        context.settings->set("music_volume", context.music->getVolume());
         button->deactivate();
+      } else if(event.key.code == sf::Keyboard::Escape) {
+        context.music->setVolume(context.settings->get("music_volume", 100.0f));
+        return;
       }
+
       context.music->setVolume(clamp(newVolume, 0.0f, 100.0f));
     }
-    context.settings->set("music_volume", context.music->getVolume());
   }, [context](gui::Label* label) {
     label->setText(std::to_string(context.music->getVolume()));
   });
@@ -53,12 +57,15 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
         newVolume -= 10;
       } else if(event.key.code == sf::Keyboard::Right) {
         newVolume += 10;
-      } else if(event.key.code == sf::Keyboard::Escape) {
+      } else if(event.key.code == sf::Keyboard::Return) {
+        context.settings->set("sounds_volume", context.sounds->getMasterVolume());
         button->deactivate();
+      } else if(event.key.code == sf::Keyboard::Escape) {
+        context.sounds->setMasterVolume(context.settings->get("sounds_volume", 100.0f));
+        return;
       }
       context.sounds->setMasterVolume(clamp(newVolume, 0.0f, 100.0f));
     }
-    context.settings->set("sounds_volume", context.sounds->getMasterVolume());
   }, [context](gui::Label* label) {
     label->setText(std::to_string(context.sounds->getMasterVolume()));
   });
@@ -93,11 +100,10 @@ bool SettingsState::handleEvent(const sf::Event &event) {
     if(option.first->active()) {
       isKeyBinding = true;
       if(event.type == sf::Event::KeyReleased) {
+        option.second(event, option.first.get());
         if(event.key.code == sf::Keyboard::Escape) {
           option.first->deactivate();
-          break;
         }
-        option.second(event, option.first.get());
       }
       break;
     }
