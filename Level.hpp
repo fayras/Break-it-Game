@@ -13,16 +13,17 @@ class Level : public SceneNode {
 
     bool done() const;
     bool isLast() const;
+    bool isLoading() const;
     int getID() const;
     float getBallSpeedMultiplier() const;
-
-  private:
-    void load();
 
   protected:
     void updateCurrent(sf::Time dt, CommandQueue &commands) override;
 
   private:
+    void load();
+
+    bool loading{false};
     int currentID{-1};
     LevelData levelData;
     sf::FloatRect* bounds;

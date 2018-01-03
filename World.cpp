@@ -42,7 +42,9 @@ void World::update(sf::Time dt) {
     sceneGraph.onCommand(command, dt);
   }
 
-  handleCollisions();
+  if(!currentLevel->isLoading()) {
+    handleCollisions();
+  }
   sceneGraph.update(dt, commandQueue);
 
   Command bgCommand;

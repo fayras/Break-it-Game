@@ -42,6 +42,7 @@ void Level::loadNext() {
 }
 
 void Level::load() {
+  loading = true;
   levelData = LevelTable[getID()];
   // std::size_t columns = levelData.blockColors.size();
 
@@ -64,6 +65,9 @@ void Level::load() {
       bPointer->setPosition(diff * t + from);
     });
     tween->delay(sf::milliseconds(350 + Random::integer(70)));
+    tween->attachObserver([this]() {
+      loading = false;
+    });
     block->tween(std::move(tween));
     blocksLayer->attachChild(std::move(block));
   }
@@ -130,4 +134,8 @@ void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
 
 void Level::setBounds(sf::FloatRect* bounds) {
   this->bounds = bounds;
+}
+
+bool Level::isLoading() const {
+  return loading;
 }
