@@ -14,6 +14,7 @@ namespace gui {
 
       bool selectable() const override;
       void setText(const std::string& text);
+      void setSize(unsigned int size);
       void handleEvent(const sf::Event& event) override;
 
     protected:

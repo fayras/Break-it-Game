@@ -75,7 +75,12 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
   backButton->setText(L"Zurück");
   backButton->setCallback(std::bind(&SettingsState::requestStackPop, this));
 
+  auto settingsLabel = std::make_shared<gui::Label>("Einstellungen", *context.fonts);
+  settingsLabel->setSize(70);
+  settingsLabel->setPosition(50, 100);
+
   guiContainer.pack(backButton);
+  guiContainer.pack(settingsLabel);
   updateLabels();
 }
 
@@ -124,12 +129,12 @@ void SettingsState::addOption(
     const std::function<void(gui::Label*)>& func2
 ) {
   auto button = std::make_shared<gui::Button>(context);
-  button->setPosition(80.0f, options.size() * 60 + 300);
+  button->setPosition(80.0f, options.size() * 60 + 240);
   button->setText(title);
   button->setToggle(true);
 
   auto label = std::make_shared<gui::Label>("", *getContext().fonts);
-  label->setPosition(350.0f, options.size() * 60 + 300);
+  label->setPosition(350.0f, options.size() * 60 + 240);
 
   options.insert(std::make_pair(button, func));
   optionLabels.insert(std::make_pair(label, func2));

@@ -24,3 +24,7 @@ void gui::Label::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 void gui::Label::handleEvent(const sf::Event &event) {
 
 }
+
+void gui::Label::setSize(unsigned int size) {
+  text.setCharacterSize(size);
+}
