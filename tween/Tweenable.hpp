@@ -8,6 +8,7 @@
 class Tweenable {
   public:
     void tween(std::unique_ptr<Tween> tween);
+    void clearTweens();
     void update(sf::Time dt);
 
   private:

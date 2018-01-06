@@ -33,10 +33,8 @@ void Score::increase(int amount) {
     scoreText.setString("Score: " + std::to_string(currentVisibleScore));
     scoreText.setOrigin(scoreText.getGlobalBounds().width, 0);
   });
+  clearTweens();
   tween(std::move(tw));
-
-  // scoreText.setString("Score: " + std::to_string(score));
-  // scoreText.setOrigin(scoreText.getGlobalBounds().width, 0);
 }
 
 int Score::get() const {

@@ -16,3 +16,7 @@ void Tweenable::update(sf::Time dt) {
     }
   }
 }
+
+void Tweenable::clearTweens() {
+  tweens.clear();
+}
