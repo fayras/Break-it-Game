@@ -17,20 +17,20 @@ TitleState::TitleState(StateStack &stack, State::Context context)
   });
 
   auto btSettings = std::make_shared<gui::Button>(context);
-  btSettings->setPosition(200, 0);
+  btSettings->setPosition(0, 60);
   btSettings->setText("Einstellungen");
   btSettings->setCallback([this] () {
     requestStackPush(States::ID::SETTINGS);
   });
 
   auto btExit = std::make_shared<gui::Button>(context);
-  btExit->setPosition(400, 0);
+  btExit->setPosition(0, 120);
   btExit->setText("Beenden");
   btExit->setCallback([this] () {
     requestStackPop();
   });
 
-  guiContainer.move(300, 500);
+  guiContainer.move(120, 450);
   guiContainer.pack(btPlay);
   guiContainer.pack(btSettings);
   guiContainer.pack(btExit);
