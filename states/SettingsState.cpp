@@ -51,7 +51,7 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
       context.music->setVolume(clamp(newVolume, 0.0f, 100.0f));
     }
   }, [context](gui::Label* label) {
-    label->setText(std::to_string(context.music->getVolume()));
+    label->setText(std::to_string((int) context.music->getVolume()));
   });
 
   addOption("Sounds", [context](const sf::Event& event, gui::Button* button) {
@@ -71,7 +71,7 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
       context.sounds->setMasterVolume(clamp(newVolume, 0.0f, 100.0f));
     }
   }, [context](gui::Label* label) {
-    label->setText(std::to_string(context.sounds->getMasterVolume()));
+    label->setText(std::to_string((int) context.sounds->getMasterVolume()));
   });
 
   auto backButton = std::make_shared<gui::Button>(context);
