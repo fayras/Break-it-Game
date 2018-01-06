@@ -127,7 +127,9 @@ void gui::Button::draw(sf::RenderTarget &target, sf::RenderStates states) const 
 
 sf::FloatRect gui::Button::getBounds() const {
   sf::Transform transform = parent ? getTransform() * parent->getTransform() : getTransform();
-  return transform.transformRect(text.getGlobalBounds());
+  sf::FloatRect rect = deco.getGlobalBounds();
+  rect.width += maxTextWidth;
+  return transform.transformRect(rect);
 }
 
 void gui::Button::update(sf::Time dt) {
