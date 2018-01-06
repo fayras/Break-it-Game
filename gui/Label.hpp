@@ -11,6 +11,7 @@ namespace gui {
       typedef std::shared_ptr<Label> Ptr;
 
       Label(const std::string& text, const FontHolder& fonts);
+      Label(const std::string& text, const sf::Font& font);
 
       bool selectable() const override;
       void setText(const std::string& text);

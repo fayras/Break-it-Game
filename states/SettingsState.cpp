@@ -76,7 +76,7 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
   backButton->setShortcut(sf::Keyboard::Escape);
   backButton->setCallback(std::bind(&SettingsState::requestStackPop, this));
 
-  auto settingsLabel = std::make_shared<gui::Label>("Einstellungen", *context.fonts);
+  auto settingsLabel = std::make_shared<gui::Label>("Einstellungen", context.fonts->get(Fonts::MAIN));
   settingsLabel->setSize(70);
   settingsLabel->setPosition(50, 100);
 
