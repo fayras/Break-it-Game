@@ -14,16 +14,20 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
   background.setFillColor(sf::Color(0, 0, 0, 170));
 
   addOption("Links", [context](const sf::Event& event, gui::Button* button) {
-    context.player->assignKey(Player::MOVE_LEFT, event.key.code);
-    context.settings->set("key_left", (int) event.key.code);
+    if(event.key.code != sf::Keyboard::Escape) {
+      context.player->assignKey(Player::MOVE_LEFT, event.key.code);
+      context.settings->set("key_left", (int) event.key.code);
+    }
     button->deactivate();
   }, [context](gui::Label* label) {
     label->setText(String::from(context.player->getAssignedKey(Player::MOVE_LEFT)));
   });
 
   addOption("Rechts", [context](const sf::Event& event, gui::Button* button) {
-    context.player->assignKey(Player::MOVE_RIGHT, event.key.code);
-    context.settings->set("key_right", (int) event.key.code);
+    if(event.key.code != sf::Keyboard::Escape) {
+      context.player->assignKey(Player::MOVE_RIGHT, event.key.code);
+      context.settings->set("key_right", (int) event.key.code);
+    }
     button->deactivate();
   }, [context](gui::Label* label) {
     label->setText(String::from(context.player->getAssignedKey(Player::MOVE_RIGHT)));
