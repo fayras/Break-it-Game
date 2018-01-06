@@ -10,6 +10,7 @@
 #include "MusicPlayer.hpp"
 #include "SoundPlayer.hpp"
 #include "../Player.hpp"
+#include "Statistics.hpp"
 
 class Application {
   public:
@@ -35,6 +36,7 @@ class Application {
     Player player;
     ScoreBoard scoreBoard;
     SettingsParser settings;
+    Statistics stats;
 
     static const sf::Time	TimePerFrame;
 

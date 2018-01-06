@@ -27,6 +27,7 @@ Application::Application()
   loadAssets();
   registerStates();
   stateStack.push(States::ID::TITLE);
+  stats.setFont(fonts.get(Fonts::MAIN));
 }
 
 void Application::run() {
@@ -42,6 +43,7 @@ void Application::run() {
       if(!isPaused) update(TimePerFrame);
       if(stateStack.empty()) window.close();
     }
+    stats.update(dt);
     render();
   }
 }
@@ -74,6 +76,7 @@ void Application::update(sf::Time dt) {
 void Application::render() {
   window.clear();
   stateStack.draw();
+  window.draw(stats);
   window.setView(window.getDefaultView());
   window.display();
 }
