@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.5)
 
 set(PROJECT_NAME "Break-it")
 project(${PROJECT_NAME})
+set(VERSION_MAJOR "0")
+set(VERSION_MINOR "4")
+set(VERSION_PATCH "2")
+set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
@@ -42,3 +46,17 @@ add_custom_target(run_install
         "${CMAKE_COMMAND}" --build "${CMAKE_BINARY_DIR}" --target install
         DEPENDS ${PROJECT_NAME}
         COMMENT "Installing ${PROJECT_NAME}")
+
+if(WIN32)
+    set (ZIP_INCLUDE_FILES "Break-it.exe" "assets" "openal32.dll")
+else()
+    set (ZIP_INCLUDE_FILES "Break-it.exe" "assets")
+endif ()
+
+add_custom_command(TARGET run_install POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E tar "cfv" "${PROJECT_NAME}-${VERSION}-${CMAKE_SYSTEM_NAME}.zip" --format=zip ${ZIP_INCLUDE_FILES}
+        COMMAND ${CMAKE_COMMAND} -E remove_directory "assets"
+        COMMAND ${CMAKE_COMMAND} -E remove "Break-it.exe"
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/install
+        DEPENDS run_install
+        COMMENT "Packing ${PROJECT_NAME}")
