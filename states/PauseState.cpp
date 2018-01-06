@@ -62,6 +62,10 @@ bool PauseState::update(sf::Time dt) {
 }
 
 bool PauseState::handleEvent(const sf::Event &event) {
+  if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+    requestStackPop();
+    return false;
+  }
   guiContainer.handleEvent(event);
   return false;
 }
