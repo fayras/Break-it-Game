@@ -57,6 +57,7 @@ void PauseState::draw() {
 }
 
 bool PauseState::update(sf::Time dt) {
+  guiContainer.update(dt);
   return false;
 }
 

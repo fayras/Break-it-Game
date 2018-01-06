@@ -37,3 +37,7 @@ sf::FloatRect gui::Component::getBounds() const {
 void gui::Component::setParent(gui::Component *parent) {
   this->parent = parent;
 }
+
+void gui::Component::update(sf::Time dt) {
+
+}

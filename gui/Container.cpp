@@ -85,3 +85,9 @@ sf::FloatRect gui::Container::getBounds() const {
   // TODO: berechne Bounds anhand der Rects der Kinder.
   return sf::FloatRect();
 }
+
+void gui::Container::update(sf::Time dt) {
+  for(const Component::Ptr& child : children) {
+    child->update(dt);
+  }
+}

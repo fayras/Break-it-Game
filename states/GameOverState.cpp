@@ -69,6 +69,7 @@ void GameOverState::draw() {
 }
 
 bool GameOverState::update(sf::Time dt) {
+  guiContainer.update(dt);
   if(!showedHighscore && context.scoreBoard->worthInsert(context.player->getScore())) {
     requestStackPush(States::NEW_HIGHSCORE);
     showedHighscore = true;

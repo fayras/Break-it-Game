@@ -14,6 +14,7 @@ namespace gui {
       void pack(Component::Ptr component);
       bool selectable() const override;
       void handleEvent(const sf::Event& event) override;
+      void update(sf::Time dt) override;
       sf::FloatRect getBounds() const override;
 
     private:

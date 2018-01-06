@@ -6,6 +6,7 @@
 #include <SFML/Graphics/Transformable.hpp>
 #include <memory>
 #include <functional>
+#include <SFML/System/Time.hpp>
 
 namespace sf {
   class Event;
@@ -32,6 +33,7 @@ namespace gui {
       virtual sf::FloatRect getBounds() const;
 
       virtual void handleEvent(const sf::Event& event) = 0;
+      virtual void update(sf::Time dt);
 
     protected:
       Component* parent{nullptr};

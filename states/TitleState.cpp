@@ -44,6 +44,7 @@ void TitleState::draw() {
 }
 
 bool TitleState::update(sf::Time dt) {
+  guiContainer.update(dt);
   return true;
 }
 

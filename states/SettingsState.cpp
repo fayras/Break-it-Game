@@ -94,7 +94,8 @@ void SettingsState::draw() {
   window.draw(guiContainer);
 }
 
-bool SettingsState::update(sf::Time) {
+bool SettingsState::update(sf::Time dt) {
+  guiContainer.update(dt);
   return false;
 }
 

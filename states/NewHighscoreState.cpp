@@ -47,6 +47,7 @@ void NewHighscoreState::draw() {
 }
 
 bool NewHighscoreState::update(sf::Time dt) {
+  guiContainer.update(dt);
   return false;
 }
 

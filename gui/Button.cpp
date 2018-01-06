@@ -1,20 +1,20 @@
 #include "Button.hpp"
+#include "../tween/LinearTween.hpp"
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <cmath>
 
 gui::Button::Button(State::Context context)
-  : normalTexture(context.textures->get(Textures::ID::BUTTON_NORMAL)),
-    selectedTexture(context.textures->get(Textures::ID::BUTTON_SELECTED)),
-    pressedTexture(context.textures->get(Textures::ID::BUTTON_PRESSED)),
+  : deco({ 3, 45 }),
+    hover({ 0, 45 }),
     text("", context.fonts->get(Fonts::ID::PIXEL), 35),
     isToggle(false)
 {
-  sprite.setTexture(normalTexture);
-  sf::FloatRect bounds = sprite.getLocalBounds();
-  text.setPosition(bounds.width / 2.f, 13);
-  text.setFillColor(sf::Color::Black);
+  deco.setFillColor(sf::Color(255, 255, 255, 150));
+  hover.setFillColor({ 255, 255, 255, 70 });
+  text.setFillColor(sf::Color::White);
+  text.move(13, -4);
 }
 
 void gui::Button::setCallback(gui::Button::Callback callback) {
@@ -24,13 +24,14 @@ void gui::Button::setCallback(gui::Button::Callback callback) {
 void gui::Button::setText(const std::string &text) {
   this->text.setString(text);
   sf::FloatRect bounds = this->text.getLocalBounds();
-  this->text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top));
+  maxTextWidth = bounds.width + 20;
+  // this->text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top));
 }
 
 void gui::Button::setText(const std::wstring &text) {
   this->text.setString(text);
   sf::FloatRect bounds = this->text.getLocalBounds();
-  this->text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top));
+  maxTextWidth = bounds.width + 20;
 }
 
 void gui::Button::setToggle(bool flag) {
@@ -42,20 +43,31 @@ bool gui::Button::selectable() const {
 }
 
 void gui::Button::select() {
-  Component::select();
-  sprite.setTexture(selectedTexture);
+  if(!selected()) {
+    Component::select();
+    tween(std::make_unique<LinearTween>(sf::milliseconds(100), [this](const float& t) {
+      hover.setSize({ maxTextWidth * t, hover.getSize().y });
+    }));
+  }
 }
 
 void gui::Button::deselect() {
-  Component::deselect();
-  sprite.setTexture(normalTexture);
+  if(selected()) {
+    Component::deselect();
+    tween(std::make_unique<LinearTween>(sf::milliseconds(100), [this](const float& t) {
+      hover.setSize({ maxTextWidth - maxTextWidth * t, hover.getSize().y });
+    }));
+  }
 }
 
 void gui::Button::activate() {
   Component::activate();
 
   // If we are toggle then we should show that the button is pressed and thus "toggled".
-  if (isToggle) sprite.setTexture(pressedTexture);
+  if (isToggle) {
+    hover.setFillColor(sf::Color::White);
+    text.setFillColor(sf::Color::Black);
+  }
 
   if (callback) callback();
 
@@ -67,8 +79,10 @@ void gui::Button::deactivate() {
   Component::deactivate();
   if (isToggle) {
     // Reset texture to right one depending on if we are selected or not.
-    if (selected()) sprite.setTexture(selectedTexture);
-    else sprite.setTexture(normalTexture);
+    hover.setFillColor({ 255, 255, 255, 70 });
+    text.setFillColor(sf::Color::White);
+    if (selected()) hover.setSize({ maxTextWidth, hover.getSize().y });
+    else hover.setSize({ 0, hover.getSize().y });
   }
 }
 
@@ -94,11 +108,16 @@ void gui::Button::handleEvent(const sf::Event &event) {
 
 void gui::Button::draw(sf::RenderTarget &target, sf::RenderStates states) const {
   states.transform *= getTransform();
-  target.draw(sprite, states);
+  target.draw(deco, states);
+  target.draw(hover, states);
   target.draw(text, states);
 }
 
 sf::FloatRect gui::Button::getBounds() const {
   sf::Transform transform = parent ? getTransform() * parent->getTransform() : getTransform();
-  return transform.transformRect(sprite.getGlobalBounds());
+  return transform.transformRect(text.getGlobalBounds());
+}
+
+void gui::Button::update(sf::Time dt) {
+  Tweenable::update(dt);
 }
