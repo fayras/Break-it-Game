@@ -116,14 +116,13 @@ void World::loadTextures() {
 
 void World::adaptPlayerPosition() {
   // Keep player's position inside the screen bounds, at least borderDistance units from the border
-  sf::FloatRect viewBounds = getViewBounds();
   const float borderDistance = 52.f;
 
   sf::Vector2f position = paddle->getPosition();
-  position.x = std::max(position.x, viewBounds.left + borderDistance);
-  position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
-  position.y = std::max(position.y, viewBounds.top + borderDistance);
-  position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
+  position.x = std::max(position.x, worldBounds.left + borderDistance);
+  position.x = std::min(position.x, worldBounds.left + worldBounds.width - borderDistance);
+  position.y = std::max(position.y, worldBounds.top);
+  position.y = std::min(position.y, worldBounds.top + worldBounds.height);
   paddle->setPosition(position);
 }
 
@@ -148,9 +147,10 @@ void World::handleCollisions() {
       sounds.play(SoundEffect::HIT_GENERAL);
       score->resetMultiplier();
 
-      paddle.tween(std::make_unique<LinearTween>(sf::milliseconds(100), [&paddle](const float& t) {
-        float y = 10.0f * (0.5f - t);
-        paddle.move(0, y);
+      float oldY = paddle.getPosition().y;
+      paddle.tween(std::make_unique<LinearTween>(sf::milliseconds(100), [&paddle, oldY](const float& t) {
+        float y = oldY + 20.0f * (0.5f - std::abs(0.5f - t));
+        paddle.setPosition(paddle.getPosition().x, y);
       }));
     } else if(matchesCategories(collisionPair, Category::BALL, Category::BLOCK)) {
       auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
