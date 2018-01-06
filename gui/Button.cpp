@@ -14,10 +14,10 @@ gui::Button::Button(State::Context context)
     isToggle(false),
     shortcut(sf::Keyboard::Unknown)
 {
-  deco.setFillColor(sf::Color(255, 255, 255, 200));
-  hover.setFillColor({ 255, 255, 255, 70 });
+  deco.setFillColor(sf::Color(53, 92, 125, 200));
+  hover.setFillColor({ 210, 230, 255, 50 });
   text.setFillColor(sf::Color::White);
-  shortcutText.setFillColor(sf::Color::Red);
+  shortcutText.setFillColor({ 246, 114, 128 });
   shortcutText.move(2, 4);
   updatePositions();
 }
