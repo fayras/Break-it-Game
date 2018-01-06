@@ -1,20 +1,20 @@
 #include "Score.hpp"
 #include "system/Utility.hpp"
+#include "tween/LinearTween.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <iostream>
 
-Score::Score(const sf::Texture &texture, const sf::Font& font)
-  : SpriteNode(texture),
-    scoreText("Score: " + std::to_string(score), font, 41)
+Score::Score(const sf::Font& font)
+  : scoreText("Score: " + std::to_string(score), font, 41)
 {
-  scoreText.move(20, 0);
+  scoreText.setOrigin(scoreText.getGlobalBounds().width, 0);
 }
 
 void Score::updateCurrent(sf::Time dt, CommandQueue &commands) {
-  SpriteNode::updateCurrent(dt, commands);
+
 }
 
 void Score::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
-  SpriteNode::drawCurrent(target, states);
   target.draw(scoreText, states);
 }
 
@@ -28,7 +28,15 @@ void Score::resetMultiplier() {
 
 void Score::increase(int amount) {
   score += amount * multiplier;
-  scoreText.setString("Score: " + std::to_string(score));
+  auto tw = std::make_unique<LinearTween>(sf::seconds(1.0f), [this](const float& t) {
+    currentVisibleScore += (score - currentVisibleScore) * t;
+    scoreText.setString("Score: " + std::to_string(currentVisibleScore));
+    scoreText.setOrigin(scoreText.getGlobalBounds().width, 0);
+  });
+  tween(std::move(tw));
+
+  // scoreText.setString("Score: " + std::to_string(score));
+  // scoreText.setOrigin(scoreText.getGlobalBounds().width, 0);
 }
 
 int Score::get() const {

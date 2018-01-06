@@ -267,8 +267,8 @@ void World::buildScene() {
   currentLevel = level.get();
   sceneGraph.attachChild(std::move(level));
 
-  auto score = std::make_unique<Score>(textures.get(Textures::SCORE), fonts.get(Fonts::PIXEL));
-  score->setPosition(worldView.getSize().x - 295, 10);
+  auto score = std::make_unique<Score>(fonts.get(Fonts::PIXEL));
+  score->setPosition(worldView.getSize().x - 25, -5);
   this->score = score.get();
   sceneGraph.attachChild(std::move(score));
 

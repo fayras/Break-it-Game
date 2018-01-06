@@ -4,9 +4,9 @@
 #include <SFML/Graphics/Text.hpp>
 #include "nodes/SpriteNode.hpp"
 
-class Score : public SpriteNode {
+class Score : public SceneNode {
   public:
-    Score(const sf::Texture &texture, const sf::Font& font);
+    explicit Score(const sf::Font& font);
     void increaseMultiplier();
     void resetMultiplier();
     void increase(int amount = 10);
@@ -19,6 +19,7 @@ class Score : public SpriteNode {
 
   private:
     int score{0};
+    int currentVisibleScore{0};
     float multiplier{1.0f};
     sf::Text scoreText;
 };

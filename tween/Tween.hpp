@@ -15,6 +15,7 @@ class Tween : public Observable {
 
     virtual float calculate(const sf::Time &dt) = 0;
     void update(const sf::Time &dt);
+    void finalUpdate();
     void delay(sf::Time delay);
     bool done() const;
 

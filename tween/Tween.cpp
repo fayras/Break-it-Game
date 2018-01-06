@@ -22,3 +22,7 @@ void Tween::update(const sf::Time &dt) {
   callback(calculate(dt));
   time += dt;
 }
+
+void Tween::finalUpdate() {
+  callback(1.0f);
+}

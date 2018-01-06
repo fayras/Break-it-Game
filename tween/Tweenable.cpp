@@ -8,6 +8,7 @@ void Tweenable::update(sf::Time dt) {
   for(auto tweenIterator = tweens.begin(); tweenIterator != tweens.end();) {
     (*tweenIterator)->update(dt);
     if((*tweenIterator)->done()) {
+      (*tweenIterator)->finalUpdate();
       (*tweenIterator)->notify();
       tweenIterator = tweens.erase(tweenIterator);
     } else {
