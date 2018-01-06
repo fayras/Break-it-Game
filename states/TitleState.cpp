@@ -26,6 +26,7 @@ TitleState::TitleState(StateStack &stack, State::Context context)
   auto btExit = std::make_shared<gui::Button>(context);
   btExit->setPosition(0, 120);
   btExit->setText("Beenden");
+  btExit->setShortcut(sf::Keyboard::Escape);
   btExit->setCallback([this] () {
     requestStackPop();
   });

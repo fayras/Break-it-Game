@@ -26,6 +26,7 @@ namespace gui {
       void setText(const std::string& text);
       void setText(const std::wstring& text);
       void setToggle(bool flag);
+      void setShortcut(sf::Keyboard::Key key);
 
       bool selectable() const override;
       void select() override;
@@ -41,13 +42,16 @@ namespace gui {
 
     protected:
       void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+      void updatePositions();
 
       Callback callback;
       sf::RectangleShape deco;
       sf::RectangleShape hover;
       sf::Text text;
+      sf::Text shortcutText;
       float maxTextWidth;
       bool isToggle;
+      sf::Keyboard::Key shortcut;
   };
 }
 

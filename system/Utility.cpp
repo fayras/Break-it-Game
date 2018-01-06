@@ -101,7 +101,7 @@ std::string String::from(sf::Keyboard::Key key) {
     SFML_KEY_TO_STRING(Num7)
     SFML_KEY_TO_STRING(Num8)
     SFML_KEY_TO_STRING(Num9)
-    SFML_KEY_TO_STRING(Escape)
+    case sf::Keyboard::Escape: return "Esc";
     SFML_KEY_TO_STRING(LControl)
     SFML_KEY_TO_STRING(LShift)
     SFML_KEY_TO_STRING(LAlt)

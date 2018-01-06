@@ -32,7 +32,8 @@ namespace Textures {
 namespace Fonts {
   enum ID {
     MAIN,
-    PIXEL
+    PIXEL,
+    NARROW
   };
 }
 

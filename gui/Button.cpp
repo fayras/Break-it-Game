@@ -1,5 +1,6 @@
 #include "Button.hpp"
 #include "../tween/LinearTween.hpp"
+#include "../system/Utility.hpp"
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -9,12 +10,16 @@ gui::Button::Button(State::Context context)
   : deco({ 3, 45 }),
     hover({ 0, 45 }),
     text("", context.fonts->get(Fonts::ID::PIXEL), 35),
-    isToggle(false)
+    shortcutText("", context.fonts->get(Fonts::ID::NARROW), 30),
+    isToggle(false),
+    shortcut(sf::Keyboard::Unknown)
 {
-  deco.setFillColor(sf::Color(255, 255, 255, 150));
+  deco.setFillColor(sf::Color(255, 255, 255, 200));
   hover.setFillColor({ 255, 255, 255, 70 });
   text.setFillColor(sf::Color::White);
-  text.move(13, -4);
+  shortcutText.setFillColor(sf::Color::Red);
+  shortcutText.move(2, 4);
+  updatePositions();
 }
 
 void gui::Button::setCallback(gui::Button::Callback callback) {
@@ -24,14 +29,14 @@ void gui::Button::setCallback(gui::Button::Callback callback) {
 void gui::Button::setText(const std::string &text) {
   this->text.setString(text);
   sf::FloatRect bounds = this->text.getLocalBounds();
-  maxTextWidth = bounds.width + 20;
+  maxTextWidth = bounds.width + 30;
   // this->text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top));
 }
 
 void gui::Button::setText(const std::wstring &text) {
   this->text.setString(text);
   sf::FloatRect bounds = this->text.getLocalBounds();
-  maxTextWidth = bounds.width + 20;
+  maxTextWidth = bounds.width + 30;
 }
 
 void gui::Button::setToggle(bool flag) {
@@ -104,6 +109,10 @@ void gui::Button::handleEvent(const sf::Event &event) {
   if(selected() && event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Return) {
     activate();
   }
+
+  if(event.type == sf::Event::KeyReleased && event.key.code != sf::Keyboard::Unknown && event.key.code == shortcut) {
+    activate();
+  }
 }
 
 void gui::Button::draw(sf::RenderTarget &target, sf::RenderStates states) const {
@@ -111,6 +120,9 @@ void gui::Button::draw(sf::RenderTarget &target, sf::RenderStates states) const 
   target.draw(deco, states);
   target.draw(hover, states);
   target.draw(text, states);
+  if(shortcut != sf::Keyboard::Unknown) {
+    target.draw(shortcutText, states);
+  }
 }
 
 sf::FloatRect gui::Button::getBounds() const {
@@ -120,4 +132,21 @@ sf::FloatRect gui::Button::getBounds() const {
 
 void gui::Button::update(sf::Time dt) {
   Tweenable::update(dt);
+}
+
+void gui::Button::setShortcut(sf::Keyboard::Key key) {
+  shortcut = key;
+  if(key != sf::Keyboard::Unknown) {
+    shortcutText.setString(String::from(key));
+  } else {
+    shortcutText.setString("");
+  }
+  updatePositions();
+}
+
+void gui::Button::updatePositions() {
+  auto bounds = shortcutText.getLocalBounds();
+  deco.setSize({ bounds.width + 7, deco.getSize().y });
+  text.setPosition(bounds.width + 20, -4);
+  hover.setPosition(bounds.width + 7, hover.getPosition().y);
 }
