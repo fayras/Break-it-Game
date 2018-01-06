@@ -1,7 +1,7 @@
 #include "Paddle.hpp"
-#include "system/ResourceHolder.hpp"
-#include "system/Utility.hpp"
-#include "Life.hpp"
+#include "../system/ResourceHolder.hpp"
+#include "../system/Utility.hpp"
+#include "../Life.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
 const int SPEED = 500;

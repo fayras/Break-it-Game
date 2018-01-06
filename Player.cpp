@@ -1,6 +1,6 @@
 #include "Player.hpp"
 #include "system/CommandQueue.hpp"
-#include "Paddle.hpp"
+#include "entities/Paddle.hpp"
 #include <map>
 #include <string>
 #include <algorithm>

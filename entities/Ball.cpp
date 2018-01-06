@@ -1,8 +1,8 @@
 #include "Ball.hpp"
-#include "system/ResourceHolder.hpp"
-#include "system/Utility.hpp"
-#include "nodes/ParticleNode.hpp"
-#include "nodes/EmitterNode.hpp"
+#include "../system/ResourceHolder.hpp"
+#include "../system/Utility.hpp"
+#include "../nodes/ParticleNode.hpp"
+#include "../nodes/EmitterNode.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
 Ball::Ball(const TextureHolder& textures)

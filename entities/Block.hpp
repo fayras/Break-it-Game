@@ -2,9 +2,9 @@
 #define BREAK_IT_BLOCK_HPP
 
 #include <SFML/Graphics/Sprite.hpp>
-#include "entities/Entity.hpp"
-#include "ResourceIdentifiers.hpp"
-#include "system/Animation.hpp"
+#include "Entity.hpp"
+#include "../ResourceIdentifiers.hpp"
+#include "../system/Animation.hpp"
 
 class Block : public Entity {
   public:

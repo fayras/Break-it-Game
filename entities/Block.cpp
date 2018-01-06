@@ -1,6 +1,6 @@
 #include "Block.hpp"
-#include "system/Utility.hpp"
-#include "system/ResourceHolder.hpp"
+#include "../system/Utility.hpp"
+#include "../system/ResourceHolder.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
 Block::Block(const TextureHolder& textures, Textures::ID textureID)

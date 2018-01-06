@@ -2,8 +2,8 @@
 #define BREAK_IT_PADDLE_HPP
 
 #include <SFML/Graphics/Sprite.hpp>
-#include "entities/Entity.hpp"
-#include "ResourceIdentifiers.hpp"
+#include "Entity.hpp"
+#include "../ResourceIdentifiers.hpp"
 
 class Paddle : public Entity {
   public:

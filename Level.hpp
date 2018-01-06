@@ -2,7 +2,7 @@
 #define BREAK_IT_LEVEL_HPP
 
 #include "nodes/SceneNode.hpp"
-#include "Block.hpp"
+#include "entities/Block.hpp"
 #include "DataTables.hpp"
 
 class Level : public SceneNode {
