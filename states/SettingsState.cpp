@@ -73,6 +73,7 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
   auto backButton = std::make_shared<gui::Button>(context);
   backButton->setPosition(80.0f, 600.0f);
   backButton->setText(L"Zurück");
+  backButton->setShortcut(sf::Keyboard::Escape);
   backButton->setCallback(std::bind(&SettingsState::requestStackPop, this));
 
   auto settingsLabel = std::make_shared<gui::Label>("Einstellungen", *context.fonts);
