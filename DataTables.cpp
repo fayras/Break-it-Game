@@ -75,8 +75,9 @@ std::vector<LevelData> initializeLevelData() {
     }
   }
 
+  data[0].blockType = Blocks::SMALL | Blocks::DOUBLE_HP;
   data[1].ballSpeedMultiplier = 1.5f;
-  data[1].blockTexture = Textures::BLOCK_SMALL;
+  data[1].blockType = Blocks::SMALL;
 
   return data;
 }

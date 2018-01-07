@@ -47,7 +47,7 @@ void Level::load() {
   // std::size_t columns = levelData.blockColors.size();
 
   for(auto const &pair : levelData.blockColors) {
-    std::unique_ptr<Block> block(new Block(textures, levelData.blockTexture));
+    std::unique_ptr<Block> block(new Block(textures, levelData.blockType));
     block->setColor(pair.second);
     sf::FloatRect blockRect = block->getBoundingRect();
     float margin = 5;

@@ -3,14 +3,24 @@
 #include "../system/ResourceHolder.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
-Block::Block(const TextureHolder& textures, Textures::ID textureID)
+Block::Block(const TextureHolder& textures, Blocks::Type type)
   : Entity(100),
-    sprite(textures.get(textureID)),
-    breakAnimation(textures.get(Textures::EXPLOSION))
+    sprite(textures.get(Textures::BLOCK)),
+    breakAnimation(textures.get(Textures::EXPLOSION)),
+    textures(textures),
+    type(type)
 {
   breakAnimation.setFrameSize(sf::Vector2i(256, 256));
   breakAnimation.setNumFrames(16);
   breakAnimation.setDuration(sf::seconds(0.75));
+
+  switch (type) {
+    case Blocks::SMALL : sprite.setTexture(textures.get(Textures::BLOCK_SMALL), true);
+    case Blocks::DOUBLE_HP: setHP(200);
+    case Blocks::INVISIBLE: ;
+    case Blocks::SELF_HEALING: ;
+    case Blocks::NORMAL: ;
+  }
 
   centerOrigin(sprite);
   centerOrigin(breakAnimation);
@@ -49,4 +59,8 @@ bool Block::isMarkedForRemoval() const {
 
 void Block::setColor(const sf::Color &color) {
   sprite.setColor(color);
+}
+
+void Block::damage(int points) {
+  Entity::damage(points);
 }

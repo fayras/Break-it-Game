@@ -5,16 +5,18 @@
 #include "Entity.hpp"
 #include "../ResourceIdentifiers.hpp"
 #include "../system/Animation.hpp"
+#include "BlockTypes.hpp"
 
 class Block : public Entity {
   public:
     typedef std::unique_ptr<Block> Ptr;
 
-    explicit Block(const TextureHolder& textures, Textures::ID textureID = Textures::BLOCK);
+    explicit Block(const TextureHolder& textures, Blocks::Type type);
     void setColor(const sf::Color& color);
     unsigned int getCategory() const override;
     sf::FloatRect getBoundingRect() const override;
     bool isMarkedForRemoval() const override;
+    void damage(int points) override;
 
   protected:
     void updateCurrent(sf::Time dt, CommandQueue &commands) override;
@@ -23,6 +25,8 @@ class Block : public Entity {
   private:
     sf::Sprite sprite;
     Animation breakAnimation;
+    Blocks::Type type;
+    const TextureHolder& textures;
 };
 
 

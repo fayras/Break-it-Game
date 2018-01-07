@@ -58,3 +58,7 @@ void Entity::updateCurrent(sf::Time dt, CommandQueue &commands) {
     move(velocity * dt.asSeconds());
   }
 }
+
+void Entity::setHP(int points) {
+  hitpoints = points;
+}

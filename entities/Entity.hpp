@@ -15,7 +15,9 @@ class Entity : public SceneNode {
 
     int getHitpoints() const;
     void heal(int points);
-    void damage(int points);
+
+    virtual void damage(int points);
+    void setHP(int points);
     void destroy();
 
     virtual void remove();
