@@ -2,7 +2,7 @@
 #include <cassert>
 
 Entity::Entity(int hitpoints)
-  : velocity(), hitpoints(hitpoints)
+  : velocity(), hitpoints(hitpoints), maxHitpoints(hitpoints)
 {}
 
 void Entity::setVelocity(sf::Vector2f velocity) {
@@ -31,9 +31,13 @@ int Entity::getHitpoints() const {
   return hitpoints;
 }
 
+int Entity::getMaxHitpoints() const {
+  return maxHitpoints;
+}
+
 void Entity::heal(int points) {
   assert(points > 0);
-  hitpoints += points;
+  hitpoints = std::min(hitpoints + points, maxHitpoints);
 }
 
 void Entity::damage(int points) {

@@ -31,6 +31,7 @@ class Entity : public SceneNode {
   private:
     sf::Vector2f velocity;
     int hitpoints;
+    int maxHitpoints;
 };
 
 

@@ -8,7 +8,8 @@ Block::Block(const TextureHolder& textures, Blocks::Type type)
     sprite(textures.get(Textures::BLOCK)),
     breakAnimation(textures.get(Textures::EXPLOSION)),
     textures(textures),
-    type(type)
+    type(type),
+    timer()
 {
   breakAnimation.setFrameSize(sf::Vector2i(256, 256));
   breakAnimation.setNumFrames(16);
@@ -35,6 +36,10 @@ void Block::updateCurrent(sf::Time dt, CommandQueue &commands) {
     breakAnimation.update(dt);
   } else {
     Entity::updateCurrent(dt, commands);
+    if(type == Blocks::SELF_HEALING && timer.getElapsedTime().asSeconds() == 2.0f) {
+      timer.restart();
+      heal(getHP() * 0.1f);
+    }
   }
 }
 
