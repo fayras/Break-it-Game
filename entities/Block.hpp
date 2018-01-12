@@ -27,7 +27,8 @@ class Block : public Entity {
     Animation breakAnimation;
     Blocks::Type type;
     const TextureHolder& textures;
-    sf::Clock timer;
+    std::unordered_map<Blocks::Type, sf::Clock> timers;
+    bool hidden{false};
 };
 
 

@@ -14,6 +14,7 @@ class Entity : public SceneNode {
     sf::Vector2f getVelocity() const;
 
     int getHitpoints() const;
+    int getMaxHitpoints() const;
     void heal(int points);
 
     virtual void damage(int points);

@@ -1,6 +1,7 @@
 #include "Block.hpp"
 #include "../system/Utility.hpp"
 #include "../system/ResourceHolder.hpp"
+#include "../tween/LinearTween.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
 Block::Block(const TextureHolder& textures, Blocks::Type type)
@@ -8,19 +9,18 @@ Block::Block(const TextureHolder& textures, Blocks::Type type)
     sprite(textures.get(Textures::BLOCK)),
     breakAnimation(textures.get(Textures::EXPLOSION)),
     textures(textures),
-    type(type),
-    timer()
+    type(type)
 {
   breakAnimation.setFrameSize(sf::Vector2i(256, 256));
   breakAnimation.setNumFrames(16);
   breakAnimation.setDuration(sf::seconds(0.75));
 
-  switch (type) {
-    case Blocks::SMALL : sprite.setTexture(textures.get(Textures::BLOCK_SMALL), true);
-    case Blocks::DOUBLE_HP: setHP(200);
-    case Blocks::INVISIBLE: ;
-    case Blocks::SELF_HEALING: ;
-    case Blocks::NORMAL: ;
+  if(type == Blocks::SMALL) sprite.setTexture(textures.get(Textures::BLOCK_SMALL), true);
+  if(type == Blocks::DOUBLE_HP) setHP(200);
+  if(type == Blocks::SELF_HEALING) timers.emplace(Blocks::SELF_HEALING, sf::Clock());
+  if(type == Blocks::INVISIBLE) {
+    hidden = true;
+    timers.emplace(Blocks::INVISIBLE, sf::Clock());
   }
 
   centerOrigin(sprite);
@@ -36,9 +36,25 @@ void Block::updateCurrent(sf::Time dt, CommandQueue &commands) {
     breakAnimation.update(dt);
   } else {
     Entity::updateCurrent(dt, commands);
-    if(type == Blocks::SELF_HEALING && timer.getElapsedTime().asSeconds() == 2.0f) {
-      timer.restart();
-      heal(getHP() * 0.1f);
+    if(type == Blocks::SELF_HEALING && timers.at(Blocks::SELF_HEALING).getElapsedTime().asSeconds() >= 2.0f) {
+      heal(static_cast<int>(getHitpoints() * 0.1f));
+      timers.at(Blocks::SELF_HEALING).restart();
+    }
+    if(type == Blocks::INVISIBLE && timers.at(Blocks::INVISIBLE).getElapsedTime().asSeconds() >= 3.0f - Random::decimal(-0.5f, 0.5f)) {
+      hidden = false;
+      tween(std::make_unique<LinearTween>(sf::milliseconds(150), [this](const float& t) {
+        const sf::Color& c = sprite.getColor();
+        sprite.setColor({ c.r, c.g, c.b, static_cast<sf::Uint8>(255 * t) });
+      }));
+      timers.at(Blocks::INVISIBLE).restart();
+    }
+    if(!hidden && type == Blocks::INVISIBLE && timers.at(Blocks::INVISIBLE).getElapsedTime().asSeconds() >= 0.3f) {
+      hidden = true;
+      tween(std::make_unique<LinearTween>(sf::milliseconds(150), [this](const float& t) {
+        const sf::Color& c = sprite.getColor();
+        sprite.setColor({ c.r, c.g, c.b, static_cast<sf::Uint8>(255 - (255 * t)) });
+      }));
+      timers.at(Blocks::INVISIBLE).restart();
     }
   }
 }
