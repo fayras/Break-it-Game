@@ -36,3 +36,7 @@ int Paddle::getMovementSpeed() const {
 sf::FloatRect Paddle::getBoundingRect() const {
   return getWorldTransform().transformRect(sprite.getGlobalBounds());
 }
+
+bool Paddle::isMarkedForRemoval() const {
+  return false;
+}

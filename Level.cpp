@@ -82,8 +82,6 @@ bool Level::isLast() const {
 }
 
 void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
-  removeWrecks();
-
   if(done()) {
     loadNext();
     Command command;

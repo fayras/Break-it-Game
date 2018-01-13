@@ -46,6 +46,8 @@ void World::update(sf::Time dt) {
     handleCollisions();
   }
   sceneGraph.update(dt, commandQueue);
+  adaptPlayerPosition();
+  updateSounds();
 
   Command bgCommand;
   bgCommand.category = Category::BACKGROUND;
@@ -58,8 +60,39 @@ void World::update(sf::Time dt) {
   };
   commandQueue.push(bgCommand);
 
-  adaptPlayerPosition();
-  updateSounds();
+  sceneGraph.removeWrecks();
+
+  if(!sceneGraph.containsNode(Category::BALL)) {
+    auto ball = std::make_unique<Ball>(textures);
+    sceneGraph.attachChild(std::move(ball));
+
+    Command command0;
+    command0.category = Category::LEVEL_INFO;
+    command0.action = derivedAction<LevelInfo>([this](LevelInfo& info, sf::Time) {
+      info.show(currentLevel->getID() + 1);
+    });
+    Command command1;
+    command1.category = Category::PADDLE;
+    command1.action = derivedAction<Paddle>([this](Paddle& paddle, sf::Time) {
+      paddle.damage(1);
+      if(!paddle.isDestroyed()) resetPositions();
+    });
+    Command command2;
+    command2.category = Category::LIFE;
+    command2.action = derivedAction<Life>([](Life& life, sf::Time) {
+      life.decrease();
+    });
+    Command command3;
+    command3.category = Category::SCORE;
+    command3.action = derivedAction<Score>([](Score& score, sf::Time) {
+      score.resetMultiplier();
+      score.increase(-score.get() / 2);
+    });
+    commandQueue.push(command0);
+    commandQueue.push(command1);
+    commandQueue.push(command2);
+    commandQueue.push(command3);
+  }
 
   if(shakeScreen) {
     shakeTimer += dt;
@@ -179,33 +212,7 @@ void World::handleCollisions() {
       }
 
       if(wall.isDeadly()) {
-        Command command0;
-        command0.category = Category::LEVEL_INFO;
-        command0.action = derivedAction<LevelInfo>([this](LevelInfo& info, sf::Time) {
-          info.show(currentLevel->getID() + 1);
-        });
-        Command command1;
-        command1.category = Category::PADDLE;
-        command1.action = derivedAction<Paddle>([this](Paddle& paddle, sf::Time) {
-          paddle.damage(1);
-          if(!paddle.isDestroyed())
-            resetPositions();
-        });
-        Command command2;
-        command2.category = Category::LIFE;
-        command2.action = derivedAction<Life>([](Life& life, sf::Time) {
-          life.decrease();
-        });
-        Command command3;
-        command3.category = Category::SCORE;
-        command3.action = derivedAction<Score>([](Score& score, sf::Time) {
-          score.resetMultiplier();
-          score.increase(-score.get() / 2);
-        });
-        commandQueue.push(command0);
-        commandQueue.push(command1);
-        commandQueue.push(command2);
-        commandQueue.push(command3);
+        ball.destroy();
       }
 
       sounds.play(SoundEffect::HIT_GENERAL);

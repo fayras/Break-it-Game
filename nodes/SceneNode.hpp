@@ -30,6 +30,7 @@ class SceneNode : public virtual sf::Transformable, public sf::Drawable, private
 
     void attachChild(Ptr child);
     Ptr detachChild(const SceneNode& node);
+    bool containsNode(Category::Type type) const;
 
     sf::Vector2f getWorldPosition() const;
     sf::Transform getWorldTransform() const;

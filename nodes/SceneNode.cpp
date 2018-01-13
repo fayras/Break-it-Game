@@ -137,6 +137,14 @@ bool SceneNode::hasChildren() const {
   return !children.empty();
 }
 
+bool SceneNode::containsNode(Category::Type type) const {
+  for(const auto& node : children) {
+    if(node->getCategory() & type) return true;
+  }
+
+  return false;
+}
+
 CollisionSide collision(const SceneNode &lhs, const SceneNode &rhs) {
   sf::FloatRect r1 = lhs.getBoundingRect();
   sf::FloatRect r2 = rhs.getBoundingRect();

@@ -11,6 +11,7 @@ class Paddle : public Entity {
     unsigned int getCategory() const override;
     int getMovementSpeed() const;
     sf::FloatRect getBoundingRect() const override;
+    bool isMarkedForRemoval() const override;
 
   protected:
     void updateCurrent(sf::Time dt, CommandQueue &commands) override;
