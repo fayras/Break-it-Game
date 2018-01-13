@@ -11,7 +11,8 @@ class Player {
   public:
     enum Action {
       MOVE_LEFT,
-      MOVE_RIGHT
+      MOVE_RIGHT,
+      DUPLICATE_BALL
     };
 
     Player();

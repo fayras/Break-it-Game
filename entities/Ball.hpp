@@ -13,6 +13,8 @@ class Ball : public Entity {
     unsigned int getCategory() const override;
     sf::FloatRect getBoundingRect() const override;
 
+    void duplicate();
+    void rotateBy(float angle);
     void reset(sf::Vector2f pos);
 
   protected:
@@ -20,6 +22,7 @@ class Ball : public Entity {
 
   private:
     sf::Sprite sprite;
+    const TextureHolder& textures;
 };
 
 

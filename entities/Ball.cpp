@@ -4,10 +4,12 @@
 #include "../nodes/ParticleNode.hpp"
 #include "../nodes/EmitterNode.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <cmath>
 
 Ball::Ball(const TextureHolder& textures)
   : Entity(1),
-    sprite(textures.get(Textures::BALL))
+    sprite(textures.get(Textures::BALL)),
+    textures(textures)
 {
   centerOrigin(sprite);
   std::unique_ptr<EmitterNode> trail(new EmitterNode(Particle::Propellant));
@@ -29,4 +31,22 @@ void Ball::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const 
 
 void Ball::reset(sf::Vector2f pos) {
   setPosition(pos.x, pos.y - getBoundingRect().height - 20);
+}
+
+void Ball::duplicate() {
+  float radians = toRadian(30.f);
+  auto ball = std::make_unique<Ball>(textures);
+  ball->setPosition(getPosition());
+  ball->setVelocity(getVelocity());
+
+  rotateBy(radians);
+  ball->rotateBy(-radians);
+
+  parent->attachChildFront(std::move(ball));
+}
+
+void Ball::rotateBy(float angle) {
+  float cosA = std::cos(angle);
+  float sinA = std::sin(angle);
+  setVelocity(cosA * getVelocity().x - sinA * getVelocity().y, sinA * getVelocity().x + cosA * getVelocity().y);
 }

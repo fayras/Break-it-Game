@@ -1,6 +1,7 @@
 #include "Player.hpp"
 #include "system/CommandQueue.hpp"
 #include "entities/Paddle.hpp"
+#include "entities/Ball.hpp"
 #include <map>
 #include <string>
 #include <algorithm>
@@ -11,14 +12,10 @@ Player::Player() {
   // Set initial key bindings
   keyBinding[sf::Keyboard::Left] = Action::MOVE_LEFT;
   keyBinding[sf::Keyboard::Right] = Action::MOVE_RIGHT;
+  keyBinding[sf::Keyboard::Q] = Action::DUPLICATE_BALL;
 
   // Set initial action bindings
   initializeActions();
-
-  // Assign all categories to player's aircraft
-  for(auto& pair : actionBinding) {
-    pair.second.category = Category::PADDLE;
-  }
 }
 
 void Player::handleEvent(const sf::Event &event, CommandQueue &commands) {
@@ -59,11 +56,17 @@ sf::Keyboard::Key Player::getAssignedKey(Player::Action action) const {
 }
 
 void Player::initializeActions() {
+  actionBinding[MOVE_LEFT].category = Category::PADDLE;
   actionBinding[MOVE_LEFT].action = derivedAction<Paddle>([] (Paddle& p, sf::Time) {
     p.accelerate(-1 * p.getMovementSpeed(), 0);
   });
+  actionBinding[MOVE_RIGHT].category = Category::PADDLE;
   actionBinding[MOVE_RIGHT].action = derivedAction<Paddle>([] (Paddle& p, sf::Time) {
     p.accelerate(1 * p.getMovementSpeed(), 0);
+  });
+  actionBinding[DUPLICATE_BALL].category = Category::BALL;
+  actionBinding[DUPLICATE_BALL].action = derivedAction<Ball>([] (Ball& ball, sf::Time) {
+    ball.duplicate();
   });
 }
 
