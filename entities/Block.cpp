@@ -37,7 +37,7 @@ void Block::updateCurrent(sf::Time dt, CommandQueue &commands) {
   } else {
     Entity::updateCurrent(dt, commands);
     if(type == Blocks::SELF_HEALING && timers.at(Blocks::SELF_HEALING).getElapsedTime().asSeconds() >= 2.0f) {
-      heal(static_cast<int>(getHitpoints() * 0.1f));
+      heal(static_cast<int>(getMaxHitpoints() * 0.1f));
       timers.at(Blocks::SELF_HEALING).restart();
     }
     if(type == Blocks::INVISIBLE && timers.at(Blocks::INVISIBLE).getElapsedTime().asSeconds() >= 3.0f - Random::decimal(-0.5f, 0.5f)) {
