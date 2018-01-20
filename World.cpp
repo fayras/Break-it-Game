@@ -64,7 +64,7 @@ void World::update(sf::Time dt) {
   sceneGraph.removeWrecks();
 
   if(!sceneGraph.containsNode(Category::BALL)) {
-    auto ball = std::make_unique<Ball>(textures);
+    auto ball = std::make_unique<Ball>(textures.get(Textures::BALL));
     sceneGraph.attachChild(std::move(ball));
 
     Command command0;
@@ -237,7 +237,7 @@ void World::buildScene() {
   background->setCategory(Category::BACKGROUND);
   sceneGraph.attachChild(std::move(background));
 
-  auto ball = std::make_unique<Ball>(textures);
+  auto ball = std::make_unique<Ball>(textures.get(Textures::BALL));
   sceneGraph.attachChild(std::move(ball));
 
   auto paddle = std::make_unique<Paddle>(textures);

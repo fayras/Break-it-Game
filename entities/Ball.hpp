@@ -9,7 +9,7 @@ class Ball : public Entity {
   public:
     static constexpr float SPEED = 300.0f;
 
-    explicit Ball(const TextureHolder& textures);
+    explicit Ball(const sf::Texture& texture);
     unsigned int getCategory() const override;
     sf::FloatRect getBoundingRect() const override;
 
@@ -22,7 +22,6 @@ class Ball : public Entity {
 
   private:
     sf::Sprite sprite;
-    const TextureHolder& textures;
 };
 
 

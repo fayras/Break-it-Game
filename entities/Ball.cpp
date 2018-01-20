@@ -6,10 +6,9 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <cmath>
 
-Ball::Ball(const TextureHolder& textures)
+Ball::Ball(const sf::Texture& texture)
   : Entity(1),
-    sprite(textures.get(Textures::BALL)),
-    textures(textures)
+    sprite(texture)
 {
   centerOrigin(sprite);
   std::unique_ptr<EmitterNode> trail(new EmitterNode(Particle::Propellant));
@@ -35,7 +34,7 @@ void Ball::reset(sf::Vector2f pos) {
 
 void Ball::duplicate() {
   float radians = toRadian(30.f);
-  auto ball = std::make_unique<Ball>(textures);
+  auto ball = std::make_unique<Ball>(*sprite.getTexture());
   ball->setPosition(getPosition());
   ball->setVelocity(getVelocity());
 
