@@ -14,7 +14,8 @@ namespace Category {
     SCORE = 1 << 7,
     LIFE = 1 << 8,
     BACKGROUND = 1 << 9,
-    LEVEL_INFO = 1 << 10
+    LEVEL_INFO = 1 << 10,
+    DUPLICATE_SKILL = 1 << 11,
   };
 }
 

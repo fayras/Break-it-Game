@@ -3,6 +3,7 @@
 #include "system/Utility.hpp"
 #include "LevelInfo.hpp"
 #include "tween/LinearTween.hpp"
+#include "skills/DuplicateBallSkill.hpp"
 #include <cmath>
 #include <algorithm>
 
@@ -144,6 +145,7 @@ void World::loadTextures() {
   textures.load(Textures::SCORE, "assets/textures/glassPanel_cornerBL.png");
   textures.load(Textures::PARTICLE, "assets/textures/particle.png");
   textures.load(Textures::LIFE, "assets/textures/life.png");
+  textures.load(Textures::DUPLICATE_SKILL, "assets/textures/duplicateSkill.png");
   textures.get(Textures::LIFE).setRepeated(true);
 }
 
@@ -278,6 +280,11 @@ void World::buildScene() {
   score->setPosition(worldView.getSize().x - 25, -5);
   this->score = score.get();
   sceneGraph.attachChild(std::move(score));
+
+  auto dupSkill = std::make_unique<DuplicateBallSkill>(textures.get(Textures::DUPLICATE_SKILL));
+  dupSkill->move(200, 0);
+  dupSkill->scale(0.25f, 0.25f);
+  sceneGraph.attachChild(std::move(dupSkill));
 
   Command command;
   command.category = Category::LEVEL_INFO;

@@ -2,6 +2,7 @@
 #include "system/CommandQueue.hpp"
 #include "entities/Paddle.hpp"
 #include "entities/Ball.hpp"
+#include "skills/DuplicateBallSkill.hpp"
 #include <map>
 #include <string>
 #include <algorithm>
@@ -64,9 +65,9 @@ void Player::initializeActions() {
   actionBinding[MOVE_RIGHT].action = derivedAction<Paddle>([] (Paddle& p, sf::Time) {
     p.accelerate(1 * p.getMovementSpeed(), 0);
   });
-  actionBinding[DUPLICATE_BALL].category = Category::BALL;
-  actionBinding[DUPLICATE_BALL].action = derivedAction<Ball>([] (Ball& ball, sf::Time) {
-    ball.duplicate();
+  actionBinding[DUPLICATE_BALL].category = Category::DUPLICATE_SKILL;
+  actionBinding[DUPLICATE_BALL].action = derivedAction<DuplicateBallSkill>([] (DuplicateBallSkill& skill, sf::Time) {
+    skill.activate();
   });
 }
 
