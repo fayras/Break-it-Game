@@ -8,8 +8,7 @@
 
 class LevelInfo : public SceneNode {
   public:
-    explicit LevelInfo(const sf::Font& font);
-    void setView(sf::Vector2f view);
+    explicit LevelInfo(const sf::Font& font, sf::Vector2f view);
     void show(int level, sf::Time delay = sf::Time::Zero);
     unsigned int getCategory() const override;
 

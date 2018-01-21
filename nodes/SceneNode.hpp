@@ -29,7 +29,6 @@ class SceneNode : public virtual sf::Transformable, public sf::Drawable, private
     explicit SceneNode(Category::Type category = Category::NONE);
 
     void attachChild(Ptr child);
-    void attachChildFront(Ptr child);
     Ptr detachChild(const SceneNode& node);
     bool containsNode(Category::Type type) const;
 
@@ -62,6 +61,7 @@ class SceneNode : public virtual sf::Transformable, public sf::Drawable, private
     std::list<Ptr> children;
     SceneNode* parent;
     Category::Type defaultCategory;
+    std::list<Ptr> pendingChildren;
 };
 
 CollisionSide collision(const SceneNode &lhs, const SceneNode &rhs);

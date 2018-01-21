@@ -12,14 +12,14 @@ namespace {
   const std::vector<LevelData> LevelTable = initializeLevelData();
 }
 
-Level::Level(const TextureHolder &textures, const FontHolder& fonts)
+Level::Level(const TextureHolder &textures, const FontHolder& fonts, const sf::Vector2f view)
   : textures(textures), fonts(fonts), levelData(), bounds(nullptr)
 {
   auto blocks = std::make_unique<SceneNode>();
   blocksLayer = blocks.get();
   attachChild(std::move(blocks));
 
-  auto levelInfo = std::make_unique<LevelInfo>(fonts.get(Fonts::PIXEL));
+  auto levelInfo = std::make_unique<LevelInfo>(fonts.get(Fonts::PIXEL), view);
   attachChild(std::move(levelInfo));
 }
 

@@ -40,7 +40,7 @@ void Ball::duplicate() {
   rotateBy(radians);
   ball->rotateBy(-radians);
 
-  parent->attachChildFront(std::move(ball));
+  parent->attachChild(std::move(ball));
 }
 
 void Ball::rotateBy(float angle) {

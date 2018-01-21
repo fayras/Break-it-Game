@@ -271,7 +271,7 @@ void World::buildScene() {
   auto particles = std::make_unique<ParticleNode>(Particle::Propellant, textures);
   sceneGraph.attachChild(std::move(particles));
 
-  auto level = std::make_unique<Level>(textures, fonts);
+  auto level = std::make_unique<Level>(textures, fonts, worldView.getSize());
   level->setBounds(&worldBounds);
   currentLevel = level.get();
   sceneGraph.attachChild(std::move(level));
@@ -285,13 +285,6 @@ void World::buildScene() {
   dupSkill->move(200, 0);
   dupSkill->scale(0.25f, 0.25f);
   sceneGraph.attachChild(std::move(dupSkill));
-
-  Command command;
-  command.category = Category::LEVEL_INFO;
-  command.action = derivedAction<LevelInfo>([this](LevelInfo& info, sf::Time) {
-    info.setView(worldView.getSize());
-  });
-  commandQueue.push(command);
 }
 
 sf::FloatRect World::getViewBounds() const {

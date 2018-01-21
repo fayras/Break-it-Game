@@ -7,7 +7,7 @@
 
 class Level : public SceneNode {
   public:
-    explicit Level(const TextureHolder& textures, const FontHolder& fonts);
+    explicit Level(const TextureHolder& textures, const FontHolder& fonts, sf::Vector2f view);
     void loadNext();
     void setBounds(sf::FloatRect* bounds);
 

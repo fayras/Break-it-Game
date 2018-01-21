@@ -4,10 +4,15 @@
 #include "tween/LinearTween.hpp"
 #include "ResourceIdentifiers.hpp"
 
-LevelInfo::LevelInfo(const sf::Font &font)
+LevelInfo::LevelInfo(const sf::Font &font, const sf::Vector2f view)
+  : view(view)
 {
   pausedText.setFont(font);
   pausedText.setCharacterSize(130);
+
+  backgroundShape.setSize(sf::Vector2f(view.x, 100));
+  backgroundShape.setOrigin(view.x * 0.5f, 50);
+  backgroundShape.setPosition(0.5f * view.x, 0.3f * view.y);
 
   backgroundShape.setFillColor(sf::Color(0, 0, 0, 0));
 }
@@ -54,12 +59,4 @@ void LevelInfo::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) c
     target.draw(backgroundShape, states);
     target.draw(pausedText, states);
   }
-}
-
-void LevelInfo::setView(sf::Vector2f view) {
-  this->view = view;
-
-  backgroundShape.setSize(sf::Vector2f(view.x, 100));
-  backgroundShape.setOrigin(view.x * 0.5f, 50);
-  backgroundShape.setPosition(0.5f * view.x, 0.3f * view.y);
 }

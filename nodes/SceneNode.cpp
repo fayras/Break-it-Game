@@ -11,12 +11,7 @@ SceneNode::SceneNode(Category::Type category)
 
 void SceneNode::attachChild(SceneNode::Ptr child) {
   child->parent = this;
-  children.push_back(std::move(child));
-}
-
-void SceneNode::attachChildFront(SceneNode::Ptr child) {
-  child->parent = this;
-  children.push_front(std::move(child));
+  pendingChildren.push_back(std::move(child));
 }
 
 SceneNode::Ptr SceneNode::detachChild(const SceneNode &node) {
@@ -65,6 +60,9 @@ unsigned int SceneNode::getCategory() const {
 }
 
 void SceneNode::update(sf::Time dt, CommandQueue& commands) {
+  if(!pendingChildren.empty()) {
+    children.merge(pendingChildren);
+  }
   Tweenable::update(dt);
   updateCurrent(dt, commands);
   updateChildren(dt, commands);
