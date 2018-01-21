@@ -62,6 +62,7 @@ class SceneNode : public virtual sf::Transformable, public sf::Drawable, private
     SceneNode* parent;
     Category::Type defaultCategory;
     std::list<Ptr> pendingChildren;
+    bool isStatic{true};
 };
 
 CollisionSide collision(const SceneNode &lhs, const SceneNode &rhs);

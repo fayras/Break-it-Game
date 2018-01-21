@@ -10,6 +10,7 @@ Ball::Ball(const sf::Texture& texture)
     sprite(texture)
 {
   centerOrigin(sprite);
+  isStatic = false;
   std::unique_ptr<EmitterNode> trail(new EmitterNode(Particle::Propellant));
   trail->setPosition(0, 0);
   attachChild(std::move(trail));

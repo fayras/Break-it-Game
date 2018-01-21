@@ -11,6 +11,7 @@ Paddle::Paddle(const TextureHolder& textures)
     sprite(textures.get(Textures::PADDLE))
 {
   centerOrigin(sprite);
+  isStatic = false;
 
   auto lives = std::make_unique<Life>(textures.get(Textures::LIFE));
   lives->setPosition(10, 10);

@@ -109,8 +109,15 @@ void SceneNode::checkSceneCollision(SceneNode &sceneGraph, std::map<SceneNode::P
 
 void SceneNode::checkNodeCollision(SceneNode &node, std::map<SceneNode::Pair, CollisionSide> &collisionPairs) {
   CollisionSide side;
-  if (this != &node && (side = collision(*this, node)) && !isDestroyed() && !node.isDestroyed())
+  if (
+      !(this->isStatic && node.isStatic) &&
+      this != &node &&
+      !isDestroyed() &&
+      !node.isDestroyed() &&
+      (side = collision(*this, node))
+      ) {
     collisionPairs.try_emplace(std::minmax(this, &node), side);
+  }
 
   for(Ptr& child : children) {
     child->checkNodeCollision(node, collisionPairs);
