@@ -2,6 +2,7 @@
 #define BREAK_IT_BLOCK_HPP
 
 #include <SFML/Graphics/Sprite.hpp>
+#include <unordered_map>
 #include "Entity.hpp"
 #include "../ResourceIdentifiers.hpp"
 #include "../system/Animation.hpp"
