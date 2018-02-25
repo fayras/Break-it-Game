@@ -2,9 +2,9 @@
 #define BREAK_IT_WALL_HPP
 
 #include <SFML/Graphics/RectangleShape.hpp>
-#include "nodes/SceneNode.hpp"
+#include "entities/Entity.hpp"
 
-class Wall : public SceneNode {
+class Wall : public Entity {
   public:
     Wall(float width, float height);
     unsigned int getCategory() const override;

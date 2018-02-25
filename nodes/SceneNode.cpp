@@ -2,6 +2,7 @@
 
 #include "../system/Command.hpp"
 #include "../system/Utility.hpp"
+#include "../entities/Entity.hpp"
 #include <cassert>
 #include <cmath>
 
@@ -153,6 +154,17 @@ bool SceneNode::containsNode(Category::Type type) const {
   }
 
   return false;
+}
+
+void SceneNode::getAllEntities(std::list<Entity*> &entities) {
+  auto cast = dynamic_cast<Entity*>(this);
+  if(cast != nullptr) {
+    entities.push_back(cast);
+  }
+
+  for(Ptr& child : children) {
+    child->getAllEntities(entities);
+  }
 }
 
 CollisionSide collision(const SceneNode &lhs, const SceneNode &rhs) {

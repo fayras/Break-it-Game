@@ -2,7 +2,8 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 
 Wall::Wall(float width, float height)
-  : rect(sf::Vector2f(width, height))
+  : Entity(1),
+    rect(sf::Vector2f(width, height))
 {
   rect.setFillColor(sf::Color::Black);
 }
