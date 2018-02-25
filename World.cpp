@@ -163,12 +163,11 @@ void World::adaptPlayerPosition() {
 }
 
 void World::handleCollisions(sf::Time dt) {
-  std::map<SceneNode::Pair, CollisionSide> pairs = collisions.check(dt);
+  std::set<SceneNode::Pair> pairs = collisions.check(dt);
 
   // sceneGraph.checkSceneCollision(sceneGraph, pairs);
 
-  for(auto collision : pairs) {
-    SceneNode::Pair collisionPair = collision.first;
+  for(auto collisionPair : pairs) {
     if(matchesCategories(collisionPair, Category::BALL, Category::PADDLE)) {
       auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
       auto& paddle = dynamic_cast<Paddle&>(*collisionPair.second);
@@ -193,12 +192,6 @@ void World::handleCollisions(sf::Time dt) {
       auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
       auto& block = dynamic_cast<Block&>(*collisionPair.second);
 
-      if(collision.second == CollisionSide::LEFT || collision.second == CollisionSide::RIGHT) {
-        ball.setVelocity(-ball.getVelocity().x, ball.getVelocity().y);
-      } else {
-        ball.setVelocity(ball.getVelocity().x, -ball.getVelocity().y);
-      }
-
       ball.setVelocity(ball.getVelocity() + Vector::unit(ball.getVelocity()) * 3.0f);
       sounds.play(SoundEffect::HIT_BLOCK);
       block.damage(100);
@@ -208,12 +201,6 @@ void World::handleCollisions(sf::Time dt) {
     } else if(matchesCategories(collisionPair, Category::BALL, Category::WALL)) {
       auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
       auto& wall = dynamic_cast<Wall&>(*collisionPair.second);
-
-      if(collision.second == CollisionSide::LEFT || collision.second == CollisionSide::RIGHT) {
-        ball.setVelocity(-ball.getVelocity().x, ball.getVelocity().y);
-      } else {
-        ball.setVelocity(ball.getVelocity().x, -ball.getVelocity().y);
-      }
 
       if(wall.isDeadly()) {
         ball.destroy();
