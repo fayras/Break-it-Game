@@ -41,7 +41,7 @@ class World : private sf::NonCopyable {
   private:
     void loadTextures();
     void adaptPlayerPosition();
-    void handleCollisions();
+    void handleCollisions(sf::Time dt);
     void updateSounds();
 
     void buildScene();

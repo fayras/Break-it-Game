@@ -45,7 +45,7 @@ void World::update(sf::Time dt) {
   }
 
   if(!currentLevel->isLoading()) {
-    handleCollisions();
+    handleCollisions(dt);
   }
   sceneGraph.update(dt, commandQueue);
   adaptPlayerPosition();
@@ -162,9 +162,10 @@ void World::adaptPlayerPosition() {
   paddle->setPosition(position);
 }
 
-void World::handleCollisions() {
-  std::map<SceneNode::Pair, CollisionSide> pairs;
-  sceneGraph.checkSceneCollision(sceneGraph, pairs);
+void World::handleCollisions(sf::Time dt) {
+  std::map<SceneNode::Pair, CollisionSide> pairs = collisions.check(dt);
+
+  // sceneGraph.checkSceneCollision(sceneGraph, pairs);
 
   for(auto collision : pairs) {
     SceneNode::Pair collisionPair = collision.first;

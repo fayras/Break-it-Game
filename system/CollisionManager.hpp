@@ -8,10 +8,11 @@ class CollisionManager {
   public:
     explicit CollisionManager(SceneNode& rootNode);
 
-    void update(sf::Time dt);
+    std::map<SceneNode::Pair, CollisionSide>& check(sf::Time dt);
 
   private:
     SceneNode& nodes;
+    std::map<SceneNode::Pair, CollisionSide> pairs;
 };
 
 
