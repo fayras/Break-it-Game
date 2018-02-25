@@ -59,10 +59,22 @@ bool Entity::isDestroyed() const {
 
 void Entity::updateCurrent(sf::Time dt, CommandQueue &commands) {
   if(!isStatic && recieveEvents) {
-    move(velocity * dt.asSeconds());
+    if(directions.empty()) {
+      move(velocity * dt.asSeconds());
+    } else {
+      for(const Direction& d : directions) {
+        setVelocity(velocity.x * d.dir.x, velocity.y * d.dir.y);
+        move(velocity * (d.distance * dt.asSeconds()));
+      }
+      directions.clear();
+    }
   }
 }
 
 void Entity::setHP(int points) {
   hitpoints = points;
+}
+
+void Entity::pushDirection(const Entity::Direction dir) {
+  directions.emplace_back(dir);
 }

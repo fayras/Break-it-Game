@@ -5,6 +5,11 @@
 
 class Entity : public SceneNode {
   public:
+    struct Direction {
+      float distance{0.f};
+      sf::Vector2f dir;
+    };
+
     explicit Entity(int hitpoints);
 
     void setVelocity(sf::Vector2f velocity);
@@ -26,6 +31,8 @@ class Entity : public SceneNode {
 
     bool recieveEvents{true};
 
+    void pushDirection(const Direction dir);
+
   protected:
     void updateCurrent(sf::Time dt, CommandQueue& commands) override;
 
@@ -33,6 +40,7 @@ class Entity : public SceneNode {
     sf::Vector2f velocity;
     int hitpoints;
     int maxHitpoints;
+    std::vector<Direction> directions;
 };
 
 

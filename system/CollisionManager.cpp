@@ -28,7 +28,7 @@ void CollisionManager::doCollisionChecking(
     std::set<SceneNode::Pair>& pairs
 ) {
 
-  if(time >= sf::Time::Zero) {
+  if(time <= sf::Time::Zero) {
     return;
   }
 
@@ -43,7 +43,15 @@ void CollisionManager::doCollisionChecking(
 
   if(collisionTime < 1.0f) {
     pairs.emplace(std::minmax(entity, *found));
-    // entity response
+
+    Entity::Direction dir;
+    dir.distance = collisionTime;
+
+    if (std::abs(nX) > 0.0001f) dir.dir = sf::Vector2f(-1, 1);
+    if (std::abs(nY) > 0.0001f) dir.dir = sf::Vector2f(1, -1);
+
+    entity->pushDirection(dir);
+
     sf::Time remaining = time - time * collisionTime;
     doCollisionChecking(time, entity, entities, pairs);
   }
