@@ -27,7 +27,8 @@ World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sou
     fonts(fonts),
     sounds(sounds),
     worldBounds(0.f, 0.f, worldView.getSize().x, worldView.getSize().y),
-    spawnPosition(worldView.getSize().x / 2.f, worldBounds.height - 40)
+    spawnPosition(worldView.getSize().x / 2.f, worldBounds.height - 40),
+    collisions(sceneGraph)
 {
   sceneTexture.create(target.getSize().x, target.getSize().y);
   loadTextures();

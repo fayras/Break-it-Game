@@ -18,6 +18,7 @@
 #include "nodes/ParticleNode.hpp"
 #include "Level.hpp"
 #include "Life.hpp"
+#include "system/CollisionManager.hpp"
 
 namespace sf {
   class RenderTarget;
@@ -62,6 +63,7 @@ class World : private sf::NonCopyable {
     Score* score;
     Level* currentLevel;
     SceneNode sceneGraph;
+    CollisionManager collisions;
 
     bool shakeScreen{false};
     sf::Time shakeTimer{sf::Time::Zero};
