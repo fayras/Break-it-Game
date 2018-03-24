@@ -27,7 +27,8 @@ World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sou
     fonts(fonts),
     sounds(sounds),
     worldBounds(0.f, 0.f, worldView.getSize().x, worldView.getSize().y),
-    spawnPosition(worldView.getSize().x / 2.f, worldBounds.height - 40)
+    spawnPosition(worldView.getSize().x / 2.f, worldBounds.height - 40),
+    collisions(sceneGraph)
 {
   sceneTexture.create(target.getSize().x, target.getSize().y);
   loadTextures();
@@ -44,7 +45,7 @@ void World::update(sf::Time dt) {
   }
 
   if(!currentLevel->isLoading()) {
-    handleCollisions();
+    handleCollisions(dt);
   }
   sceneGraph.update(dt, commandQueue);
   adaptPlayerPosition();
@@ -65,7 +66,7 @@ void World::update(sf::Time dt) {
 
   if(!sceneGraph.containsNode(Category::BALL)) {
     auto ball = std::make_unique<Ball>(textures.get(Textures::BALL));
-    sceneGraph.attachChild(std::move(ball));
+    sceneGraph.attachChildNow(std::move(ball));
 
     Command command0;
     command0.category = Category::LEVEL_INFO;
@@ -161,24 +162,24 @@ void World::adaptPlayerPosition() {
   paddle->setPosition(position);
 }
 
-void World::handleCollisions() {
-  std::map<SceneNode::Pair, CollisionSide> pairs;
-  sceneGraph.checkSceneCollision(sceneGraph, pairs);
+void World::handleCollisions(sf::Time dt) {
+  std::set<SceneNode::Pair> pairs = collisions.check(dt);
 
-  for(auto collision : pairs) {
-    SceneNode::Pair collisionPair = collision.first;
+  // sceneGraph.checkSceneCollision(sceneGraph, pairs);
+
+  for(auto collisionPair : pairs) {
     if(matchesCategories(collisionPair, Category::BALL, Category::PADDLE)) {
       auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
       auto& paddle = dynamic_cast<Paddle&>(*collisionPair.second);
 
-      sf::FloatRect ballRect = ball.getBoundingRect();
-      sf::FloatRect paddleRect = paddle.getBoundingRect();
-
-      float offset = ballRect.width * 0.5f + ballRect.left - paddleRect.width * 0.5f - paddleRect.left;
-      float angle = offset / (paddleRect.width * 0.5f);
+      sf::Vector2f ballPos = ball.getPosition();
+      sf::Vector2f paddlePos = paddle.getPosition();
+      sf::Vector2f delta = ballPos - paddlePos;
+      //float offset = ballRect.width * 0.5f + ballRect.left - paddleRect.width * 0.5f - paddleRect.left;
+      //float angle = offset / (paddleRect.width * 0.5f);
       float ballSpeed = Vector::length(ball.getVelocity());
-      sf::Vector2f newVel(angle, -0.5f);
-      ball.setVelocity(Vector::unit(newVel) * ballSpeed);
+
+      ball.setVelocity(Vector::unit(delta) * ballSpeed);
       sounds.play(SoundEffect::HIT_GENERAL);
       score->resetMultiplier();
 
@@ -191,13 +192,7 @@ void World::handleCollisions() {
       auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
       auto& block = dynamic_cast<Block&>(*collisionPair.second);
 
-      if(collision.second == CollisionSide::LEFT || collision.second == CollisionSide::RIGHT) {
-        ball.setVelocity(-ball.getVelocity().x, ball.getVelocity().y);
-      } else {
-        ball.setVelocity(ball.getVelocity().x, -ball.getVelocity().y);
-      }
-
-      ball.setVelocity(ball.getVelocity() + Vector::unit(ball.getVelocity()) * 3.0f);
+      // ball.setVelocity(ball.getVelocity() + Vector::unit(ball.getVelocity()) * 3.0f);
       sounds.play(SoundEffect::HIT_BLOCK);
       block.damage(100);
       shakeScreen = true;
@@ -206,12 +201,6 @@ void World::handleCollisions() {
     } else if(matchesCategories(collisionPair, Category::BALL, Category::WALL)) {
       auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
       auto& wall = dynamic_cast<Wall&>(*collisionPair.second);
-
-      if(collision.second == CollisionSide::LEFT || collision.second == CollisionSide::RIGHT) {
-        ball.setVelocity(-ball.getVelocity().x, ball.getVelocity().y);
-      } else {
-        ball.setVelocity(ball.getVelocity().x, -ball.getVelocity().y);
-      }
 
       if(wall.isDeadly()) {
         ball.destroy();

@@ -16,6 +16,7 @@
 
 struct Command;
 class CommandQueue;
+class Entity;
 
 enum CollisionSide {
   NONE = 0, LEFT = 1, RIGHT = 1<<1, TOP = 1<<2, BOTTOM = 1<<3
@@ -29,6 +30,7 @@ class SceneNode : public virtual sf::Transformable, public sf::Drawable, private
     explicit SceneNode(Category::Type category = Category::NONE);
 
     void attachChild(Ptr child);
+    void attachChildNow(Ptr child);
     Ptr detachChild(const SceneNode& node);
     bool containsNode(Category::Type type) const;
 
@@ -47,6 +49,7 @@ class SceneNode : public virtual sf::Transformable, public sf::Drawable, private
 
     void checkSceneCollision(SceneNode& sceneGraph, std::map<Pair, CollisionSide>& collisionPairs);
     void checkNodeCollision(SceneNode& node, std::map<Pair, CollisionSide>& collisionPairs);
+    void getAllEntities(std::list<Entity*>& entities);
     void removeWrecks();
     virtual bool isMarkedForRemoval() const;
     virtual bool isDestroyed() const;

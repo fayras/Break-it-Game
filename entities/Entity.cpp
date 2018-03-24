@@ -7,6 +7,7 @@ Entity::Entity(int hitpoints)
 
 void Entity::setVelocity(sf::Vector2f velocity) {
   this->velocity = velocity;
+  directions.clear();
 }
 
 void Entity::setVelocity(float vx, float vy) {
@@ -24,7 +25,12 @@ void Entity::accelerate(float vx, float vy) {
 }
 
 sf::Vector2f Entity::getVelocity() const {
-  return velocity;
+  sf::Vector2f vel = velocity;
+  for(const Direction& d : directions) {
+    vel.x *= d.dir.x;
+    vel.y *= d.dir.y;
+  }
+  return vel;
 }
 
 int Entity::getHitpoints() const {
@@ -59,10 +65,33 @@ bool Entity::isDestroyed() const {
 
 void Entity::updateCurrent(sf::Time dt, CommandQueue &commands) {
   if(!isStatic && recieveEvents) {
-    move(velocity * dt.asSeconds());
+    if(directions.empty()) {
+      move(velocity * dt.asSeconds());
+    } else {
+      for(const Direction& d : directions) {
+        setVelocity(velocity.x * d.dir.x, velocity.y * d.dir.y);
+        move(velocity * (d.distance * d.deltaTime));
+      }
+      directions.clear();
+    }
   }
 }
 
 void Entity::setHP(int points) {
   hitpoints = points;
+}
+
+void Entity::pushDirection(const Entity::Direction dir) {
+  directions.emplace_back(dir);
+}
+
+sf::Vector2f Entity::getPosition() const {
+  sf::Vector2f pos = Transformable::getPosition();
+  sf::Vector2f vel = velocity;
+  for(const Direction& d : directions) {
+    vel.x *= d.dir.x;
+    vel.y *= d.dir.y;
+    pos += vel * d.distance * d.deltaTime;
+  }
+  return pos;
 }
