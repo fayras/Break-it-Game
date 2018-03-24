@@ -175,7 +175,6 @@ void World::handleCollisions(sf::Time dt) {
       sf::Vector2f ballPos = ball.getPosition();
       sf::Vector2f paddlePos = paddle.getPosition();
       sf::Vector2f delta = ballPos - paddlePos;
-      delta.y = -delta.y;
       //float offset = ballRect.width * 0.5f + ballRect.left - paddleRect.width * 0.5f - paddleRect.left;
       //float angle = offset / (paddleRect.width * 0.5f);
       float ballSpeed = Vector::length(ball.getVelocity());

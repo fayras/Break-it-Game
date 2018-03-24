@@ -7,6 +7,7 @@ Entity::Entity(int hitpoints)
 
 void Entity::setVelocity(sf::Vector2f velocity) {
   this->velocity = velocity;
+  directions.clear();
 }
 
 void Entity::setVelocity(float vx, float vy) {
