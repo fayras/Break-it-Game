@@ -192,7 +192,16 @@ void World::handleCollisions(sf::Time dt) {
       auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
       auto& block = dynamic_cast<Block&>(*collisionPair.second);
 
-      // ball.setVelocity(ball.getVelocity() + Vector::unit(ball.getVelocity()) * 3.0f);
+      auto currentVelocity = ball.getVelocity();
+      sf::Vector2f newVelocity = currentVelocity + Vector::unit(currentVelocity) * 3.0f;
+      Ball::Direction dir;
+      dir.deltaTime = dir.distance = 0;
+      dir.dir = sf::Vector2f(
+              currentVelocity.x != 0 ? newVelocity.x / currentVelocity.x : 0,
+              currentVelocity.y != 0 ? newVelocity.y / currentVelocity.y : 0
+      );
+      ball.pushDirection(dir);
+
       sounds.play(SoundEffect::HIT_BLOCK);
       block.damage(100);
       shakeScreen = true;
