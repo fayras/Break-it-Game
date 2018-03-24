@@ -30,6 +30,7 @@ class SceneNode : public virtual sf::Transformable, public sf::Drawable, private
     explicit SceneNode(Category::Type category = Category::NONE);
 
     void attachChild(Ptr child);
+    void attachChildNow(Ptr child);
     Ptr detachChild(const SceneNode& node);
     bool containsNode(Category::Type type) const;
 

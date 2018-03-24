@@ -66,7 +66,7 @@ void World::update(sf::Time dt) {
 
   if(!sceneGraph.containsNode(Category::BALL)) {
     auto ball = std::make_unique<Ball>(textures.get(Textures::BALL));
-    sceneGraph.attachChild(std::move(ball));
+    sceneGraph.attachChildNow(std::move(ball));
 
     Command command0;
     command0.category = Category::LEVEL_INFO;

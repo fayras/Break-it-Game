@@ -15,6 +15,11 @@ void SceneNode::attachChild(SceneNode::Ptr child) {
   pendingChildren.push_back(std::move(child));
 }
 
+void SceneNode::attachChildNow(SceneNode::Ptr child) {
+  child->parent = this;
+  children.push_back(std::move(child));
+}
+
 SceneNode::Ptr SceneNode::detachChild(const SceneNode &node) {
   auto found = std::find_if(children.begin(), children.end(), [&] (Ptr& p) {
     return p.get() == &node;
