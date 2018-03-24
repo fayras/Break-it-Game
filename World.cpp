@@ -172,14 +172,15 @@ void World::handleCollisions(sf::Time dt) {
       auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
       auto& paddle = dynamic_cast<Paddle&>(*collisionPair.second);
 
-      sf::FloatRect ballRect = ball.getBoundingRect();
-      sf::FloatRect paddleRect = paddle.getBoundingRect();
-
-      float offset = ballRect.width * 0.5f + ballRect.left - paddleRect.width * 0.5f - paddleRect.left;
-      float angle = offset / (paddleRect.width * 0.5f);
+      sf::Vector2f ballPos = ball.getPosition();
+      sf::Vector2f paddlePos = paddle.getPosition();
+      sf::Vector2f delta = ballPos - paddlePos;
+      delta.y = -delta.y;
+      //float offset = ballRect.width * 0.5f + ballRect.left - paddleRect.width * 0.5f - paddleRect.left;
+      //float angle = offset / (paddleRect.width * 0.5f);
       float ballSpeed = Vector::length(ball.getVelocity());
-      sf::Vector2f newVel(angle, -0.5f);
-      ball.setVelocity(Vector::unit(newVel) * ballSpeed);
+
+      ball.setVelocity(Vector::unit(delta) * ballSpeed);
       sounds.play(SoundEffect::HIT_GENERAL);
       score->resetMultiplier();
 
@@ -192,7 +193,7 @@ void World::handleCollisions(sf::Time dt) {
       auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
       auto& block = dynamic_cast<Block&>(*collisionPair.second);
 
-      ball.setVelocity(ball.getVelocity() + Vector::unit(ball.getVelocity()) * 3.0f);
+      // ball.setVelocity(ball.getVelocity() + Vector::unit(ball.getVelocity()) * 3.0f);
       sounds.play(SoundEffect::HIT_BLOCK);
       block.damage(100);
       shakeScreen = true;

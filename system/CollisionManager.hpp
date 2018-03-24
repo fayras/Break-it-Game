@@ -19,7 +19,7 @@ class CollisionManager {
     std::set<SceneNode::Pair> pairs;
 
     void doCollisionChecking(sf::Time time, Entity *entity, const std::list<Entity*>& entities,
-                                 std::set<SceneNode::Pair>& pairs);
+                                 std::set<SceneNode::Pair>& pairs, int depth = 0);
 };
 
 

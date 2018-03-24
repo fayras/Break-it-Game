@@ -1,5 +1,6 @@
 #include "CollisionManager.hpp"
 #include "../entities/Entity.hpp"
+#include "Utility.hpp"
 
 CollisionManager::CollisionManager(SceneNode &rootNode)
   : nodes(rootNode)
@@ -25,7 +26,7 @@ std::set<SceneNode::Pair>& CollisionManager::check(sf::Time dt) {
 
 void CollisionManager::doCollisionChecking(
     sf::Time time, Entity *entity, const std::list<Entity*>& entities,
-    std::set<SceneNode::Pair>& pairs
+    std::set<SceneNode::Pair>& pairs, int depth
 ) {
 
   if(time <= sf::Time::Zero) {
@@ -34,26 +35,51 @@ void CollisionManager::doCollisionChecking(
 
   auto bpBox = getBroadphasingRect(*entity, time);
 
-  auto found = std::find_if(entities.begin(), entities.end(), [entity, &bpBox](const Entity *e) {
+  std::list<Entity*> found;
+  std::copy_if(entities.begin(), entities.end(), std::back_inserter(found), [entity, &bpBox](const Entity *e) {
     return entity != e && bpBox.intersects(e->getBoundingRect());
   });
 
-  float nX, nY;
-  float collisionTime = sweptAABB(*entity, **found, nX, nY);
+  if (found.empty()) {
+    if(depth > 0) {
+      Entity::Direction dir;
+      dir.distance = 1.0;
+      dir.deltaTime = time.asSeconds();
+      dir.dir = sf::Vector2f(1, 1);
+      entity->pushDirection(dir);
+    }
+    return;
+  };
 
-  if(collisionTime < 1.0f) {
-    pairs.emplace(std::minmax(entity, *found));
+  auto pos = entity->getPosition();
+  found.sort([&pos](const Entity* e1, const Entity* e2) {
+    auto dist1 = Vector::length(e1->getPosition() - pos);
+    auto dist2 = Vector::length(e2->getPosition() - pos);
+    return dist1 > dist2;
+  });
 
-    Entity::Direction dir;
-    dir.distance = collisionTime;
+  for(auto const& otherEntity : found) {
+    float nX, nY;
+    float collisionTime = sweptAABB(*entity, *otherEntity, nX, nY);
 
-    if (std::abs(nX) > 0.0001f) dir.dir = sf::Vector2f(-1, 1);
-    if (std::abs(nY) > 0.0001f) dir.dir = sf::Vector2f(1, -1);
+    if (collisionTime < 1.0f) {
+      pairs.emplace(std::minmax(entity, otherEntity));
 
-    entity->pushDirection(dir);
+      Entity::Direction dir;
+      dir.distance = collisionTime;
+      dir.deltaTime = time.asSeconds();
 
-    sf::Time remaining = time - time * collisionTime;
-    doCollisionChecking(time, entity, entities, pairs);
+      if (std::abs(nX) > 0.0001f) dir.dir = sf::Vector2f(-1, 1);
+      if (std::abs(nY) > 0.0001f) dir.dir = sf::Vector2f(1, -1);
+
+      entity->pushDirection(dir);
+
+      sf::Time remaining = time - time * collisionTime;
+      // Entity muss an der Stelle natürlich aktualisiert werden,
+      // weil sonst Broadphasing immer das gleiche liefert.
+      doCollisionChecking(remaining, entity, entities, pairs, ++depth);
+      return;
+    }
   }
 }
 
@@ -65,8 +91,8 @@ sf::FloatRect CollisionManager::getBroadphasingRect(const Entity& entity, sf::Ti
   auto offset = vel * dt.asSeconds();
   auto futurePos = pos + offset;
 
-  rect.left = std::min(pos.x, futurePos.x);
-  rect.top = std::min(pos.y, futurePos.y);
+  rect.left = std::min(pos.x, futurePos.x) - b.width / 2.f;
+  rect.top = std::min(pos.y, futurePos.y) - b.height / 2.f;
   rect.width = std::abs(futurePos.x - pos.x) + b.width;
   rect.height = std::abs(futurePos.y - pos.y) + b.height;
   // rect.top = b.vy > 0 ? b.y : b.y + b.vy;

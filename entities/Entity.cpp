@@ -24,7 +24,12 @@ void Entity::accelerate(float vx, float vy) {
 }
 
 sf::Vector2f Entity::getVelocity() const {
-  return velocity;
+  sf::Vector2f vel = velocity;
+  for(const Direction& d : directions) {
+    vel.x *= d.dir.x;
+    vel.y *= d.dir.y;
+  }
+  return vel;
 }
 
 int Entity::getHitpoints() const {
@@ -64,7 +69,7 @@ void Entity::updateCurrent(sf::Time dt, CommandQueue &commands) {
     } else {
       for(const Direction& d : directions) {
         setVelocity(velocity.x * d.dir.x, velocity.y * d.dir.y);
-        move(velocity * (d.distance * dt.asSeconds()));
+        move(velocity * (d.distance * d.deltaTime));
       }
       directions.clear();
     }
@@ -77,4 +82,15 @@ void Entity::setHP(int points) {
 
 void Entity::pushDirection(const Entity::Direction dir) {
   directions.emplace_back(dir);
+}
+
+sf::Vector2f Entity::getPosition() const {
+  sf::Vector2f pos = Transformable::getPosition();
+  sf::Vector2f vel = velocity;
+  for(const Direction& d : directions) {
+    vel.x *= d.dir.x;
+    vel.y *= d.dir.y;
+    pos += vel * d.distance;
+  }
+  return pos;
 }
