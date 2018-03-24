@@ -91,7 +91,7 @@ sf::Vector2f Entity::getPosition() const {
   for(const Direction& d : directions) {
     vel.x *= d.dir.x;
     vel.y *= d.dir.y;
-    pos += vel * d.distance;
+    pos += vel * d.distance * d.deltaTime;
   }
   return pos;
 }
