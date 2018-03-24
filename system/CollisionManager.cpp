@@ -1,6 +1,7 @@
 #include "CollisionManager.hpp"
 #include "../entities/Entity.hpp"
 #include "Utility.hpp"
+#include <cmath>
 
 CollisionManager::CollisionManager(SceneNode &rootNode)
   : nodes(rootNode)
@@ -75,8 +76,6 @@ void CollisionManager::doCollisionChecking(
       entity->pushDirection(dir);
 
       sf::Time remaining = time - time * collisionTime;
-      // Entity muss an der Stelle natürlich aktualisiert werden,
-      // weil sonst Broadphasing immer das gleiche liefert.
       doCollisionChecking(remaining, entity, entities, pairs, ++depth);
       return;
     }
@@ -95,9 +94,6 @@ sf::FloatRect CollisionManager::getBroadphasingRect(const Entity& entity, sf::Ti
   rect.top = std::min(pos.y, futurePos.y) - b.height / 2.f;
   rect.width = std::abs(futurePos.x - pos.x) + b.width;
   rect.height = std::abs(futurePos.y - pos.y) + b.height;
-  // rect.top = b.vy > 0 ? b.y : b.y + b.vy;
-  // rect.width = b.vx > 0 ? b.vx + b.w : b.w - b.vx;
-  // rect.height = b.vy > 0 ? b.vy + b.h : b.h - b.vy;
 
   return rect;
 }
