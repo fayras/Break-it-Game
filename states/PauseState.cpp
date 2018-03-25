@@ -26,14 +26,23 @@ PauseState::PauseState(StateStack &stack, State::Context context)
     requestStackPop();
   });
 
+  auto restartLevelButton = std::make_shared<gui::Button>(context);
+  restartLevelButton->setPosition(0.5f * windowSize.x - 100, 0.4f * windowSize.y + 125);
+  restartLevelButton->setText("Level neustarten");
+  restartLevelButton->setCallback([this] () {
+    requestStackClear();
+    requestStackPush(States::ID::GAME);
+  });
+
   auto backToMenuButton = std::make_shared<gui::Button>(context);
-  backToMenuButton->setPosition(0.5f * windowSize.x - 100, 0.4f * windowSize.y + 125);
+  backToMenuButton->setPosition(0.5f * windowSize.x - 100, 0.4f * windowSize.y + 175);
   backToMenuButton->setText("Beenden");
   backToMenuButton->setCallback([this] () {
     requestStackClear();
   });
 
   guiContainer.pack(returnButton);
+  guiContainer.pack(restartLevelButton);
   guiContainer.pack(backToMenuButton);
 
   getContext().music->setPaused(true);
