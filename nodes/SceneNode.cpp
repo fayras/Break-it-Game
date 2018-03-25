@@ -172,6 +172,10 @@ void SceneNode::getAllEntities(std::list<Entity*> &entities) {
   }
 }
 
+void SceneNode::clearChildren() {
+  children.clear();
+}
+
 CollisionSide collision(const SceneNode &lhs, const SceneNode &rhs) {
   sf::FloatRect r1 = lhs.getBoundingRect();
   sf::FloatRect r2 = rhs.getBoundingRect();

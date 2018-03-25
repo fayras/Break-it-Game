@@ -1,7 +1,6 @@
 #include <iostream>
 #include "World.hpp"
 #include "system/Utility.hpp"
-#include "LevelInfo.hpp"
 #include "tween/LinearTween.hpp"
 #include "skills/DuplicateBallSkill.hpp"
 #include <cmath>
@@ -33,7 +32,6 @@ World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sou
   sceneTexture.create(target.getSize().x, target.getSize().y);
   loadTextures();
   buildScene();
-  resetPositions();
 }
 
 void World::update(sf::Time dt) {
@@ -63,38 +61,6 @@ void World::update(sf::Time dt) {
   commandQueue.push(bgCommand);
 
   sceneGraph.removeWrecks();
-
-  if(!sceneGraph.containsNode(Category::BALL)) {
-    auto ball = std::make_unique<Ball>(textures.get(Textures::BALL));
-    sceneGraph.attachChildNow(std::move(ball));
-
-    Command command0;
-    command0.category = Category::LEVEL_INFO;
-    command0.action = derivedAction<LevelInfo>([this](LevelInfo& info, sf::Time) {
-      info.show(currentLevel->getID() + 1);
-    });
-    Command command1;
-    command1.category = Category::PADDLE;
-    command1.action = derivedAction<Paddle>([this](Paddle& paddle, sf::Time) {
-      paddle.damage(1);
-      if(!paddle.isDestroyed()) resetPositions();
-    });
-    Command command2;
-    command2.category = Category::LIFE;
-    command2.action = derivedAction<Life>([](Life& life, sf::Time) {
-      life.decrease();
-    });
-    Command command3;
-    command3.category = Category::SCORE;
-    command3.action = derivedAction<Score>([](Score& score, sf::Time) {
-      score.resetMultiplier();
-      score.increase(-score.get() / 2);
-    });
-    commandQueue.push(command0);
-    commandQueue.push(command1);
-    commandQueue.push(command2);
-    commandQueue.push(command3);
-  }
 
   if(shakeScreen) {
     shakeTimer += dt;
@@ -235,9 +201,6 @@ void World::buildScene() {
   background->setCategory(Category::BACKGROUND);
   sceneGraph.attachChild(std::move(background));
 
-  auto ball = std::make_unique<Ball>(textures.get(Textures::BALL));
-  sceneGraph.attachChild(std::move(ball));
-
   auto paddle = std::make_unique<Paddle>(textures);
   this->paddle = paddle.get();
   sceneGraph.attachChild(std::move(paddle));
@@ -291,28 +254,6 @@ sf::FloatRect World::getViewBounds() const {
 
 int World::getScore() const {
   return score->get();
-}
-
-void World::resetPositions() {
-  Command command1;
-  command1.category = Category::PADDLE;
-  command1.action = derivedAction<Paddle>([this](Paddle& paddle, sf::Time) {
-    paddle.setPosition(spawnPosition);
-  });
-  Command command2;
-  command2.category = Category::BALL;
-  command2.action = derivedAction<Ball>([this](Ball& ball, sf::Time) {
-    ball.reset(spawnPosition);
-    ball.setVelocity(0, -Ball::SPEED * currentLevel->getBallSpeedMultiplier());
-  });
-  Command command3;
-  command3.category = Category::PARTICLE_SYSTEM;
-  command3.action = derivedAction<ParticleNode>([](ParticleNode& particles, sf::Time) {
-    particles.clearParticles();
-  });
-  commandQueue.push(command1);
-  commandQueue.push(command2);
-  commandQueue.push(command3);
 }
 
 bool World::destroyed() {

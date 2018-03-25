@@ -12,6 +12,7 @@ class Level : public SceneNode {
     void setBounds(sf::FloatRect* bounds);
 
     bool done() const;
+    bool ballLost() const;
     bool isLast() const;
     bool isLoading() const;
     int getID() const;
@@ -30,6 +31,9 @@ class Level : public SceneNode {
     const TextureHolder& textures;
     const FontHolder& fonts;
     SceneNode* blocksLayer;
+    SceneNode* ballsLayer;
+
+    void resetObjects(CommandQueue &commands);
 };
 
 #endif //BREAK_IT_LEVEL_HPP

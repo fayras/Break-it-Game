@@ -7,6 +7,8 @@
 #include "LevelInfo.hpp"
 #include "system/ResourceHolder.hpp"
 #include "tween/LinearTween.hpp"
+#include "Score.hpp"
+#include "Life.hpp"
 
 namespace {
   const std::vector<LevelData> LevelTable = initializeLevelData();
@@ -19,12 +21,20 @@ Level::Level(const TextureHolder &textures, const FontHolder& fonts, const sf::V
   blocksLayer = blocks.get();
   attachChild(std::move(blocks));
 
+  auto balls = std::make_unique<SceneNode>();
+  ballsLayer = balls.get();
+  attachChild(std::move(balls));
+
   auto levelInfo = std::make_unique<LevelInfo>(fonts.get(Fonts::PIXEL), view);
   attachChild(std::move(levelInfo));
 }
 
 bool Level::done() const {
   return !blocksLayer->hasChildren();
+}
+
+bool Level::ballLost() const {
+  return !ballsLayer->hasChildren();
 }
 
 int Level::getID() const {
@@ -71,6 +81,10 @@ void Level::load() {
     block->tween(std::move(tween));
     blocksLayer->attachChild(std::move(block));
   }
+
+  ballsLayer->clearChildren();
+  auto ball = std::make_unique<Ball>(textures.get(Textures::BALL));
+  ballsLayer->attachChildNow(std::move(ball));
 }
 
 float Level::getBallSpeedMultiplier() const {
@@ -84,49 +98,30 @@ bool Level::isLast() const {
 void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
   if(done()) {
     loadNext();
-    Command command;
-    command.category = Category::PADDLE;
-    command.action = derivedAction<Paddle>([this](Paddle& node, sf::Time) {
-      sf::Vector2f spawnPosition{levelData.spawnPosition.x * bounds->width, levelData.spawnPosition.y * bounds->height};
-      node.setPosition(spawnPosition);
-      node.recieveEvents = false;
-    });
-    commands.push(command);
-
+    resetObjects(commands);
+  } else if(ballLost()) {
+    auto ball = std::make_unique<Ball>(textures.get(Textures::BALL));
+    ballsLayer->attachChildNow(std::move(ball));
     Command command1;
-    command1.category = Category::BALL;
-    command1.action = derivedAction<Ball>([this](Ball& ball, sf::Time) {
-      sf::Vector2f spawnPosition{levelData.spawnPosition.x * bounds->width, levelData.spawnPosition.y * bounds->height};
-      ball.reset(spawnPosition);
-      ball.setVelocity(0, -Ball::SPEED * getBallSpeedMultiplier());
-      ball.recieveEvents = false;
+    command1.category = Category::PADDLE;
+    command1.action = derivedAction<Paddle>([this](Paddle& paddle, sf::Time) {
+      paddle.damage(1);
+    });
+    Command command2;
+    command2.category = Category::LIFE;
+    command2.action = derivedAction<Life>([](Life& life, sf::Time) {
+      life.decrease();
+    });
+    Command command3;
+    command3.category = Category::SCORE;
+    command3.action = derivedAction<Score>([](Score& score, sf::Time) {
+      score.resetMultiplier();
+      score.increase(-score.get() / 2);
     });
     commands.push(command1);
-
-    Command command2;
-    command2.category = Category::PARTICLE_SYSTEM;
-    command2.action = derivedAction<ParticleNode>([](ParticleNode& particles, sf::Time) {
-      particles.clearParticles();
-    });
     commands.push(command2);
-
-    Command command3;
-    command3.category = Category::LEVEL_INFO;
-    command3.action = derivedAction<LevelInfo>([this](LevelInfo& info, sf::Time) {
-      info.show(getID() + 1, sf::milliseconds(1300));
-    });
     commands.push(command3);
-
-    auto t = std::make_unique<LinearTween>(sf::milliseconds(2900), [](const float& t) {});
-    t->attachObserver([&commands]() {
-      Command command;
-      command.category = Category::BALL | Category::PADDLE;
-      command.action = derivedAction<Entity>([](Entity& entity, sf::Time) {
-        entity.recieveEvents = true;
-      });
-      commands.push(command);
-    });
-    tween(std::move(t));
+    resetObjects(commands);
   }
 }
 
@@ -136,4 +131,50 @@ void Level::setBounds(sf::FloatRect* bounds) {
 
 bool Level::isLoading() const {
   return loading;
+}
+
+void Level::resetObjects(CommandQueue &commands) {
+  Command command;
+  command.category = Category::PADDLE;
+  command.action = derivedAction<Paddle>([this](Paddle& node, sf::Time) {
+    sf::Vector2f spawnPosition{levelData.spawnPosition.x * bounds->width, levelData.spawnPosition.y * bounds->height};
+    node.setPosition(spawnPosition);
+    node.recieveEvents = false;
+  });
+  commands.push(command);
+
+  Command command1;
+  command1.category = Category::BALL;
+  command1.action = derivedAction<Ball>([this](Ball& ball, sf::Time) {
+    sf::Vector2f spawnPosition{levelData.spawnPosition.x * bounds->width, levelData.spawnPosition.y * bounds->height};
+    ball.reset(spawnPosition);
+    ball.setVelocity(0, -Ball::SPEED * getBallSpeedMultiplier());
+    ball.recieveEvents = false;
+  });
+  commands.push(command1);
+
+  Command command2;
+  command2.category = Category::PARTICLE_SYSTEM;
+  command2.action = derivedAction<ParticleNode>([](ParticleNode& particles, sf::Time) {
+    particles.clearParticles();
+  });
+  commands.push(command2);
+
+  Command command3;
+  command3.category = Category::LEVEL_INFO;
+  command3.action = derivedAction<LevelInfo>([this](LevelInfo& info, sf::Time) {
+    info.show(getID() + 1, sf::milliseconds(1300));
+  });
+  commands.push(command3);
+
+  auto t = std::make_unique<LinearTween>(sf::milliseconds(2900), [](const float& t) {});
+  t->attachObserver([&commands]() {
+    Command command;
+    command.category = Category::BALL | Category::PADDLE;
+    command.action = derivedAction<Entity>([](Entity& entity, sf::Time) {
+      entity.recieveEvents = true;
+    });
+    commands.push(command);
+  });
+  tween(std::move(t));
 }
