@@ -10,7 +10,7 @@ TitleState::TitleState(StateStack &stack, State::Context context)
 {
   auto btPlay = std::make_shared<gui::Button>(context);
   btPlay->setPosition(0, 0);
-  btPlay->setText("Spielen");
+  btPlay->setText("Neues Spiel");
   btPlay->setCallback([this] () {
     requestStackPop();
     requestStackPush(States::ID::GAME);
@@ -35,6 +35,18 @@ TitleState::TitleState(StateStack &stack, State::Context context)
   guiContainer.pack(btPlay);
   guiContainer.pack(btSettings);
   guiContainer.pack(btExit);
+
+  // Wenn es ein Savegame gibt
+  // if (savegame) {
+  auto btContinue = std::make_shared<gui::Button>(context);
+  btContinue->setPosition(0, -60);
+  btContinue->setText("Fortsetzen");
+  btContinue->setCallback([this]() {
+    requestStackPop();
+    requestStackPush(States::ID::GAME);
+  });
+  guiContainer.pack(btContinue);
+  // }
 }
 
 void TitleState::draw() {
