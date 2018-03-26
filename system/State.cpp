@@ -9,8 +9,9 @@ State::Context::Context(
   SoundPlayer& sounds,
   Player& player,
   ScoreBoard& scoreBoard,
-  SettingsParser& settings
-) 
+  SettingsParser& settings,
+  SettingsParser& saveData
+)
   : window(&window),
     textures(&textures),
     fonts(&fonts),
@@ -18,7 +19,8 @@ State::Context::Context(
     sounds(&sounds),
     player(&player),
     scoreBoard(&scoreBoard),
-    settings(&settings)
+    settings(&settings),
+    saveData(&saveData)
 {} 
 
 State::State(StateStack& stack, Context context) 

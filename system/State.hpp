@@ -24,7 +24,7 @@ class State {
     typedef std::unique_ptr<State> Ptr;
 
     struct Context {
-      Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, MusicPlayer& music, SoundPlayer& sounds, Player& player, ScoreBoard& scoreBoard, SettingsParser& setings);
+      Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, MusicPlayer& music, SoundPlayer& sounds, Player& player, ScoreBoard& scoreBoard, SettingsParser& settings, SettingsParser& saveData);
       sf::RenderWindow* window;
       TextureHolder* textures;
       FontHolder* fonts;
@@ -33,6 +33,7 @@ class State {
       Player* player;
       ScoreBoard* scoreBoard;
       SettingsParser* settings;
+      SettingsParser* saveData;
     };
 
     State(StateStack& stack, Context context);
