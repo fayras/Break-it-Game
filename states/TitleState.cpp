@@ -12,6 +12,8 @@ TitleState::TitleState(StateStack &stack, State::Context context)
   btPlay->setPosition(0, 0);
   btPlay->setText("Neues Spiel");
   btPlay->setCallback([this] () {
+    this->context.saveData->set("player_level", 0);
+    this->context.saveData->set("player_score", 0);
     requestStackPop();
     requestStackPush(States::ID::GAME);
   });
