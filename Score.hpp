@@ -10,6 +10,7 @@ class Score : public SceneNode {
     void increaseMultiplier();
     void resetMultiplier();
     void increase(int amount = 10);
+    void set(int amount);
     int get() const;
     unsigned int getCategory() const override;
 

@@ -34,6 +34,8 @@ class World : private sf::NonCopyable {
 
     bool reachedEnd() const;
     int getScore() const;
+    void setLevel(int level);
+    void setScore(int score);
 
     bool destroyed();
 

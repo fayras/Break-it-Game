@@ -10,6 +10,8 @@ GameState::GameState(StateStack &stack, const State::Context &context)
       player(*context.player)
 {
   context.music->play(Music::GAME);
+  world.setLevel(context.saveData->get("playerLevel", 0));
+  world.setScore(context.saveData->get("playerScore", 0));
 }
 
 void GameState::draw() {

@@ -44,3 +44,8 @@ int Score::get() const {
 unsigned int Score::getCategory() const {
   return Category::SCORE;
 }
+
+void Score::set(int amount) {
+  score = amount;
+  currentVisibleScore = amount;
+}

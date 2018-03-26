@@ -53,6 +53,8 @@ void Level::loadNext() {
 
 void Level::load() {
   loading = true;
+  objectsNeedUpdate = true;
+  blocksLayer->clearChildren();
   levelData = LevelTable[getID()];
   // std::size_t columns = levelData.blockColors.size();
 
@@ -79,7 +81,7 @@ void Level::load() {
       loading = false;
     });
     block->tween(std::move(tween));
-    blocksLayer->attachChild(std::move(block));
+    blocksLayer->attachChildNow(std::move(block));
   }
 
   ballsLayer->clearChildren();
@@ -98,8 +100,8 @@ bool Level::isLast() const {
 void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
   if(done()) {
     loadNext();
-    resetObjects(commands);
   } else if(ballLost()) {
+    objectsNeedUpdate = true;
     auto ball = std::make_unique<Ball>(textures.get(Textures::BALL));
     ballsLayer->attachChildNow(std::move(ball));
     Command command1;
@@ -121,7 +123,11 @@ void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
     commands.push(command1);
     commands.push(command2);
     commands.push(command3);
+  }
+
+  if(objectsNeedUpdate) {
     resetObjects(commands);
+    objectsNeedUpdate = false;
   }
 }
 
@@ -177,4 +183,9 @@ void Level::resetObjects(CommandQueue &commands) {
     commands.push(command);
   });
   tween(std::move(t));
+}
+
+void Level::load(int level) {
+  currentID = level;
+  load();
 }

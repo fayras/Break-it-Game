@@ -259,3 +259,11 @@ int World::getScore() const {
 bool World::destroyed() {
   return paddle->isDestroyed();
 }
+
+void World::setLevel(int level) {
+  currentLevel->load(level);
+}
+
+void World::setScore(int score) {
+  this->score->set(score);
+}

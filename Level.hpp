@@ -9,6 +9,7 @@ class Level : public SceneNode {
   public:
     explicit Level(const TextureHolder& textures, const FontHolder& fonts, sf::Vector2f view);
     void loadNext();
+    void load(int level);
     void setBounds(sf::FloatRect* bounds);
 
     bool done() const;
@@ -25,6 +26,7 @@ class Level : public SceneNode {
     void load();
 
     bool loading{false};
+    bool objectsNeedUpdate{false};
     int currentID{-1};
     LevelData levelData;
     sf::FloatRect* bounds;
