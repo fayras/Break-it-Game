@@ -16,6 +16,7 @@ class GameState : public State {
   private:
     World world;
     Player& player;
+    int worldLevel{-1};
 };
 
 

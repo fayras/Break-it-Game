@@ -10,8 +10,8 @@ GameState::GameState(StateStack &stack, const State::Context &context)
       player(*context.player)
 {
   context.music->play(Music::GAME);
-  world.setLevel(context.saveData->get("playerLevel", 0));
-  world.setScore(context.saveData->get("playerScore", 0));
+  world.setLevel(context.saveData->get("player_level", 0));
+  world.setScore(context.saveData->get("player_score", 0));
 }
 
 void GameState::draw() {
@@ -32,6 +32,13 @@ bool GameState::update(sf::Time dt) {
     player.setScore(world.getScore());
     player.setLevel(-1);
     requestStackPush(States::GAME_OVER);
+  }
+
+  if(worldLevel != world.getCurrentLevel()) {
+    worldLevel = world.getCurrentLevel();
+    context.saveData->set("player_level", worldLevel);
+    context.saveData->set("player_score", world.getScore());
+    context.saveData->saveToFile();
   }
 
   return true;

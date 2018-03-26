@@ -267,3 +267,7 @@ void World::setLevel(int level) {
 void World::setScore(int score) {
   this->score->set(score);
 }
+
+int World::getCurrentLevel() const {
+  return currentLevel->getID();
+}

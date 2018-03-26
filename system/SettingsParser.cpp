@@ -129,7 +129,7 @@ bool SettingsParser::write() const
 
 
   // open the file for writing
-  std::ofstream out(m_filename);
+  std::ofstream out(m_filename, std::ios::out | std::ios::in | std::ios::trunc);
   if(!out.is_open())
   {
     std::cerr << "Error: Unable to open settings file \"" << m_filename << "\" for writing!" << std::endl;
