@@ -197,3 +197,8 @@ bool SettingsParser::isChanged() const
 {
   return m_isChanged;
 }
+
+bool SettingsParser::exists() const {
+  std::ifstream file(m_filename);
+  return file.good();
+}

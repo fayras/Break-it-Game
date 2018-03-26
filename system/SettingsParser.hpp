@@ -15,6 +15,7 @@ class SettingsParser {
     bool saveToFile();
 
     bool isChanged() const;
+    bool exists() const;
 
     template<typename T>
     T get(const std::string& key, T defaultValue) const;

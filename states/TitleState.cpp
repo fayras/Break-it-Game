@@ -37,15 +37,16 @@ TitleState::TitleState(StateStack &stack, State::Context context)
   guiContainer.pack(btExit);
 
   // Wenn es ein Savegame gibt
-  // if (savegame) {
-  auto btContinue = std::make_shared<gui::Button>(context);
-  btContinue->setPosition(0, -60);
-  btContinue->setText("Fortsetzen");
-  btContinue->setCallback([this]() {
-    requestStackPop();
-    requestStackPush(States::ID::GAME);
-  });
-  guiContainer.pack(btContinue);
+  if(context.saveData->exists()) {
+    auto btContinue = std::make_shared<gui::Button>(context);
+    btContinue->setPosition(0, -60);
+    btContinue->setText("Fortsetzen");
+    btContinue->setCallback([this]() {
+      requestStackPop();
+      requestStackPush(States::ID::GAME);
+    });
+    guiContainer.pack(btContinue);
+  }
   // }
 }
 
