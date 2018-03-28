@@ -26,15 +26,14 @@ bool GameState::update(sf::Time dt) {
   if(world.destroyed()) {
     player.setScore(world.getScore());
     requestStackPush(States::GAME_OVER);
-  }
-
-  if(world.reachedEnd()) {
+  } else if(world.reachedEnd()) {
     player.setScore(world.getScore());
     player.setLevel(-1);
+    context.saveData->set("player_level", 0);
+    context.saveData->set("player_score", 0);
+    context.saveData->saveToFile();
     requestStackPush(States::GAME_OVER);
-  }
-
-  if(worldLevel != world.getCurrentLevel()) {
+  } else if(worldLevel != world.getCurrentLevel()) {
     worldLevel = world.getCurrentLevel();
     context.saveData->set("player_level", worldLevel);
     context.saveData->set("player_score", world.getScore());

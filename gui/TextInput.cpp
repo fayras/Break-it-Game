@@ -85,7 +85,7 @@ void gui::TextInput::handleEvent(const sf::Event &event) {
       auto textBounds = text.getGlobalBounds();
       caret.setPosition(textBounds.left + textBounds.width + 2, caret.getPosition().y);
     }
-    if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return) {
+    if(event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Return) {
       activate();
     }
   }
