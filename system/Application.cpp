@@ -6,12 +6,13 @@
 #include "../states/GameOverState.hpp"
 #include "../states/NewHighscoreState.hpp"
 #include "../states/SettingsState.hpp"
+#include "../Config.hpp"
 
 const int FPS = 60;
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / FPS);
 
 Application::Application()
-  : window(sf::VideoMode(1000, 740), "Break it!"),
+  : window(sf::VideoMode(1000, 740), PROJECT_NAME),
     isPaused(false),
     stateStack(State::Context(window, textures, fonts, music, sounds, player, scoreBoard, settings, saveData))
 {

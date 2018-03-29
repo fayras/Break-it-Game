@@ -6,10 +6,18 @@ set(VERSION_MAJOR "0")
 set(VERSION_MINOR "5")
 set(VERSION_PATCH "1")
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+set(ARCHIVE_FILE_NAME "${PROJECT_NAME}-${VERSION}-${CMAKE_SYSTEM_NAME}.zip")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
-SET(CMAKE_INSTALL_RPATH "$ORIGIN/lib:$ORIGIN/")
+set(CMAKE_INSTALL_RPATH "$ORIGIN/lib:$ORIGIN/")
+
+# configure a header file to pass some of the CMake settings
+# to the source code
+configure_file (
+        "${PROJECT_SOURCE_DIR}/Config.hpp.in"
+        "${PROJECT_SOURCE_DIR}/Config.hpp"
+)
 
 # Set default build type explicitly to Release
 if (NOT CMAKE_BUILD_TYPE)
@@ -54,7 +62,7 @@ else()
 endif ()
 
 add_custom_command(TARGET run_install POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E tar "cfv" "${PROJECT_NAME}-${VERSION}-${CMAKE_SYSTEM_NAME}.zip" --format=zip ${ZIP_INCLUDE_FILES}
+        COMMAND ${CMAKE_COMMAND} -E tar "cfv" ${ARCHIVE_FILE_NAME} --format=zip ${ZIP_INCLUDE_FILES}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/install
         DEPENDS run_install
         COMMENT "Packing ${PROJECT_NAME}")

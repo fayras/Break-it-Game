@@ -1,0 +1,4 @@
+// the configured options and settings
+#define GAME_VERSION_TAG "v@VERSION@"
+#define PLATFORM_NAME "@CMAKE_SYSTEM_NAME@"
+#define PROJECT_NAME "@PROJECT_NAME@"
