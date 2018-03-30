@@ -19,6 +19,7 @@ class Patcher {
 
     public:
         Patcher();
+        Status getStatus() const;
 
     private:
         std::string crt{"curl-ca-bundle.crt"};

@@ -87,3 +87,7 @@ void Patcher::setOptions(CURL *handle, const char *url) {
     curl_easy_setopt(handle, CURLOPT_FOLLOWLOCATION, 1L);
     curl_easy_setopt(handle, CURLOPT_CAINFO, crt.c_str());
 }
+
+Patcher::Status Patcher::getStatus() const {
+    return status;
+}
