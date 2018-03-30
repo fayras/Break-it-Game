@@ -7,6 +7,10 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+namespace gui {
+    class Button;
+}
+
 class TitleState : public State {
   public:
     TitleState(StateStack& stack, Context context);
@@ -19,6 +23,7 @@ class TitleState : public State {
     sf::Sprite background;
     gui::Container guiContainer;
     Patcher patcher;
+    gui::Button* updateButton;
 };
 
 

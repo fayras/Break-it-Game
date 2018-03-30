@@ -24,7 +24,6 @@ namespace {
 Patcher::Patcher() {
     status = Status::FETCHING_INFO;
     latest_version_url_future = std::async(std::launch::async, [this] {
-
         CURL *curl = curl_easy_init();
         if (curl) {
             setOptions(curl, GITHUB_RELEASE_PATH);
@@ -45,13 +44,14 @@ Patcher::Patcher() {
                 for(auto& asset : assets) {
                     std::string browser_download_url = asset["browser_download_url"];
                     if (browser_download_url.find(std::string(PLATFORM_NAME) + ".zip") != std::string::npos) {
+                        status = Status::READY_TO_DOWNLOAD;
                         return browser_download_url;
                     }
                 }
 
             }
 
-            status = Status::READY_TO_DOWNLOAD;
+            status = Status::DONE;
             return std::string();
         } else {
             status = Status::FAILED;
@@ -71,6 +71,10 @@ Patcher::Status Patcher::getStatus() const {
 }
 
 void Patcher::download() {
+    if (status != Status::READY_TO_DOWNLOAD) {
+        return;
+    }
+
     download_future = std::async(std::launch::async, [this] {
         std::string browser_download_url = latest_version_url_future.get();
         if(!browser_download_url.empty()) {

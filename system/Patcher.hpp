@@ -6,18 +6,18 @@
 #include <future>
 
 class Patcher {
-    enum class Status {
-        IDLE,
-        FETCHING_INFO,
-        READY_TO_DOWNLOAD,
-        DOWNLOADING,
-        DOWNLOAD_DONE,
-        UPDATING,
-        DONE,
-        FAILED
-    };
-
     public:
+        enum class Status {
+            IDLE,
+            FETCHING_INFO,
+            READY_TO_DOWNLOAD,
+            DOWNLOADING,
+            DOWNLOAD_DONE,
+            UPDATING,
+            DONE,
+            FAILED
+        };
+
         Patcher();
         Status getStatus() const;
         void download();

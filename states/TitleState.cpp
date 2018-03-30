@@ -34,11 +34,11 @@ TitleState::TitleState(StateStack &stack, State::Context context)
   });
 
     auto btUpdate = std::make_shared<gui::Button>(context);
-    btUpdate->setPosition(600, 120);
-    btUpdate->setText("Update");
-    btUpdate->disable();
+    updateButton = btUpdate.get();
+    btUpdate->setPosition(440, 220);
+    btUpdate->setText("");
     btUpdate->setCallback([this] () {
-        // requestStackPop();
+        patcher.download();
     });
 
   guiContainer.move(120, 450);
@@ -70,6 +70,28 @@ void TitleState::draw() {
 }
 
 bool TitleState::update(sf::Time dt) {
+  switch(patcher.getStatus()) {
+    case Patcher::Status::FAILED: break;
+    case Patcher::Status::IDLE:break;
+    case Patcher::Status::FETCHING_INFO:
+      updateButton->setText("Suche Aktualisierungen...");
+      break;
+    case Patcher::Status::READY_TO_DOWNLOAD:
+      updateButton->setText("Update herunterladen");
+      break;
+    case Patcher::Status::DOWNLOADING:
+      updateButton->setText("Update wird heruntergeladen...");
+      break;
+    case Patcher::Status::DOWNLOAD_DONE:
+      updateButton->setText("Update heruntergeladen");
+      break;
+    case Patcher::Status::UPDATING:
+      updateButton->setText("Update wird installiert...");
+      break;
+    case Patcher::Status::DONE:
+      updateButton->setText("Kein Update gefunden");
+      break;
+  }
   guiContainer.update(dt);
   return true;
 }
