@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <unzipper.h>
 #include "Patcher.hpp"
 #include "json.hpp"
 #include "../Config.hpp"
@@ -52,10 +53,11 @@ Patcher::Patcher() {
             }
 
             status = Status::DONE;
-            return std::string();
         } else {
             status = Status::FAILED;
         }
+
+        return std::string();
     });
 }
 
@@ -82,6 +84,12 @@ void Patcher::download() {
             FILE *patch_file = fopen("temp.zip", "wb");
             // FILE *logfile = fopen("dump.txt", "wb");
             CURL *fileCurl = curl_easy_init();
+
+            if(!fileCurl) {
+                status = Status::FAILED;
+                return;
+            }
+
             setOptions(fileCurl, browser_download_url.c_str());
             curl_easy_setopt(fileCurl, CURLOPT_WRITEFUNCTION, writeFile);
             curl_easy_setopt(fileCurl, CURLOPT_WRITEDATA, patch_file);
@@ -93,7 +101,14 @@ void Patcher::download() {
             fclose(patch_file);
             // fclose(logfile);
 
-            status = Status::DOWNLOAD_DONE;
+            status = Status::UPDATING;
+
+            zipper::Unzipper unzipper("temp.zip");
+            unzipper.extract("update");
+            unzipper.close();
+            remove("temp.zip");
+
+            status = Status::DONE;
         }
     });
 }
