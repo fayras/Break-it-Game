@@ -12,6 +12,7 @@ gui::Button::Button(State::Context context)
     text("", context.fonts->get(Fonts::ID::PIXEL), 35),
     shortcutText("", context.fonts->get(Fonts::ID::NARROW), 30),
     isToggle(false),
+    disabled(false),
     shortcut(sf::Keyboard::Unknown)
 {
   deco.setFillColor(sf::Color(53, 92, 125, 200));
@@ -66,6 +67,10 @@ void gui::Button::deselect() {
 }
 
 void gui::Button::activate() {
+  if(disabled) {
+    return;
+  }
+
   Component::activate();
 
   // If we are toggle then we should show that the button is pressed and thus "toggled".
@@ -118,8 +123,10 @@ void gui::Button::handleEvent(const sf::Event &event) {
 void gui::Button::draw(sf::RenderTarget &target, sf::RenderStates states) const {
   states.transform *= getTransform();
   target.draw(deco, states);
-  target.draw(hover, states);
   target.draw(text, states);
+  if(!disabled) {
+    target.draw(hover, states);
+  }
   if(shortcut != sf::Keyboard::Unknown) {
     target.draw(shortcutText, states);
   }
@@ -133,6 +140,10 @@ sf::FloatRect gui::Button::getBounds() const {
 }
 
 void gui::Button::update(sf::Time dt) {
+  if(disabled) {
+    return;
+  }
+
   Tweenable::update(dt);
 }
 
@@ -151,4 +162,13 @@ void gui::Button::updatePositions() {
   deco.setSize({ bounds.width + 7, deco.getSize().y });
   text.setPosition(bounds.width + 20, -4);
   hover.setPosition(bounds.width + 7, hover.getPosition().y);
+}
+
+void gui::Button::disable(bool flag) {
+  disabled = flag;
+  if(disabled) {
+    deco.setFillColor(sf::Color(120, 120, 120, 200));
+  } else {
+    deco.setFillColor(sf::Color(53, 92, 125, 200));
+  }
 }

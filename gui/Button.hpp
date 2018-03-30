@@ -31,6 +31,7 @@ namespace gui {
       bool selectable() const override;
       void select() override;
       void deselect() override;
+      void disable(bool flag = true);
 
       void activate() override;
       void deactivate() override;
@@ -51,6 +52,7 @@ namespace gui {
       sf::Text shortcutText;
       float maxTextWidth;
       bool isToggle;
+      bool disabled;
       sf::Keyboard::Key shortcut;
   };
 }
