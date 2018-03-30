@@ -52,7 +52,7 @@ Patcher::Patcher() {
 
             }
 
-            status = Status::DONE;
+            status = Status::NO_UPDATE;
         } else {
             status = Status::FAILED;
         }
@@ -81,7 +81,8 @@ void Patcher::download() {
         std::string browser_download_url = latest_version_url_future.get();
         if(!browser_download_url.empty()) {
             status = Status::DOWNLOADING;
-            FILE *patch_file = fopen("temp.zip", "wb");
+            std::string tempFilename("Break-It-Patch.zip");
+            FILE *patch_file = fopen(tempFilename.c_str(), "wb");
             // FILE *logfile = fopen("dump.txt", "wb");
             CURL *fileCurl = curl_easy_init();
 
@@ -103,10 +104,10 @@ void Patcher::download() {
 
             status = Status::UPDATING;
 
-            zipper::Unzipper unzipper("temp.zip");
+            zipper::Unzipper unzipper(tempFilename);
             unzipper.extract("update");
             unzipper.close();
-            remove("temp.zip");
+            remove(tempFilename.c_str());
 
             status = Status::DONE;
         }

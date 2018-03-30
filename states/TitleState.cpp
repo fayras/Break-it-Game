@@ -72,7 +72,9 @@ void TitleState::draw() {
 bool TitleState::update(sf::Time dt) {
   switch(patcher.getStatus()) {
     case Patcher::Status::FAILED: break;
-    case Patcher::Status::IDLE:break;
+    case Patcher::Status::NO_UPDATE:
+        updateButton->setText("Kein Update gefunden");
+        break;
     case Patcher::Status::FETCHING_INFO:
       updateButton->setText("Suche Aktualisierungen...");
       break;
@@ -89,7 +91,7 @@ bool TitleState::update(sf::Time dt) {
       updateButton->setText("Update wird installiert...");
       break;
     case Patcher::Status::DONE:
-      updateButton->setText("Kein Update gefunden");
+      updateButton->setText("Neustarten");
       break;
   }
   guiContainer.update(dt);
