@@ -61,11 +61,11 @@ std::vector<LevelData> initializeLevelData() {
   auto colors = getColors();
   std::vector<LevelData> data(levels.size());
 
-  for(int i = 0; i < levels.size(); i++) {
+  for(std::size_t i = 0; i < levels.size(); i++) {
     std::size_t levelSize = levels[i].size();
-    for(int y = 0; y < levelSize; y++) {
+    for(std::size_t y = 0; y < levelSize; y++) {
       std::size_t rowLength = levels[i][y].size();
-      for(int x = 0; x < rowLength; x++) {
+      for(std::size_t x = 0; x < rowLength; x++) {
         char colorKey = levels[i][y].at(static_cast<unsigned long>(x));
         if(colorKey != ' ') {
           const sf::Color& color = colors.at(colorKey);

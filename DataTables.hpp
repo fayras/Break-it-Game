@@ -18,7 +18,7 @@ struct LevelData {
   Blocks::Type blockType{Blocks::NORMAL};
   float ballSpeedMultiplier{1.0f};
   float scoreMultiplier{1.0f};
-  sf::Vector2f spawnPosition{0.5, 0.94};
+  sf::Vector2f spawnPosition{0.5f, 0.94f};
 };
 
 std::vector<ParticleData>	initializeParticleData();
