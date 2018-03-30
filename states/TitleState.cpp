@@ -33,10 +33,19 @@ TitleState::TitleState(StateStack &stack, State::Context context)
     requestStackPop();
   });
 
+    auto btUpdate = std::make_shared<gui::Button>(context);
+    btUpdate->setPosition(600, 120);
+    btUpdate->setText("Update");
+    btUpdate->disable();
+    btUpdate->setCallback([this] () {
+        // requestStackPop();
+    });
+
   guiContainer.move(120, 450);
   guiContainer.pack(btPlay);
   guiContainer.pack(btSettings);
   guiContainer.pack(btExit);
+  guiContainer.pack(btUpdate);
 
   // Wenn es ein Savegame gibt
   if(context.saveData->exists()) {
