@@ -1,7 +1,14 @@
 #include "TitleState.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <curl/curl.h>
 #include "../system/ResourceHolder.hpp"
 #include "../gui/Button.hpp"
+#include "../Config.hpp"
+
+size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {
+  data->append((char*) ptr, size * nmemb);
+  return size * nmemb;
+}
 
 TitleState::TitleState(StateStack &stack, State::Context context)
     : State(stack, context),
@@ -50,6 +57,37 @@ TitleState::TitleState(StateStack &stack, State::Context context)
     guiContainer.pack(btContinue);
   }
   // }
+  CURL* curl = curl_easy_init();
+  if (curl) {
+    curl_easy_setopt(curl, CURLOPT_URL, GITHUB_RELEASE_PATH);
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, "curl/7.59.0");
+    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+    curl_easy_setopt(curl, CURLOPT_CAINFO, "curl-ca-bundle.crt");
+
+    std::string response_string;
+    std::string header_string;
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
+    curl_easy_setopt(curl, CURLOPT_HEADERDATA, &header_string);
+
+    struct curl_slist *headers = nullptr;
+    headers = curl_slist_append(headers, "Accept: application/json");
+    headers = curl_slist_append(headers, "Content-Type: application/json");
+    headers = curl_slist_append(headers, "charsets: utf-8");
+    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+
+    char* url;
+    long response_code;
+    double elapsed;
+    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
+    curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &elapsed);
+    curl_easy_getinfo(curl, CURLINFO_EFFECTIVE_URL, &url);
+
+    curl_easy_perform(curl);
+    curl_easy_cleanup(curl);
+
+    curl = nullptr;
+  }
 }
 
 void TitleState::draw() {
