@@ -38,7 +38,6 @@ Patcher::Patcher() {
             curl_easy_perform(curl);
             curl_easy_cleanup(curl);
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(10000));
             auto responseJson = json::parse(response_string);
             std::string tag = responseJson["tag_name"];
             if(tag.compare(GAME_VERSION_TAG) > 0) {
