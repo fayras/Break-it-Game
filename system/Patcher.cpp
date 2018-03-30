@@ -62,19 +62,22 @@ Patcher::Patcher() {
     download_future = std::async(std::launch::async, [this] {
         std::string browser_download_url = latest_version_url_future.get();
         if(!browser_download_url.empty()) {
+            status = Status::DOWNLOADING;
             FILE *patch_file = fopen("temp.zip", "wb");
-            FILE *logfile = fopen("dump.txt", "wb");
+            // FILE *logfile = fopen("dump.txt", "wb");
             CURL *fileCurl = curl_easy_init();
             setOptions(fileCurl, browser_download_url.c_str());
             curl_easy_setopt(fileCurl, CURLOPT_WRITEFUNCTION, writeFile);
             curl_easy_setopt(fileCurl, CURLOPT_WRITEDATA, patch_file);
-            curl_easy_setopt(fileCurl, CURLOPT_VERBOSE, 1L);
-            curl_easy_setopt(fileCurl, CURLOPT_STDERR, logfile);
+            // curl_easy_setopt(fileCurl, CURLOPT_VERBOSE, 1L);
+            // curl_easy_setopt(fileCurl, CURLOPT_STDERR, logfile);
 
             curl_easy_perform(fileCurl);
             curl_easy_cleanup(fileCurl);
             fclose(patch_file);
-            fclose(logfile);
+            // fclose(logfile);
+
+            status = Status::DOWNLOAD_DONE;
         }
     });
 }
