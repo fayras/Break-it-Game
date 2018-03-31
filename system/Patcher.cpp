@@ -65,7 +65,6 @@ void Patcher::setOptions(CURL *handle, const char *url) {
     curl_easy_setopt(handle, CURLOPT_URL, url);
     curl_easy_setopt(handle, CURLOPT_USERAGENT, "curl/7.59.0");
     curl_easy_setopt(handle, CURLOPT_FOLLOWLOCATION, 1L);
-    curl_easy_setopt(handle, CURLOPT_CAINFO, crt.c_str());
 }
 
 Patcher::Status Patcher::getStatus() const {

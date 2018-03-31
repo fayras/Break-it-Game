@@ -24,7 +24,6 @@ class Patcher {
         void patch() const;
 
     private:
-        std::string crt{"curl-ca-bundle.crt"};
         std::atomic<Status> status;
         std::atomic<float> progress{0.f};
         std::future<std::string> latest_version_url_future;
