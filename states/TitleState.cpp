@@ -38,7 +38,12 @@ TitleState::TitleState(StateStack &stack, State::Context context)
     btUpdate->setPosition(440, 220);
     btUpdate->setText("");
     btUpdate->setCallback([this] () {
-        patcher.download();
+        if(patcher.getStatus() == Patcher::Status::READY_TO_DOWNLOAD) {
+            patcher.download();
+        } else if(patcher.getStatus() == Patcher::Status::DONE) {
+            patcher.patch();
+            requestStackClear();
+        }
     });
 
   guiContainer.move(120, 450);
@@ -88,10 +93,10 @@ bool TitleState::update(sf::Time dt) {
       updateButton->setText("Update heruntergeladen");
       break;
     case Patcher::Status::UPDATING:
-      updateButton->setText("Update wird installiert...");
+      updateButton->setText("Update wird extraheirt...");
       break;
     case Patcher::Status::DONE:
-      updateButton->setText("Neustarten");
+      updateButton->setText("Update installieren");
       break;
   }
   guiContainer.update(dt);

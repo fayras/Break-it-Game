@@ -105,11 +105,19 @@ void Patcher::download() {
             status = Status::UPDATING;
 
             zipper::Unzipper unzipper(tempFilename);
-            unzipper.extract("update");
+            unzipper.extract("temp_files");
             unzipper.close();
             remove(tempFilename.c_str());
 
             status = Status::DONE;
         }
     });
+}
+
+void Patcher::patch() const {
+    #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+        ShellExecute(nullptr, "open", "cmd.exe", "/c Windows.bat", "patcher", NULL);
+    #else
+        // We are on Linux - run a shell script
+    #endif
 }

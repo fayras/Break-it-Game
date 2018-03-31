@@ -21,6 +21,7 @@ class Patcher {
         Patcher();
         Status getStatus() const;
         void download();
+        void patch() const;
 
     private:
         std::string crt{"curl-ca-bundle.crt"};
