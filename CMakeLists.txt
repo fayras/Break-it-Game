@@ -65,6 +65,7 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E
 # Install target
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION "${CMAKE_SOURCE_DIR}/install")
 install(DIRECTORY assets DESTINATION "${CMAKE_SOURCE_DIR}/install")
+install(DIRECTORY patcher DESTINATION "${CMAKE_SOURCE_DIR}/install")
 
 add_custom_target(run_install
         "${CMAKE_COMMAND}" --build "${CMAKE_BINARY_DIR}" --target install
@@ -72,9 +73,9 @@ add_custom_target(run_install
         COMMENT "Installing ${PROJECT_NAME}")
 
 if(WIN32)
-    set (ZIP_INCLUDE_FILES "Break-it.exe" "assets" "openal32.dll")
+    set (ZIP_INCLUDE_FILES "Break-it.exe" "assets" "patcher" "openal32.dll")
 else()
-    set (ZIP_INCLUDE_FILES "Break-it" "assets" "Start" "lib")
+    set (ZIP_INCLUDE_FILES "Break-it" "assets" "patcher" "Start" "lib")
 endif ()
 
 add_custom_command(TARGET run_install POST_BUILD

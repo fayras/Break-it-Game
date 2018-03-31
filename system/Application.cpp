@@ -17,14 +17,14 @@ Application::Application()
     stateStack(State::Context(window, textures, fonts, music, sounds, player, scoreBoard, settings, saveData))
 {
   window.setFramerateLimit(FPS);
-  settings.loadFromFile("assets/settings.dat");
-  saveData.loadFromFile("assets/save.dat");
+  settings.loadFromFile("settings.dat");
+  saveData.loadFromFile("save.dat");
 
   player.assignKey(Player::MOVE_LEFT, (sf::Keyboard::Key) settings.get("key_left", (int) sf::Keyboard::Left));
   player.assignKey(Player::MOVE_RIGHT, (sf::Keyboard::Key) settings.get("key_right", (int) sf::Keyboard::Right));
 
-  music.setVolume(settings.get("music_volume", 100.0f));
-  sounds.setMasterVolume(settings.get("sounds_volume", 100.0f));
+  music.setVolume(settings.get("music_volume", 70.0f));
+  sounds.setMasterVolume(settings.get("sounds_volume", 70.0f));
 
   loadAssets();
   registerStates();
@@ -96,9 +96,6 @@ void Application::loadAssets() {
   fonts.load(Fonts::ID::MAIN, "./assets/fonts/Roboto.ttf");
   fonts.load(Fonts::ID::PIXEL, "./assets/fonts/TimesNewPixel.ttf");
   fonts.load(Fonts::ID::NARROW, "./assets/fonts/Diner.ttf");
-  textures.load(Textures::BUTTON_NORMAL, "assets/textures/buttonDefault.png");
-  textures.load(Textures::BUTTON_PRESSED, "assets/textures/buttonDefault.png");
-  textures.load(Textures::BUTTON_SELECTED, "assets/textures/buttonSelected.png");
   textures.load(Textures::TITLE, "assets/textures/title.png");
   textures.load(Textures::GAME_OVER_SCREEN, "assets/textures/game_over_screen_2.png");
   textures.load(Textures::GAME_WIN_SCREEN, "assets/textures/win_screen.png");

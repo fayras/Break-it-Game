@@ -94,8 +94,6 @@ void Patcher::download() {
             setOptions(fileCurl, browser_download_url.c_str());
             curl_easy_setopt(fileCurl, CURLOPT_WRITEFUNCTION, writeFile);
             curl_easy_setopt(fileCurl, CURLOPT_WRITEDATA, patch_file);
-            // curl_easy_setopt(fileCurl, CURLOPT_VERBOSE, 1L);
-            // curl_easy_setopt(fileCurl, CURLOPT_STDERR, logfile);
 
             curl_easy_perform(fileCurl);
             curl_easy_cleanup(fileCurl);
