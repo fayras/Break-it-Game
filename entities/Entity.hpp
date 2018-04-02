@@ -33,7 +33,7 @@ class Entity : public SceneNode {
 
     bool recieveEvents{true};
 
-    void pushDirection(const Direction dir);
+    void pushDirection(Direction dir);
 
   protected:
     void updateCurrent(sf::Time dt, CommandQueue& commands) override;
