@@ -8,6 +8,7 @@
 class Patcher {
     public:
         enum class Status {
+            IDLE,
             NO_UPDATE,
             FETCHING_INFO,
             READY_TO_DOWNLOAD,
@@ -20,11 +21,12 @@ class Patcher {
 
         Patcher();
         Status getStatus() const;
+        void fetch();
         void download();
         void patch() const;
 
     private:
-        std::atomic<Status> status;
+        std::atomic<Status> status{Status::IDLE};
         std::atomic<float> progress{0.f};
         std::future<std::string> latest_version_url_future;
         std::future<void> download_future;

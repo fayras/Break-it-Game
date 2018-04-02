@@ -22,7 +22,19 @@ namespace {
     }
 }
 
-Patcher::Patcher() {
+Patcher::Patcher() = default;
+
+void Patcher::setOptions(CURL *handle, const char *url) {
+    curl_easy_setopt(handle, CURLOPT_URL, url);
+    curl_easy_setopt(handle, CURLOPT_USERAGENT, "curl/7.59.0");
+    curl_easy_setopt(handle, CURLOPT_FOLLOWLOCATION, 1L);
+}
+
+Patcher::Status Patcher::getStatus() const {
+    return status;
+}
+
+void Patcher::fetch() {
     status = Status::FETCHING_INFO;
     latest_version_url_future = std::async(std::launch::async, [this] {
         CURL *curl = curl_easy_init();
@@ -59,16 +71,6 @@ Patcher::Patcher() {
 
         return std::string();
     });
-}
-
-void Patcher::setOptions(CURL *handle, const char *url) {
-    curl_easy_setopt(handle, CURLOPT_URL, url);
-    curl_easy_setopt(handle, CURLOPT_USERAGENT, "curl/7.59.0");
-    curl_easy_setopt(handle, CURLOPT_FOLLOWLOCATION, 1L);
-}
-
-Patcher::Status Patcher::getStatus() const {
-    return status;
 }
 
 void Patcher::download() {
