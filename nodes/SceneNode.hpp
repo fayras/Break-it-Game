@@ -27,7 +27,7 @@ class SceneNode : public virtual sf::Transformable, public sf::Drawable, private
     typedef std::unique_ptr<SceneNode> Ptr;
     typedef std::pair<SceneNode*, SceneNode*> Pair;
 
-    explicit SceneNode(Category::Type category = Category::NONE);
+    explicit SceneNode(Category::Type category = Category::SCENE);
 
     void attachChild(Ptr child);
     void attachChildNow(Ptr child);

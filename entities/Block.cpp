@@ -25,10 +25,8 @@ Block::Block(const TextureHolder& textures, Blocks::Type type)
 
   centerOrigin(sprite);
   centerOrigin(breakAnimation);
-}
 
-unsigned int Block::getCategory() const {
-  return Category::BLOCK;
+  defaultCategory = Category::BLOCK;
 }
 
 void Block::updateCurrent(sf::Time dt, CommandQueue &commands) {

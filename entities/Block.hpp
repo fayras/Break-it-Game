@@ -14,7 +14,6 @@ class Block : public Entity {
 
     explicit Block(const TextureHolder& textures, Blocks::Type type);
     void setColor(const sf::Color& color);
-    unsigned int getCategory() const override;
     sf::FloatRect getBoundingRect() const override;
     bool isMarkedForRemoval() const override;
     void damage(int points) override;

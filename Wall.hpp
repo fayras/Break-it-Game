@@ -7,7 +7,6 @@
 class Wall : public Entity {
   public:
     Wall(float width, float height);
-    unsigned int getCategory() const override;
     sf::FloatRect getBoundingRect() const override;
     void setDeadly(bool deadly);
     bool isDeadly() const;

@@ -13,7 +13,6 @@ class ParticleNode : public SceneNode {
     void addParticle(sf::Vector2f position);
     void clearParticles();
     Particle::Type getParticleType() const;
-    unsigned int getCategory() const override;
 
   private:
     void updateCurrent(sf::Time dt, CommandQueue& commands) override;

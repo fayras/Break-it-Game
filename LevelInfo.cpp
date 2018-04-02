@@ -5,7 +5,8 @@
 #include "ResourceIdentifiers.hpp"
 
 LevelInfo::LevelInfo(const sf::Font &font, const sf::Vector2f view)
-  : view(view)
+  : SceneNode(Category::LEVEL_INFO),
+    view(view)
 {
   pausedText.setFont(font);
   pausedText.setCharacterSize(130);
@@ -48,10 +49,6 @@ void LevelInfo::show(int level, sf::Time delay) {
     showInfo = false;
   });
   tween(std::move(t3));
-}
-
-unsigned int LevelInfo::getCategory() const {
-  return Category::LEVEL_INFO;
 }
 
 void LevelInfo::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {

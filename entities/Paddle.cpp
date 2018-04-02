@@ -12,14 +12,11 @@ Paddle::Paddle(const TextureHolder& textures)
 {
   centerOrigin(sprite);
   isStatic = false;
+  defaultCategory = Category::PADDLE;
 
   auto lives = std::make_unique<Life>(textures.get(Textures::LIFE));
   lives->setPosition(10, 10);
   attachChild(std::move(lives));
-}
-
-unsigned int Paddle::getCategory() const {
-  return Category::PADDLE;
 }
 
 void Paddle::updateCurrent(sf::Time dt, CommandQueue &commands) {

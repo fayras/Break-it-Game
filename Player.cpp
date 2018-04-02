@@ -25,6 +25,14 @@ void Player::handleEvent(const sf::Event &event, CommandQueue &commands) {
     auto found = keyBinding.find(event.key.code);
     if (found != keyBinding.end() && !isRealtimeAction(found->second))
       commands.push(actionBinding[found->second]);
+
+    if (event.key.code == sf::Keyboard::F12) {
+      Command command;
+      command.category = Category::SCENE;
+      command.action = [](SceneNode& node, sf::Time) {
+        node.showDebugInfo = !node.showDebugInfo;
+      };
+    }
   }
 }
 

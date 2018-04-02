@@ -1,13 +1,14 @@
 #include "Life.hpp"
 
-Life::Life(const sf::Texture &texture) : SpriteNode(texture), originalRect(sprite.getTextureRect()) {
+Life::Life(const sf::Texture &texture)
+  : SpriteNode(texture),
+    originalRect(sprite.getTextureRect())
+{
+  defaultCategory = Category::LIFE;
+
   sf::IntRect rect(originalRect);
   rect.width *= lives;
   sprite.setTextureRect(rect);
-}
-
-unsigned int Life::getCategory() const {
-  return Category::LIFE;
 }
 
 int Life::getLives() const {

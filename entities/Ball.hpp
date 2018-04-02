@@ -10,7 +10,6 @@ class Ball : public Entity {
     static constexpr float SPEED = 300.0f;
 
     explicit Ball(const sf::Texture& texture);
-    unsigned int getCategory() const override;
     sf::FloatRect getBoundingRect() const override;
 
     void duplicate();

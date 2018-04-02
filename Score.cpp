@@ -5,7 +5,8 @@
 #include <iostream>
 
 Score::Score(const sf::Font& font)
-  : scoreText("Score: " + std::to_string(score), font, 41)
+  : SceneNode(Category::SCORE),
+    scoreText("Score: " + std::to_string(score), font, 41)
 {
   scoreText.setOrigin(scoreText.getGlobalBounds().width, 0);
 }
@@ -39,10 +40,6 @@ void Score::increase(int amount) {
 
 int Score::get() const {
   return score;
-}
-
-unsigned int Score::getCategory() const {
-  return Category::SCORE;
 }
 
 void Score::set(int amount) {

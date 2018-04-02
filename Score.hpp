@@ -12,7 +12,6 @@ class Score : public SceneNode {
     void increase(int amount = 10);
     void set(int amount);
     int get() const;
-    unsigned int getCategory() const override;
 
   protected:
     void updateCurrent(sf::Time dt, CommandQueue &commands) override;

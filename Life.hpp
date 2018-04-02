@@ -13,7 +13,6 @@ class Life : public SpriteNode {
 
   public:
     void decrease();
-    unsigned int getCategory() const override;
 
   private:
     int lives{3};

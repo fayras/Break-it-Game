@@ -11,13 +11,11 @@ Ball::Ball(const sf::Texture& texture)
 {
   centerOrigin(sprite);
   isStatic = false;
+  defaultCategory = Category::BALL;
+
   std::unique_ptr<EmitterNode> trail(new EmitterNode(Particle::Propellant));
   trail->setPosition(0, 0);
   attachChild(std::move(trail));
-}
-
-unsigned int Ball::getCategory() const {
-  return Category::BALL;
 }
 
 sf::FloatRect Ball::getBoundingRect() const {

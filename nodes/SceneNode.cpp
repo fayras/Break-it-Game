@@ -64,7 +64,7 @@ void SceneNode::setCategory(const Category::Type category) {
 }
 
 unsigned int SceneNode::getCategory() const {
-  return defaultCategory;
+  return Category::SCENE | defaultCategory;
 }
 
 void SceneNode::update(sf::Time dt, CommandQueue& commands) {
