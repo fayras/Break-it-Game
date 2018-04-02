@@ -32,6 +32,7 @@ void Player::handleEvent(const sf::Event &event, CommandQueue &commands) {
       command.action = [](SceneNode& node, sf::Time) {
         node.showDebugInfo = !node.showDebugInfo;
       };
+      commands.push(command);
     }
   }
 }
