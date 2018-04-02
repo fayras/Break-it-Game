@@ -35,6 +35,7 @@ void Ball::duplicate() {
   auto ball = std::make_unique<Ball>(*sprite.getTexture());
   ball->setPosition(getPosition());
   ball->setVelocity(getVelocity());
+  ball->showDebugInfo = showDebugInfo;
 
   rotateBy(radians);
   ball->rotateBy(-radians);
