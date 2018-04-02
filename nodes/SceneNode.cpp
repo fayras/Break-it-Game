@@ -5,6 +5,8 @@
 #include "../entities/Entity.hpp"
 #include <cassert>
 #include <cmath>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 
 SceneNode::SceneNode(Category::Type category)
   : parent(nullptr), defaultCategory(category)
@@ -88,6 +90,15 @@ void SceneNode::draw(sf::RenderTarget &target, sf::RenderStates states) const {
   states.transform *= getTransform();
 
   drawCurrent(target, states);
+  if(showDebugInfo) {
+      auto bounding = getBoundingRect();
+      sf::RectangleShape rect({ bounding.width, bounding.height });
+      rect.setOutlineColor(sf::Color::Red);
+      rect.setFillColor(sf::Color::Transparent);
+      rect.setOutlineThickness(1.f);
+      rect.setPosition(bounding.left, bounding.top);
+      target.draw(rect);
+  }
   drawChildren(target, states);
 }
 

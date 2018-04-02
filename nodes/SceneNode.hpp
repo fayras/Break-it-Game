@@ -55,6 +55,8 @@ class SceneNode : public virtual sf::Transformable, public sf::Drawable, private
     virtual bool isMarkedForRemoval() const;
     virtual bool isDestroyed() const;
 
+    bool showDebugInfo{false};
+
   protected:
     virtual void updateCurrent(sf::Time dt, CommandQueue& commands);
     void updateChildren(sf::Time dt, CommandQueue& commands);
