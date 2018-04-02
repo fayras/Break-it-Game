@@ -123,10 +123,10 @@ void gui::Button::handleEvent(const sf::Event &event) {
 void gui::Button::draw(sf::RenderTarget &target, sf::RenderStates states) const {
   states.transform *= getTransform();
   target.draw(deco, states);
-  target.draw(text, states);
   if(!disabled) {
     target.draw(hover, states);
   }
+  target.draw(text, states);
   if(shortcut != sf::Keyboard::Unknown) {
     target.draw(shortcutText, states);
   }
