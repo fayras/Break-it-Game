@@ -73,7 +73,7 @@ add_custom_target(run_install
         COMMENT "Installing ${PROJECT_NAME}")
 
 if(WIN32)
-    set (ZIP_INCLUDE_FILES "Break-it.exe" "assets" "patcher" "openal32.dll")
+    set (ZIP_INCLUDE_FILES "Break-it.exe" "assets" "patcher" "openal32.dll" "libcurl.dll" "zlibd.dll")
 else()
     set (ZIP_INCLUDE_FILES "Break-it" "assets" "patcher" "Start" "lib")
 endif ()
