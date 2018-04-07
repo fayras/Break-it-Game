@@ -5,7 +5,7 @@
 
 class DuplicateBallSkill : public Skill {
   public:
-    explicit DuplicateBallSkill(const sf::Texture &texture);
+    explicit DuplicateBallSkill(const sf::Texture &texture, const sf::Font &font);
 };
 
 #endif //BREAK_IT_DUPLICATEBALLSKILL_HPP

@@ -9,6 +9,8 @@ class SpriteNode : public SceneNode {
   public:
     explicit SpriteNode(const sf::Texture& texture);
     SpriteNode(const sf::Texture& texture, const sf::IntRect& textureRect);
+    void setColor(sf::Color color);
+    sf::FloatRect getBoundingRect() const;
 
   protected:
     void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;

@@ -1,11 +1,12 @@
 #ifndef BREAK_IT_SKILL_HPP
 #define BREAK_IT_SKILL_HPP
 
+#include <SFML/Graphics/Text.hpp>
 #include "../nodes/SpriteNode.hpp"
 
 class Skill : public SpriteNode {
   public:
-    explicit Skill(const sf::Texture &texture, float cooldownInSeconds);
+    explicit Skill(const sf::Texture &texture, const sf::Font &font, float cooldownInSeconds);
     void activate();
 
   protected:
@@ -15,8 +16,9 @@ class Skill : public SpriteNode {
     Command command;
 
   private:
-    sf::Time cooldownTime;
     sf::Time cooldown;
+    sf::Time cooldownTime;
+    sf::Text cooldownText;
     bool activateSkill{false};
 };
 
