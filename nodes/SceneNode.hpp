@@ -65,9 +65,9 @@ class SceneNode : public virtual sf::Transformable, public sf::Drawable, private
     void drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 
     std::list<Ptr> children;
+    std::list<Ptr> pendingChildren;
     SceneNode* parent;
     Category::Type defaultCategory;
-    std::list<Ptr> pendingChildren;
     bool isStatic{true};
 };
 

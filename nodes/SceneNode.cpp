@@ -69,7 +69,7 @@ unsigned int SceneNode::getCategory() const {
 
 void SceneNode::update(sf::Time dt, CommandQueue& commands) {
   if(!pendingChildren.empty()) {
-    children.merge(pendingChildren);
+    children.splice(children.end(), pendingChildren);
   }
   Tweenable::update(dt);
   updateCurrent(dt, commands);
