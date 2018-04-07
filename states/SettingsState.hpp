@@ -20,6 +20,8 @@ class SettingsState : public State {
   private:
     sf::RectangleShape background;
     gui::Container guiContainer;
+    int col;
+    int row;
     std::map<
         gui::Button::Ptr,
         std::function<void(const sf::Event&, gui::Button*)>
@@ -36,7 +38,15 @@ class SettingsState : public State {
         const std::function<void(gui::Label*)>& func2
     );
 
+    void addOption(
+        const std::string &label,
+        const std::function<void()>& func,
+        const std::function<void(gui::Label*)>& func2
+    );
+
+    void setPositionsAndPack(std::shared_ptr<gui::Button>& button, std::shared_ptr<gui::Label>& label);
     void updateLabels();
+    void newColumn();
 };
 
 #endif //BREAK_IT_SETTINGSSTATE_HPP

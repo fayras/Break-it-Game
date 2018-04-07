@@ -9,29 +9,11 @@ float clamp(float n, float lower, float upper) {
 }
 
 SettingsState::SettingsState(StateStack &stack, State::Context context)
-    : State(stack, context), background(sf::Vector2f(context.window->getSize().x, context.window->getSize().y))
+    : State(stack, context),
+      background(sf::Vector2f(context.window->getSize().x, context.window->getSize().y)),
+      col(0), row(0)
 {
   background.setFillColor(sf::Color(0, 0, 0, 170));
-
-  addOption("Links", [context](const sf::Event& event, gui::Button* button) {
-    if(event.key.code != sf::Keyboard::Escape) {
-      context.player->assignKey(Player::MOVE_LEFT, event.key.code);
-      context.settings->set("key_left", (int) event.key.code);
-    }
-    button->deactivate();
-  }, [context](gui::Label* label) {
-    label->setText(String::from(context.player->getAssignedKey(Player::MOVE_LEFT)));
-  });
-
-  addOption("Rechts", [context](const sf::Event& event, gui::Button* button) {
-    if(event.key.code != sf::Keyboard::Escape) {
-      context.player->assignKey(Player::MOVE_RIGHT, event.key.code);
-      context.settings->set("key_right", (int) event.key.code);
-    }
-    button->deactivate();
-  }, [context](gui::Label* label) {
-    label->setText(String::from(context.player->getAssignedKey(Player::MOVE_RIGHT)));
-  });
 
   addOption("Musik", [context](const sf::Event& event, gui::Button* button) {
     if(event.type == sf::Event::KeyReleased) {
@@ -72,6 +54,48 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
     }
   }, [context](gui::Label* label) {
     label->setText(std::to_string((int) context.sounds->getMasterVolume()));
+  });
+
+  addOption("Nach Updates suchen", [context]() {
+      context.settings->set("checkForUpdates", !context.settings->get("checkForUpdates", true));
+  }, [context](gui::Label* label) {
+      if(context.settings->get("checkForUpdates", true)) {
+          label->setText("Ja");
+      } else {
+          label->setText("Nein");
+      }
+  });
+
+  newColumn();
+
+  addOption("Links", [context](const sf::Event& event, gui::Button* button) {
+      if(event.key.code != sf::Keyboard::Escape) {
+        context.player->assignKey(Player::MOVE_LEFT, event.key.code);
+        context.settings->set("key_left", (int) event.key.code);
+      }
+      button->deactivate();
+  }, [context](gui::Label* label) {
+      label->setText(String::from(context.player->getAssignedKey(Player::MOVE_LEFT)));
+  });
+
+  addOption("Rechts", [context](const sf::Event& event, gui::Button* button) {
+      if(event.key.code != sf::Keyboard::Escape) {
+        context.player->assignKey(Player::MOVE_RIGHT, event.key.code);
+        context.settings->set("key_right", (int) event.key.code);
+      }
+      button->deactivate();
+  }, [context](gui::Label* label) {
+      label->setText(String::from(context.player->getAssignedKey(Player::MOVE_RIGHT)));
+  });
+
+  addOption("Skill 1", [context](const sf::Event& event, gui::Button* button) {
+      if(event.key.code != sf::Keyboard::Escape) {
+        context.player->assignKey(Player::DUPLICATE_BALL, event.key.code);
+        context.settings->set("key_skill_1", (int) event.key.code);
+      }
+      button->deactivate();
+  }, [context](gui::Label* label) {
+      label->setText(String::from(context.player->getAssignedKey(Player::DUPLICATE_BALL)));
   });
 
   auto backButton = std::make_shared<gui::Button>(context);
@@ -135,21 +159,48 @@ void SettingsState::addOption(
     const std::function<void(gui::Label*)>& func2
 ) {
   auto button = std::make_shared<gui::Button>(context);
-  button->setPosition(80.0f, options.size() * 60 + 240);
   button->setText(title);
   button->setToggle(true);
 
   auto label = std::make_shared<gui::Label>("", *getContext().fonts);
-  label->setPosition(350.0f, options.size() * 60 + 240);
 
   options.insert(std::make_pair(button, func));
   optionLabels.insert(std::make_pair(label, func2));
-  guiContainer.pack(button);
-  guiContainer.pack(label);
+  setPositionsAndPack(button, label);
+}
+
+void SettingsState::addOption(
+        const std::string &title,
+        const std::function<void()>& func,
+        const std::function<void(gui::Label*)>& func2
+) {
+    auto button = std::make_shared<gui::Button>(context);
+    button->setText(title);
+    button->setCallback([this, func] () {
+        func();
+        updateLabels();
+    });
+
+    auto label = std::make_shared<gui::Label>("", *getContext().fonts);
+    optionLabels.insert(std::make_pair(label, func2));
+    setPositionsAndPack(button, label);
 }
 
 void SettingsState::updateLabels() {
   for(const auto& label : optionLabels) {
     label.second(label.first.get());
   }
+}
+
+void SettingsState::newColumn() {
+  col++;
+  row = 0;
+}
+
+void SettingsState::setPositionsAndPack(std::shared_ptr<gui::Button> &button, std::shared_ptr<gui::Label> &label) {
+    button->setPosition(80.0f + col * 450.f, row * 60.f + 240.f);
+    label->setPosition(420.0f + col * 450.f, row * 58.f + 240.f);
+    guiContainer.pack(button);
+    guiContainer.pack(label);
+    row++;
 }
