@@ -22,6 +22,7 @@ Application::Application()
 
   player.assignKey(Player::MOVE_LEFT, (sf::Keyboard::Key) settings.get("key_left", (int) sf::Keyboard::Left));
   player.assignKey(Player::MOVE_RIGHT, (sf::Keyboard::Key) settings.get("key_right", (int) sf::Keyboard::Right));
+  player.assignKey(Player::DUPLICATE_BALL, (sf::Keyboard::Key) settings.get("key_skill_1", (int) sf::Keyboard::Q));
 
   music.setVolume(settings.get("music_volume", 70.0f));
   sounds.setMasterVolume(settings.get("sounds_volume", 70.0f));

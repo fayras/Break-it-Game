@@ -2,11 +2,12 @@
 #define BREAK_IT_SKILL_HPP
 
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include "../nodes/SpriteNode.hpp"
 
 class Skill : public SpriteNode {
   public:
-    explicit Skill(const sf::Texture &texture, const sf::Font &font, float cooldownInSeconds);
+    explicit Skill(const sf::Texture &texture, const sf::Font &font, float cooldownInSeconds, sf::Keyboard::Key key);
     void activate();
 
   protected:
@@ -20,6 +21,7 @@ class Skill : public SpriteNode {
     sf::Time cooldownTime;
     sf::Text cooldownText;
     bool activateSkill{false};
+    sf::Text assignedKey;
 };
 
 #endif //BREAK_IT_SKILL_HPP

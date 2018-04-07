@@ -20,11 +20,12 @@ bool matchesCategories(SceneNode::Pair& colliders, Category::Type typeA, Categor
   }
 }
 
-World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sounds)
+World::World(sf::RenderTarget &outputTarget, FontHolder &fonts, SoundPlayer &sounds, SettingsParser& settings)
   : target(outputTarget),
     worldView(outputTarget.getDefaultView()),
     fonts(fonts),
     sounds(sounds),
+    settings(settings),
     worldBounds(0.f, 0.f, worldView.getSize().x, worldView.getSize().y),
     spawnPosition(worldView.getSize().x / 2.f, worldBounds.height - 40),
     collisions(sceneGraph)
@@ -241,7 +242,7 @@ void World::buildScene() {
   this->score = score.get();
   sceneGraph.attachChild(std::move(score));
 
-  auto dupSkill = std::make_unique<DuplicateBallSkill>(textures.get(Textures::DUPLICATE_SKILL), fonts.get(Fonts::MAIN));
+  auto dupSkill = std::make_unique<DuplicateBallSkill>(textures.get(Textures::DUPLICATE_SKILL), fonts.get(Fonts::MAIN), (sf::Keyboard::Key) settings.get("key_skill_1", (int) sf::Keyboard::Q));
   dupSkill->move(200, 0);
   sceneGraph.attachChild(std::move(dupSkill));
 }

@@ -2,14 +2,24 @@
 #include "../system/Utility.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
-Skill::Skill(const sf::Texture &texture, const sf::Font &font, float cooldownInSeconds)
-  : SpriteNode(texture), cooldownTime(sf::seconds(cooldownInSeconds))
+Skill::Skill(const sf::Texture &texture, const sf::Font &font, float cooldownInSeconds, sf::Keyboard::Key key)
+  : SpriteNode(texture), cooldownTime(sf::seconds(cooldownInSeconds)), assignedKey()
 {
   auto bounds = sprite.getGlobalBounds();
   sprite.scale(64.f / bounds.width, 64.f / bounds.height);
   cooldownText.setFont(font);
   cooldownText.setCharacterSize(30);
   cooldownText.setPosition(32, 32);
+
+  assignedKey.setFont(font);
+  assignedKey.setCharacterSize(14);
+  assignedKey.setStyle(sf::Text::Bold);
+  assignedKey.setString(String::from(key));
+
+  sf::FloatRect textBounds = assignedKey.getLocalBounds();
+  assignedKey.setOrigin(std::floor(textBounds.left + textBounds.width), std::floor(textBounds.top));
+
+  assignedKey.setPosition(60, 5);
 }
 
 void Skill::activate() {
@@ -18,6 +28,7 @@ void Skill::activate() {
 
 void Skill::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
   SpriteNode::drawCurrent(target, states);
+  target.draw(assignedKey, states);
   if(cooldown > sf::Time::Zero) {
     target.draw(cooldownText, states);
   }

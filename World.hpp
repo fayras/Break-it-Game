@@ -19,6 +19,7 @@
 #include "Level.hpp"
 #include "Life.hpp"
 #include "system/CollisionManager.hpp"
+#include "system/SettingsParser.hpp"
 
 namespace sf {
   class RenderTarget;
@@ -26,7 +27,7 @@ namespace sf {
 
 class World : private sf::NonCopyable {
   public:
-    World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sounds);
+    World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sounds, SettingsParser& settings);
     void update(sf::Time dt);
     void draw();
 
@@ -55,6 +56,7 @@ class World : private sf::NonCopyable {
     TextureHolder textures;
     FontHolder& fonts;
     SoundPlayer& sounds;
+    SettingsParser& settings;
 
     CommandQueue commandQueue;
 

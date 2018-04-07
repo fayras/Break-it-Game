@@ -6,7 +6,7 @@
 
 GameState::GameState(StateStack &stack, const State::Context &context)
     : State(stack, context),
-      world(*context.window, *context.fonts, *context.sounds),
+      world(*context.window, *context.fonts, *context.sounds, *context.settings),
       player(*context.player)
 {
   context.music->play(Music::GAME);
