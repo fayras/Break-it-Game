@@ -87,7 +87,7 @@ bool SettingsParser::read()
 
 bool SettingsParser::write() const
 {
-  std::vector<std::pair<std::string, std::string>> fileContents;
+  std::map<std::string, std::string> fileContents;
 
   std::ifstream in(m_filename);
 
@@ -115,18 +115,16 @@ bool SettingsParser::write() const
         // if the line is empty or a comment simply take the whole line as the key
         keyValuePair.first = line;
       }
-      fileContents.push_back(keyValuePair);
+      fileContents[keyValuePair.first] = keyValuePair.second;
     }
   }
-  else
-  {
-    // Can't open file for reading. Use only the data from the map
-    for (const auto &it : m_data)
-      fileContents.emplace_back(it.first, it.second);
-  }
-
   in.close();
 
+
+  // Override Settings from file or add new values not defined in the file
+  for (const auto &it : m_data) {
+    fileContents[it.first] = it.second;
+  }
 
   // open the file for writing
   std::ofstream out(m_filename, std::ios::out | std::ios::in | std::ios::trunc);
@@ -135,7 +133,7 @@ bool SettingsParser::write() const
     std::cerr << "Error: Unable to open settings file \"" << m_filename << "\" for writing!" << std::endl;
     return false;
   }
-  for (auto &fileContent : fileContents) {
+  for (auto const& fileContent : fileContents) {
     out << fileContent.first; // write the key
 
     if(!fileContent.second.empty())
