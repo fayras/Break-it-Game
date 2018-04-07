@@ -99,7 +99,7 @@ bool TitleState::update(sf::Time dt) {
         updateButton->setText("Update heruntergeladen");
             break;
       case Patcher::Status::UPDATING:
-        updateButton->setText("Update wird extraheirt...");
+        updateButton->setText("Update wird extrahiert...");
             break;
       case Patcher::Status::DONE:
         updateButton->setText("Update installieren");
