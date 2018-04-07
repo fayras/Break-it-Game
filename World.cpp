@@ -109,7 +109,6 @@ void World::loadTextures() {
   textures.load(Textures::BALL, "assets/textures/ballGrey.png");
   textures.load(Textures::EXPLOSION, "assets/textures/Explosion.png");
   textures.load(Textures::STARFIELD, "assets/textures/starfield.png");
-  textures.load(Textures::SCORE, "assets/textures/glassPanel_cornerBL.png");
   textures.load(Textures::PARTICLE, "assets/textures/particle.png");
   textures.load(Textures::LIFE, "assets/textures/life.png");
   textures.load(Textures::DUPLICATE_SKILL, "assets/textures/duplicateSkill.png");
@@ -242,9 +241,8 @@ void World::buildScene() {
   this->score = score.get();
   sceneGraph.attachChild(std::move(score));
 
-  auto dupSkill = std::make_unique<DuplicateBallSkill>(textures.get(Textures::DUPLICATE_SKILL));
+  auto dupSkill = std::make_unique<DuplicateBallSkill>(textures.get(Textures::DUPLICATE_SKILL), fonts.get(Fonts::MAIN));
   dupSkill->move(200, 0);
-  dupSkill->scale(0.25f, 0.25f);
   sceneGraph.attachChild(std::move(dupSkill));
 }
 
