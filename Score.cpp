@@ -45,4 +45,6 @@ int Score::get() const {
 void Score::set(int amount) {
   score = amount;
   currentVisibleScore = amount;
+  scoreText.setString("Score: " + std::to_string(currentVisibleScore));
+  scoreText.setOrigin(scoreText.getGlobalBounds().width, 0);
 }
