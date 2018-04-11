@@ -51,6 +51,15 @@ namespace Music {
   };
 }
 
+namespace Shaders {
+    enum ID {
+        BrightnessPass,
+        DownSamplePass,
+        GaussianBlurPass,
+        AddPass,
+    };
+}
+
 
 // Forward declaration and a few type definitions
 template <typename Resource, typename Identifier>
@@ -59,5 +68,6 @@ class ResourceHolder;
 typedef ResourceHolder<sf::Texture, Textures::ID>	TextureHolder;
 typedef ResourceHolder<sf::Font, Fonts::ID> FontHolder;
 typedef ResourceHolder<sf::SoundBuffer, SoundEffect::ID> SoundBufferHolder;
+typedef ResourceHolder<sf::Shader, Shaders::ID>	ShaderHolder;
 
 #endif //SFML_TEMPLATE_RESOURCEIDENTIFIERS_HPP

@@ -3,6 +3,7 @@
 #include "system/Utility.hpp"
 #include "tween/LinearTween.hpp"
 #include "skills/DuplicateBallSkill.hpp"
+#include "shaders/PostEffect.hpp"
 #include <cmath>
 #include <algorithm>
 
@@ -91,8 +92,16 @@ void World::update(sf::Time dt) {
 }
 
 void World::draw() {
-  target.setView(worldView);
-  target.draw(sceneGraph);
+  if(PostEffect::isSupported()) {
+    sceneTexture.clear();
+    sceneTexture.setView(worldView);
+    sceneTexture.draw(sceneGraph);
+    sceneTexture.display();
+    bloomEffect.apply(sceneTexture, target);
+  } else {
+    target.setView(worldView);
+    target.draw(sceneGraph);
+  }
 }
 
 CommandQueue& World::getCommandQueue() {

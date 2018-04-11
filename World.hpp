@@ -20,6 +20,7 @@
 #include "Life.hpp"
 #include "system/CollisionManager.hpp"
 #include "system/SettingsParser.hpp"
+#include "shaders/BloomEffect.hpp"
 
 namespace sf {
   class RenderTarget;
@@ -50,13 +51,15 @@ class World : private sf::NonCopyable {
     void buildScene();
     sf::FloatRect getViewBounds() const;
 
-    sf::RenderTarget&	target;
+    sf::RenderTarget& target;
     sf::RenderTexture sceneTexture;
     sf::View worldView;
     TextureHolder textures;
     FontHolder& fonts;
     SoundPlayer& sounds;
     SettingsParser& settings;
+
+    BloomEffect bloomEffect;
 
     CommandQueue commandQueue;
 
