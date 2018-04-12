@@ -57,6 +57,7 @@ namespace Shaders {
         DownSamplePass,
         GaussianBlurPass,
         AddPass,
+        Space
     };
 }
 

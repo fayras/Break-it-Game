@@ -4,6 +4,7 @@
 #include "tween/LinearTween.hpp"
 #include "skills/DuplicateBallSkill.hpp"
 #include "shaders/PostEffect.hpp"
+#include "Background.hpp"
 #include <cmath>
 #include <algorithm>
 
@@ -50,17 +51,6 @@ void World::update(sf::Time dt) {
   sceneGraph.update(dt, commandQueue);
   adaptPlayerPosition();
   updateSounds();
-
-  Command bgCommand;
-  bgCommand.category = Category::BACKGROUND;
-  bgCommand.action = [this](SceneNode& background, sf::Time dt) {
-    background.move(0, 100 * dt.asSeconds());
-    // keep bg repeating. 1400 = size of texture
-    if(background.getPosition().y > 0) {
-      background.setPosition(0, -1400 + worldView.getSize().y);
-    }
-  };
-  commandQueue.push(bgCommand);
 
   sceneGraph.removeWrecks();
 
@@ -206,8 +196,7 @@ void World::updateSounds() {
 void World::buildScene() {
   sf::Texture& stars = textures.get(Textures::STARFIELD);
   stars.setRepeated(true);
-  auto background = std::make_unique<SpriteNode>(stars);
-  background->setCategory(Category::BACKGROUND);
+  auto background = std::make_unique<Background>(stars, worldView);
   sceneGraph.attachChild(std::move(background));
 
   auto paddle = std::make_unique<Paddle>(textures);

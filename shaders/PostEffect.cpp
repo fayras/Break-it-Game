@@ -6,9 +6,7 @@
 #include "PostEffect.hpp"
 #include <SFML/Graphics/VertexArray.hpp>
 
-PostEffect::~PostEffect() {
-
-}
+PostEffect::~PostEffect() = default;
 
 bool PostEffect::isSupported() {
     return sf::Shader::isAvailable();
