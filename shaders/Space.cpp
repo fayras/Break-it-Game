@@ -3,6 +3,7 @@
 //
 
 #include "Space.hpp"
+#include "../system/Utility.hpp"
 
 Space::Space()
         : Space(20, 20, 0.53f)
@@ -13,6 +14,7 @@ Space::Space(int iterations, int steps, float formuparam)
           iterations(iterations), steps(steps), formuparam(formuparam)
 {
     shaders.load(Shaders::Space, "assets/shaders/Fullpass.vert", "assets/shaders/Space.frag");
+    from = sf::Vector3f(Random::decimal(0, 1), Random::decimal(0, 1), Random::decimal(0, 1));
 }
 
 void Space::apply(const sf::RenderTexture &input, sf::RenderTarget &output) {
@@ -33,7 +35,9 @@ void Space::space(const sf::RenderTexture &input, sf::RenderTarget &output) {
     shader.setUniform("iResolution", sf::Vector3f(input.getSize().x, input.getSize().y, 0));
     shader.setUniform("iTime", time.asSeconds());
     shader.setUniform("iterations", iterations);
+    shader.setUniform("volsteps", steps);
     shader.setUniform("formuparam", formuparam);
+    shader.setUniform("from", from);
     applyShader(shader, output);
 }
 

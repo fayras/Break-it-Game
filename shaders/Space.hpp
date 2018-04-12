@@ -29,6 +29,7 @@ private:
     int iterations;
     int steps;
     float formuparam;
+    sf::Vector3f from;
 };
 
 

@@ -1,7 +1,7 @@
 #include "Background.hpp"
 
 Background::Background(const sf::Texture &texture, sf::View &worldView)
-        : SpriteNode(texture), spaceEffect(15, 17, 0.53f)
+        : SpriteNode(texture), spaceEffect(15, 20, 0.53f)
 {
     setCategory(Category::BACKGROUND);
     this->texture.setView(worldView);

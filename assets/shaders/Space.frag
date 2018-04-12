@@ -11,11 +11,12 @@ uniform float iTime;                 // shader playback time (in seconds)
 uniform int iterations;
 uniform int volsteps;
 uniform float formuparam;
+uniform vec3 from;
 
 // #define iterations 17
 //#define formuparam 0.53
 
-#define volsteps 20
+// #define volsteps 20
 #define stepsize 0.1
 
 #define zoom   0.800
@@ -47,7 +48,7 @@ void main()
 	vec3 dir=vec3(uv*zoom,1.);
 	float time=iTime*speed+.25;
 
-	vec3 from=vec3(1.,.5,0.5);
+	// vec3 from=vec3(1.,.5,0.5);
 	from+=vec3(0,time*2.,0);
 
 	//volumetric rendering
