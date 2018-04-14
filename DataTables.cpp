@@ -75,6 +75,8 @@ std::vector<LevelData> initializeLevelData() {
     }
   }
 
+  data[0].blockType = Blocks::SWAY;
+
   data[1].ballSpeedMultiplier = 1.5f;
   data[1].blockType = Blocks::SMALL;
 

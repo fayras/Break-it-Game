@@ -8,6 +8,7 @@ namespace Blocks {
     INVISIBLE = 1 << 1,
     SELF_HEALING = 1 << 2,
     SMALL = 1 << 3,
+    SWAY = 1 << 4
   };
 
   inline Type operator|(Type a, Type b) {

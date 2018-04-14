@@ -18,6 +18,7 @@ Block::Block(const TextureHolder& textures, Blocks::Type type)
   if(type == Blocks::SMALL) sprite.setTexture(textures.get(Textures::BLOCK_SMALL), true);
   if(type == Blocks::DOUBLE_HP) setHP(200);
   if(type == Blocks::SELF_HEALING) timers.emplace(Blocks::SELF_HEALING, sf::Clock());
+  if(type == Blocks::SWAY) timers.emplace(Blocks::SWAY, sf::Clock());
   if(type == Blocks::INVISIBLE) {
     hidden = true;
     timers.emplace(Blocks::INVISIBLE, sf::Clock());
@@ -53,6 +54,13 @@ void Block::updateCurrent(sf::Time dt, CommandQueue &commands) {
         sprite.setColor({ c.r, c.g, c.b, static_cast<sf::Uint8>(255 - (255 * t)) });
       }));
       timers.at(Blocks::INVISIBLE).restart();
+    }
+
+    // sway block a bit
+    if(type == Blocks::SWAY) {
+      float offsetX = (float) std::sin(timers.at(Blocks::SWAY).getElapsedTime().asSeconds()) * .3f + Random::decimal(-0.2f, 0.2f);
+      float offsetY = (float) std::cos(timers.at(Blocks::SWAY).getElapsedTime().asSeconds()) * .3f + Random::decimal(-0.2f, 0.2f);
+      move(offsetX, offsetY);
     }
   }
 }
