@@ -1,10 +1,11 @@
 #include "EmitterNode.hpp"
 #include "ParticleNode.hpp"
 
-EmitterNode::EmitterNode(Particle::Type type)
+EmitterNode::EmitterNode(Particle::Type type, float emissionRate)
   : accumulatedTime(sf::Time::Zero),
     type(type),
-    particleSystem(nullptr)
+    particleSystem(nullptr),
+    emissionRate(emissionRate)
 {}
 
 void EmitterNode::updateCurrent(sf::Time dt, CommandQueue &commands) {
@@ -25,7 +26,6 @@ void EmitterNode::updateCurrent(sf::Time dt, CommandQueue &commands) {
 }
 
 void EmitterNode::emitParticles(sf::Time dt) {
-  const float emissionRate = 100.f;
   const sf::Time interval = sf::seconds(1.f) / emissionRate;
 
   accumulatedTime += dt;
@@ -33,4 +33,8 @@ void EmitterNode::emitParticles(sf::Time dt) {
     accumulatedTime -= interval;
     particleSystem->addParticle(getWorldPosition());
   }
+}
+
+void EmitterNode::setEmissionRate(float rate) {
+  emissionRate = rate;
 }

@@ -59,7 +59,7 @@ class SceneNode : public virtual sf::Transformable, public sf::Drawable, private
 
   protected:
     virtual void updateCurrent(sf::Time dt, CommandQueue& commands);
-    void updateChildren(sf::Time dt, CommandQueue& commands);
+    virtual void updateChildren(sf::Time dt, CommandQueue& commands);
 
     virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
     void drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;

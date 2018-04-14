@@ -5,6 +5,8 @@
 #include "Entity.hpp"
 #include "../ResourceIdentifiers.hpp"
 
+class EmitterNode;
+
 class Ball : public Entity {
   public:
     static constexpr float SPEED = 300.0f;
@@ -18,9 +20,12 @@ class Ball : public Entity {
 
   protected:
     void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const override;
+    void updateCurrent(sf::Time dt, CommandQueue &commands) override;
+    void updateChildren(sf::Time dt, CommandQueue &commands) override;
 
-  private:
+private:
     sf::Sprite sprite;
+    EmitterNode* trail;
 };
 
 

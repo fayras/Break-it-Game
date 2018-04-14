@@ -13,8 +13,9 @@ Ball::Ball(const sf::Texture& texture)
   isStatic = false;
   defaultCategory = Category::BALL;
 
-  std::unique_ptr<EmitterNode> trail(new EmitterNode(Particle::Propellant));
+  std::unique_ptr<EmitterNode> trail(new EmitterNode(Particle::Propellant, 0.f));
   trail->setPosition(0, 0);
+  this->trail = trail.get();
   attachChild(std::move(trail));
 }
 
@@ -47,4 +48,14 @@ void Ball::rotateBy(float angle) {
   float cosA = std::cos(angle);
   float sinA = std::sin(angle);
   setVelocity(cosA * getVelocity().x - sinA * getVelocity().y, sinA * getVelocity().x + cosA * getVelocity().y);
+}
+
+void Ball::updateChildren(sf::Time dt, CommandQueue &commands) {
+  if(recieveEvents) SceneNode::updateChildren(dt, commands);
+}
+
+void Ball::updateCurrent(sf::Time dt, CommandQueue &commands) {
+  Entity::updateCurrent(dt, commands);
+  const float speed = Vector::length(getVelocity()) / SPEED * 100.f;
+  trail->setEmissionRate(speed);
 }
