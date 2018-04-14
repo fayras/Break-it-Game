@@ -34,7 +34,7 @@ void CollisionManager::doCollisionChecking(
     return;
   }
 
-  auto bpBox = getBroadphasingRect(*entity, time);
+  auto bpBox = getBroadphasingRect(*entity, time * 2.f);
 
   std::list<Entity*> found;
   std::copy_if(entities.begin(), entities.end(), std::back_inserter(found), [entity, &bpBox](const Entity *e) {
