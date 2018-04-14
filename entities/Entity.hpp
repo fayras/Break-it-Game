@@ -33,6 +33,8 @@ class Entity : public SceneNode {
 
     bool recieveEvents{true};
 
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
     void pushDirection(Direction dir);
 
   protected:
@@ -43,6 +45,7 @@ class Entity : public SceneNode {
     int hitpoints;
     int maxHitpoints;
     std::vector<Direction> directions;
+    std::vector<Direction> doneDirections;
 };
 
 

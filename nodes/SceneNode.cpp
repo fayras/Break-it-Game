@@ -7,6 +7,7 @@
 #include <cmath>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 
 SceneNode::SceneNode(Category::Type category)
   : parent(nullptr), defaultCategory(category)
@@ -97,7 +98,14 @@ void SceneNode::draw(sf::RenderTarget &target, sf::RenderStates states) const {
       rect.setFillColor(sf::Color::Transparent);
       rect.setOutlineThickness(1.f);
       rect.setPosition(bounding.left, bounding.top);
+
+      sf::CircleShape circle(3);
+      circle.setOrigin(1.5f, 1.5f);
+      circle.setPosition(getPosition());
+      circle.setFillColor(sf::Color::White);
+
       target.draw(rect);
+      target.draw(circle);
   }
   drawChildren(target, states);
 }

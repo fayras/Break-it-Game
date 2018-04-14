@@ -1,5 +1,9 @@
 #include "Entity.hpp"
 #include <cassert>
+#include <SFML/Graphics/Vertex.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
+#include <SFML/Graphics/PrimitiveType.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 
 Entity::Entity(int hitpoints)
   : velocity(), hitpoints(hitpoints), maxHitpoints(hitpoints)
@@ -72,6 +76,7 @@ void Entity::updateCurrent(sf::Time dt, CommandQueue &commands) {
         setVelocity(velocity.x * d.dir.x, velocity.y * d.dir.y);
         move(velocity * (d.distance * d.deltaTime));
       }
+      doneDirections = directions;
       directions.clear();
     }
   }
@@ -94,4 +99,27 @@ sf::Vector2f Entity::getPosition() const {
     pos += vel * d.distance * d.deltaTime;
   }
   return pos;
+}
+
+void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+  SceneNode::draw(target, states);
+
+  if(showDebugInfo &&!doneDirections.empty()) {
+    std::size_t count = doneDirections.size() * 2;
+    sf::VertexArray lines(sf::Lines, count);
+    auto pos = Transformable::getPosition();
+    auto vel = getVelocity();
+    std::size_t index = 0;
+
+    for(const Direction& d : doneDirections) {
+      vel.x *= d.dir.x;
+      vel.y *= d.dir.y;
+
+      lines[index++] = sf::Vertex(pos);
+      pos += vel * d.distance * d.deltaTime;
+      lines[index++] = sf::Vertex(pos);
+    }
+
+    target.draw(lines, states);
+  }
 }

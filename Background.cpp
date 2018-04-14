@@ -4,7 +4,6 @@ Background::Background(const sf::Texture &texture, sf::View &worldView)
         : SpriteNode(texture), spaceEffect(15, 20, 0.53f)
 {
     setCategory(Category::BACKGROUND);
-    this->texture.setView(worldView);
     this->texture.create((unsigned int) worldView.getSize().x + 100, (unsigned int) worldView.getSize().y + 100);
 }
 
