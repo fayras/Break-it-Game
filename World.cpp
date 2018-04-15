@@ -5,6 +5,7 @@
 #include "skills/DuplicateBallSkill.hpp"
 #include "shaders/PostEffect.hpp"
 #include "Background.hpp"
+#include "skills/SlowmotionSkill.hpp"
 #include <cmath>
 #include <algorithm>
 
@@ -111,7 +112,7 @@ void World::loadTextures() {
   textures.load(Textures::STARFIELD, "assets/textures/starfield.png");
   textures.load(Textures::PARTICLE, "assets/textures/particle.png");
   textures.load(Textures::LIFE, "assets/textures/life.png");
-  textures.load(Textures::DUPLICATE_SKILL, "assets/textures/duplicateSkill.png");
+  textures.load(Textures::SKILLS, "assets/textures/skills.png");
   textures.get(Textures::LIFE).setRepeated(true);
 }
 
@@ -240,9 +241,13 @@ void World::buildScene() {
   this->score = score.get();
   sceneGraph.attachChild(std::move(score));
 
-  auto dupSkill = std::make_unique<DuplicateBallSkill>(textures.get(Textures::DUPLICATE_SKILL), fonts.get(Fonts::MAIN), (sf::Keyboard::Key) settings.get("key_skill_1", (int) sf::Keyboard::Q));
-  dupSkill->move(200, 0);
+  auto dupSkill = std::make_unique<DuplicateBallSkill>(textures.get(Textures::SKILLS), fonts.get(Fonts::MAIN), (sf::Keyboard::Key) settings.get("key_skill_1", (int) sf::Keyboard::Q));
+  dupSkill->move(200, 10);
   sceneGraph.attachChild(std::move(dupSkill));
+
+  auto slowSkill = std::make_unique<SlowmotionSkill>(textures.get(Textures::SKILLS), fonts.get(Fonts::MAIN), (sf::Keyboard::Key) settings.get("key_skill_2", (int) sf::Keyboard::W));
+  slowSkill->move(260, 10);
+  sceneGraph.attachChild(std::move(slowSkill));
 }
 
 sf::FloatRect World::getViewBounds() const {

@@ -7,7 +7,8 @@
 
 class Skill : public SpriteNode {
   public:
-    explicit Skill(const sf::Texture &texture, const sf::Font &font, float cooldownInSeconds, sf::Keyboard::Key key);
+    Skill(const sf::Texture &texture, const sf::Font &font, sf::Keyboard::Key key, float cooldownInSeconds, float activationTime = 0);
+    Skill(const sf::Texture &texture, const sf::IntRect &textureRect, const sf::Font &font, sf::Keyboard::Key key, float cooldownInSeconds, float activationTime = 0);
     void activate();
 
   protected:
@@ -15,10 +16,13 @@ class Skill : public SpriteNode {
     void updateCurrent(sf::Time dt, CommandQueue &commands) override;
 
     Command command;
+    Command deactivateCommand;
 
   private:
     sf::Time cooldown;
     sf::Time cooldownTime;
+    sf::Time activation;
+    sf::Time activationTime;
     sf::Text cooldownText;
     bool activateSkill{false};
     sf::Text assignedKey;

@@ -3,6 +3,7 @@
 #include "entities/Paddle.hpp"
 #include "entities/Ball.hpp"
 #include "skills/DuplicateBallSkill.hpp"
+#include "skills/SlowmotionSkill.hpp"
 #include <map>
 #include <string>
 #include <algorithm>
@@ -14,6 +15,7 @@ Player::Player() {
   keyBinding[sf::Keyboard::Left] = Action::MOVE_LEFT;
   keyBinding[sf::Keyboard::Right] = Action::MOVE_RIGHT;
   keyBinding[sf::Keyboard::Q] = Action::DUPLICATE_BALL;
+  keyBinding[sf::Keyboard::W] = Action::SLOWDOWN_BALL;
 
   // Set initial action bindings
   initializeActions();
@@ -77,6 +79,11 @@ void Player::initializeActions() {
   actionBinding[DUPLICATE_BALL].category = Category::DUPLICATE_SKILL;
   actionBinding[DUPLICATE_BALL].action = derivedAction<DuplicateBallSkill>([] (DuplicateBallSkill& skill, sf::Time) {
     skill.activate();
+  });
+
+  actionBinding[SLOWDOWN_BALL].category = Category::SLOWMOTION_SKILL;
+  actionBinding[SLOWDOWN_BALL].action = derivedAction<SlowmotionSkill>([] (SlowmotionSkill& skill, sf::Time) {
+      skill.activate();
   });
 }
 

@@ -26,7 +26,7 @@ namespace Textures {
     GAME_OVER_SCREEN,
     GAME_WIN_SCREEN,
     LIFE,
-    DUPLICATE_SKILL
+    SKILLS
   };
 }
 

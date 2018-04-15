@@ -16,6 +16,7 @@ namespace Category {
     BACKGROUND = 1 << 9,
     LEVEL_INFO = 1 << 10,
     DUPLICATE_SKILL = 1 << 11,
+    SLOWMOTION_SKILL = 1 << 12
   };
 }
 

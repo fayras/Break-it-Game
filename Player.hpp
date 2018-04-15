@@ -12,7 +12,8 @@ class Player {
     enum Action {
       MOVE_LEFT,
       MOVE_RIGHT,
-      DUPLICATE_BALL
+      DUPLICATE_BALL,
+        SLOWDOWN_BALL
     };
 
     Player();
