@@ -44,7 +44,7 @@ Skill::Skill(const sf::Texture &texture, const sf::IntRect &textureRect, const s
   sf::FloatRect textBounds = assignedKey.getLocalBounds();
   assignedKey.setOrigin(std::floor(textBounds.left + textBounds.width), std::floor(textBounds.top));
 
-  assignedKey.setPosition(textureRect.width - 3, 5);
+  assignedKey.setPosition(textureRect.width - 4, 4);
 }
 
 void Skill::activate() {
