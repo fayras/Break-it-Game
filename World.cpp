@@ -103,11 +103,11 @@ bool World::reachedEnd() const {
 }
 
 void World::loadTextures() {
-  textures.load(Textures::PADDLE, "assets/textures/paddleBlu.png");
-  textures.load(Textures::BLOCK, "assets/textures/block.png");
-  textures.load(Textures::BLOCK_SMALL, "assets/textures/block_small.png");
-  textures.load(Textures::BALL, "assets/textures/ballGrey.png");
-  textures.load(Textures::EXPLOSION, "assets/textures/Explosion.png");
+  textures.load(Textures::PADDLE, "assets/textures/paddle.png");
+  textures.load(Textures::BLOCK, "assets/textures/enemy_base_ship.png");
+  textures.load(Textures::BLOCK_SMALL, "assets/textures/enemy_art.png");
+  textures.load(Textures::BALL, "assets/textures/meteor_small.png");
+  textures.load(Textures::EXPLOSION, "assets/textures/explosion_2.png");
   textures.load(Textures::STARFIELD, "assets/textures/starfield.png");
   textures.load(Textures::PARTICLE, "assets/textures/particle.png");
   textures.load(Textures::LIFE, "assets/textures/life.png");

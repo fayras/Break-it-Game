@@ -11,9 +11,9 @@ Block::Block(const TextureHolder& textures, Blocks::Type type)
     textures(textures),
     type(type)
 {
-  breakAnimation.setFrameSize(sf::Vector2i(256, 256));
-  breakAnimation.setNumFrames(16);
-  breakAnimation.setDuration(sf::seconds(0.75));
+  breakAnimation.setFrameSize(sf::Vector2i(126, 116));
+  breakAnimation.setNumFrames(9);
+  breakAnimation.setDuration(sf::seconds(0.4));
 
   if(type == Blocks::SMALL) sprite.setTexture(textures.get(Textures::BLOCK_SMALL), true);
   if(type == Blocks::DOUBLE_HP) setHP(200);
