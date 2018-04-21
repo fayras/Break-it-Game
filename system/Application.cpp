@@ -98,6 +98,6 @@ void Application::loadAssets() {
   fonts.load(Fonts::ID::PIXEL, "./assets/fonts/TimesNewPixel.ttf");
   fonts.load(Fonts::ID::NARROW, "./assets/fonts/Diner.ttf");
   textures.load(Textures::TITLE, "assets/textures/title.png");
-  textures.load(Textures::GAME_OVER_SCREEN, "assets/textures/game_over_screen_2.png");
+  textures.load(Textures::GAME_OVER_SCREEN, "assets/textures/game_over_screen.png");
   textures.load(Textures::GAME_WIN_SCREEN, "assets/textures/win_screen.png");
 }
