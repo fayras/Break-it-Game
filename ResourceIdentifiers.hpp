@@ -47,7 +47,8 @@ namespace SoundEffect {
 
 namespace Music {
   enum ID {
-    GAME
+    GAME,
+    TITLE
   };
 }
 

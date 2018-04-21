@@ -2,12 +2,15 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "../system/ResourceHolder.hpp"
 #include "../gui/Button.hpp"
+#include "../system/MusicPlayer.hpp"
 
 TitleState::TitleState(StateStack &stack, State::Context context)
     : State(stack, context),
       guiContainer(),
       background(context.textures->get(Textures::TITLE))
 {
+  context.music->play(Music::TITLE);
+
   auto btPlay = std::make_shared<gui::Button>(context);
   btPlay->setPosition(0, 0);
   btPlay->setText("Neues Spiel");

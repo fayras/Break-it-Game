@@ -3,6 +3,7 @@
 MusicPlayer::MusicPlayer()
   : volume(100.f)
 {
+  filenames[Music::TITLE] = "./assets/music/through space.ogg";
   filenames[Music::GAME] = "./assets/music/Retro1 140.wav";
 }
 
