@@ -24,8 +24,10 @@ Block::Block(const TextureHolder& textures, Blocks::Type type)
     timers.emplace(Blocks::INVISIBLE, sf::Clock());
   }
 
-  centerOrigin(sprite);
+  // centerOrigin(sprite);
   centerOrigin(breakAnimation);
+  sf::FloatRect bounds = sprite.getLocalBounds();
+  breakAnimation.setPosition(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
 
   defaultCategory = Category::BLOCK;
 }

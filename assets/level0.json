@@ -1,0 +1,856 @@
+{
+	"assets": {
+		"name": "assets",
+		"contents": [
+			{
+				"id": "98c08743-ef06-4297-a629-0d731e235610",
+				"name": "enemy_base_ship.png",
+				"fullPath": "/enemy_base_ship.png",
+				"key": "/enemy_base_ship.png",
+				"width": 64,
+				"height": 47,
+				"frameWidth": 64,
+				"frameHeight": 47,
+				"frameMax": -1,
+				"margin": 0,
+				"spacing": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"fps": 10,
+				"updated": 1524332013936,
+				"atlas": ""
+			}
+		],
+		"count": 7
+	},
+	"objects": {
+		"name": "objects",
+		"contents": [
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 704,
+				"y": 192,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "ffffba",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524352136540",
+				"name": "enemy_base_ship33",
+				"index": -1,
+				"fullPath": "/enemy_base_ship33",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 704,
+				"y": 272,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "baffc9",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524352136542",
+				"name": "enemy_base_ship34",
+				"index": -1,
+				"fullPath": "/enemy_base_ship34",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 624,
+				"y": 272,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "baffc9",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524352136534",
+				"name": "enemy_base_ship29",
+				"index": -1,
+				"fullPath": "/enemy_base_ship29",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 624,
+				"y": 192,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "ffffba",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524352136532",
+				"name": "enemy_base_ship27",
+				"index": -1,
+				"fullPath": "/enemy_base_ship27",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 544,
+				"y": 272,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "baffc9",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524352136530",
+				"name": "enemy_base_ship26",
+				"index": -1,
+				"fullPath": "/enemy_base_ship26",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 544,
+				"y": 192,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "ffffba",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524352136528",
+				"name": "enemy_base_ship25",
+				"index": -1,
+				"fullPath": "/enemy_base_ship25",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 464,
+				"y": 272,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "baffc9",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524352136522",
+				"name": "enemy_base_ship21",
+				"index": -1,
+				"fullPath": "/enemy_base_ship21",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 464,
+				"y": 192,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "ffffba",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524352136520",
+				"name": "enemy_base_ship19",
+				"index": -1,
+				"fullPath": "/enemy_base_ship19",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 384,
+				"y": 272,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "baffc9",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524352136518",
+				"name": "enemy_base_ship18",
+				"index": -1,
+				"fullPath": "/enemy_base_ship18",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 384,
+				"y": 192,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "ffffba",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524352136516",
+				"name": "enemy_base_ship17",
+				"index": -1,
+				"fullPath": "/enemy_base_ship17",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 304,
+				"y": 272,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "baffc9",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524352136510",
+				"name": "enemy_base_ship13",
+				"index": -1,
+				"fullPath": "/enemy_base_ship13",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 224,
+				"y": 272,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "baffc9",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524352136506",
+				"name": "enemy_base_ship10",
+				"index": -1,
+				"fullPath": "/enemy_base_ship10",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 304,
+				"y": 192,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "ffffba",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524352136508",
+				"name": "enemy_base_ship11",
+				"index": -1,
+				"fullPath": "/enemy_base_ship11",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 224,
+				"y": 192,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "ffffba",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524352136504",
+				"name": "enemy_base_ship5",
+				"index": -1,
+				"fullPath": "/enemy_base_ship5",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 624,
+				"y": 112,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "ffb3ba",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524343048959",
+				"name": "enemy_base_ship28",
+				"index": -1,
+				"fullPath": "/enemy_base_ship28",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 704,
+				"y": 112,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "ffb3ba",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524343048967",
+				"name": "enemy_base_ship32",
+				"index": -1,
+				"fullPath": "/enemy_base_ship32",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 384,
+				"y": 112,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "ffb3ba",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524343048935",
+				"name": "enemy_base_ship16",
+				"index": -1,
+				"fullPath": "/enemy_base_ship16",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 544,
+				"y": 112,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "ffb3ba",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524343048951",
+				"name": "enemy_base_ship24",
+				"index": -1,
+				"fullPath": "/enemy_base_ship24",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 224,
+				"y": 112,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "ffb3ba",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524343048919",
+				"name": "enemy_base_ship8",
+				"index": -1,
+				"fullPath": "/enemy_base_ship8",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 304,
+				"y": 112,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "ffb3ba",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524343048927",
+				"name": "enemy_base_ship12",
+				"index": -1,
+				"fullPath": "/enemy_base_ship12",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			},
+			{
+				"assetId": "98c08743-ef06-4297-a629-0d731e235610",
+				"x": 464,
+				"y": 112,
+				"type": 0,
+				"anchorX": 0,
+				"anchorY": 0,
+				"userData": {},
+				"physics": {
+					"enable": 0
+				},
+				"scaleX": 1,
+				"scaleY": 1,
+				"angle": 0,
+				"alpha": 1,
+				"color": "ffb3ba",
+				"frame": 0,
+				"isVisible": 1,
+				"isLocked": 0,
+				"contents": [],
+				"width": 64,
+				"height": 47,
+				"id": "tmp1524343048943",
+				"name": "enemy_base_ship20",
+				"index": -1,
+				"fullPath": "/enemy_base_ship20",
+				"movies": {
+					"__main": {
+						"frames": [],
+						"info": {
+							"fps": 60
+						},
+						"subdata": []
+					}
+				},
+				"blockType": 0,
+				"assetKey": "/enemy_base_ship.png"
+			}
+		],
+		"count": 0
+	},
+	"map": {
+		"cameraX": -194,
+		"cameraY": -13,
+		"worldWidth": 1000,
+		"worldHeight": 740,
+		"viewportWidth": 1000,
+		"viewportHeight": 740,
+		"scaleMode": "SHOW_ALL",
+		"gridX": 16,
+		"gridY": 16,
+		"gridOffsetX": 0,
+		"gridOffsetY": 0,
+		"showGrid": 1,
+		"gridOpacity": 0.3,
+		"backgroundColor": "#222222",
+		"movieInfo": {
+			"fps": 60,
+			"lastFrame": 60
+		},
+		"pixelPerfectPicking": 1,
+		"spawnX": 500,
+		"spawnY": 700,
+		"physics": {
+			"enable": 0
+		}
+	}
+}

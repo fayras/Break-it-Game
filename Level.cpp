@@ -1,3 +1,4 @@
+#include <fstream>
 #include "Level.hpp"
 #include "nodes/ParticleNode.hpp"
 #include "system/Utility.hpp"
@@ -9,6 +10,9 @@
 #include "tween/LinearTween.hpp"
 #include "Score.hpp"
 #include "Life.hpp"
+#include "system/json.hpp"
+
+using json = nlohmann::json;
 
 namespace {
   const std::vector<LevelData> LevelTable = initializeLevelData();
@@ -55,21 +59,38 @@ void Level::load() {
   loading = true;
   objectsNeedUpdate = true;
   blocksLayer->clearChildren();
+  std::string file = LevelTable[getID()].filename;
   levelData = LevelTable[getID()];
   // std::size_t columns = levelData.blockColors.size();
 
-  for(auto const &pair : levelData.blockColors) {
-    std::unique_ptr<Block> block(new Block(textures, levelData.blockType));
-    block->setColor(pair.second);
+  std::ifstream inputData(file);
+  json levelJson;
+  inputData >> levelJson;
+
+  auto map = levelJson["map"];
+  levelData.spawnPosition = sf::Vector2f(
+          map["spawnX"].get<float>() / map["worldWidth"].get<float>(),
+          map["spawnY"].get<float>() / map["worldHeight"].get<float>()
+  );
+
+  auto objects = levelJson["objects"];
+  auto blocks = objects["contents"];
+  for(auto const &blockJson : blocks) {
+    auto blockType = static_cast<Blocks::Type>(blockJson["blockType"].get<int>());
+
+    std::unique_ptr<Block> block(new Block(textures, blockType));
+    std::string colorHexString = blockJson["color"];
+    unsigned int colorHex = std::stoul("0x" + colorHexString + "ff", nullptr, 16);
+    block->setColor(sf::Color(colorHex));
     sf::FloatRect blockRect = block->getBoundingRect();
     float margin = 5;
     blockRect.height += margin;
     blockRect.width += margin;
 
-    block->setPosition(pair.first.x * blockRect.width + 80, -40);
+    block->setPosition(blockJson["x"], -40);
 
     sf::Vector2f from{block->getPosition()};
-    sf::Vector2f to{pair.first.x * blockRect.width + 80.0f, pair.first.y * blockRect.height + 110.0f};
+    sf::Vector2f to{blockJson["x"], blockJson["y"]};
     Block* bPointer = block.get();
 
     auto tween = std::make_unique<EaseOutElastic>(sf::milliseconds(1200), [bPointer, from, to](const float& t) {
@@ -90,7 +111,7 @@ void Level::load() {
 }
 
 float Level::getBallSpeedMultiplier() const {
-  return levelData.ballSpeedMultiplier;
+  return 1.0f; //levelData.ballSpeedMultiplier;
 }
 
 bool Level::isLast() const {

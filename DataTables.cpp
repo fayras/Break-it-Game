@@ -2,83 +2,17 @@
 #include "DataTables.hpp"
 #include "system/Particle.hpp"
 
-namespace {
-  const std::map<char, sf::Color> getColors() {
-    return {
-        { 'a', sf::Color(255, 100, 100) },
-        { 'b', sf::Color(150, 255, 0) },
-        { 'c', sf::Color(100, 100, 255) },
-        { '-', sf::Color(0, 0, 0) },
-        { '+', sf::Color(255, 255, 255) },
-        { 'g', sf::Color(150, 150, 150) },
-
-        { 'q', sf::Color(102, 78, 50) },
-        { 'w', sf::Color(208, 148, 76) },
-        { 'r', sf::Color(168, 118, 36) },
-        { 'e', sf::Color(255, 220, 205) },
-        { 'p', sf::Color(255, 153, 153) },
-    };
-  };
-
-  std::vector<std::vector<std::string>> getLevels() {
-    return {
-        {
-            "aaaaaaaaaaaaa",
-            "bbbbbbbbbbbbb",
-            "ccccccccccccc",
-            "aaaaaaaaaaaaa",
-            "bbbbbbbbbbbbb",
-            "ccccccccccccc"
-        },
-        {
-            "    q        q",
-            "    qq      qq",
-            "    qeq    qeq",
-            "    qwwqqqqwwq",
-            "   qwwwwrwrwwq",
-            "   qwwqwrwwqwwq",
-            "  qqwpwwwwwwpwqq",
-            "   qrrwwwewwwrq",
-            "  qqwwweeweewwqq",
-            "    qwwrwwwrwq",
-            "     qqqqqqqq"
-        },
-        {
-            "a a a a a a a",
-            "             ",
-            "a a a a a a a",
-            "             ",
-            "b b b b b b b",
-            "             ",
-            "c c c c c c c"
-        }
-    };
-  }
-}
 
 std::vector<LevelData> initializeLevelData() {
-  auto levels = getLevels();
-  auto colors = getColors();
-  std::vector<LevelData> data(levels.size());
+  std::vector<LevelData> data(4);
 
-  for(std::size_t i = 0; i < levels.size(); i++) {
-    std::size_t levelSize = levels[i].size();
-    for(std::size_t y = 0; y < levelSize; y++) {
-      std::size_t rowLength = levels[i][y].size();
-      for(std::size_t x = 0; x < rowLength; x++) {
-        char colorKey = levels[i][y].at(static_cast<unsigned long>(x));
-        if(colorKey != ' ') {
-          const sf::Color& color = colors.at(colorKey);
-          data[i].blockColors.emplace_back(std::make_pair(sf::Vector2i(x, y), color));
-        }
-      }
-    }
-  }
+  data[0].filename = "assets/level0.json";
+  data[1].filename = "assets/level1.json";
+  data[2].filename = "assets/level2.json";
+  data[3].filename = "assets/level3.json";
 
-  data[0].blockType = Blocks::SWAY;
-
-  data[1].ballSpeedMultiplier = 1.5f;
-  data[1].blockType = Blocks::SMALL;
+  //data[1].ballSpeedMultiplier = 1.5f;
+  //data[1].blockType = Blocks::SMALL;
 
   return data;
 }

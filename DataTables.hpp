@@ -19,6 +19,7 @@ struct LevelData {
   float ballSpeedMultiplier{1.0f};
   float scoreMultiplier{1.0f};
   sf::Vector2f spawnPosition{0.5f, 0.94f};
+  std::string filename;
 };
 
 std::vector<ParticleData>	initializeParticleData();
