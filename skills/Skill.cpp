@@ -1,6 +1,7 @@
 #include "Skill.hpp"
 #include "../system/Utility.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <cmath>
 
 Skill::Skill(const sf::Texture &texture, const sf::Font &font, sf::Keyboard::Key key, float cooldownInSeconds, float activationTime)
   : SpriteNode(texture), cooldownTime(sf::seconds(cooldownInSeconds)), assignedKey(), activationTime(sf::seconds(activationTime))

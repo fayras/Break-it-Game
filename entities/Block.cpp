@@ -3,6 +3,7 @@
 #include "../system/ResourceHolder.hpp"
 #include "../tween/LinearTween.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <cmath>
 
 Block::Block(const TextureHolder& textures, Blocks::Type type)
   : Entity(100),
