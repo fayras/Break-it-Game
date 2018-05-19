@@ -7,6 +7,7 @@
 #include "../states/NewHighscoreState.hpp"
 #include "../states/SettingsState.hpp"
 #include "../Config.hpp"
+#include "../states/StoreState.hpp"
 
 const int FPS = 60;
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / FPS);
@@ -22,7 +23,8 @@ Application::Application()
 
   player.assignKey(Player::MOVE_LEFT, (sf::Keyboard::Key) settings.get("key_left", (int) sf::Keyboard::Left));
   player.assignKey(Player::MOVE_RIGHT, (sf::Keyboard::Key) settings.get("key_right", (int) sf::Keyboard::Right));
-  player.assignKey(Player::DUPLICATE_BALL, (sf::Keyboard::Key) settings.get("key_skill_1", (int) sf::Keyboard::Q));
+  player.assignKey(Player::DUPLICATE_BALL, (sf::Keyboard::Key) settings.get(Skills::ID::DUPLICATE_BALL, (int) sf::Keyboard::Q));
+  player.assignKey(Player::SLOWDOWN_BALL, (sf::Keyboard::Key) settings.get(Skills::ID::SLOWMOTION, (int) sf::Keyboard::W));
 
   music.setVolume(settings.get("music_volume", 70.0f));
   sounds.setMasterVolume(settings.get("sounds_volume", 70.0f));
@@ -91,6 +93,7 @@ void Application::registerStates() {
   stateStack.registerState<GameOverState>(States::ID::GAME_OVER);
   stateStack.registerState<NewHighscoreState>(States::ID::NEW_HIGHSCORE);
   stateStack.registerState<SettingsState>(States::ID::SETTINGS);
+  stateStack.registerState<StoreState>(States::ID::STORE);
 }
 
 void Application::loadAssets() {
@@ -100,4 +103,5 @@ void Application::loadAssets() {
   textures.load(Textures::TITLE, "assets/textures/title.png");
   textures.load(Textures::GAME_OVER_SCREEN, "assets/textures/game_over_screen.png");
   textures.load(Textures::GAME_WIN_SCREEN, "assets/textures/win_screen.png");
+  textures.load(Textures::SKILLS, "assets/textures/skills.png");
 }

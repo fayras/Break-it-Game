@@ -21,6 +21,13 @@ TitleState::TitleState(StateStack &stack, State::Context context)
     requestStackPush(States::ID::GAME);
   });
 
+  auto btStore = std::make_shared<gui::Button>(context);
+  btStore->setPosition(300, 0);
+  btStore->setText("Store");
+  btStore->setCallback([this] () {
+      requestStackPush(States::ID::STORE);
+  });
+
   auto btSettings = std::make_shared<gui::Button>(context);
   btSettings->setPosition(0, 60);
   btSettings->setText("Einstellungen");
@@ -38,6 +45,7 @@ TitleState::TitleState(StateStack &stack, State::Context context)
 
   guiContainer.move(120, 450);
   guiContainer.pack(btPlay);
+  guiContainer.pack(btStore);
   guiContainer.pack(btSettings);
   guiContainer.pack(btExit);
 
