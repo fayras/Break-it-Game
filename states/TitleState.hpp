@@ -3,7 +3,7 @@
 
 #include "../system/State.hpp"
 #include "../gui/Container.hpp"
-#include "../system/Patcher.hpp"
+// #include "../system/Patcher.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 
@@ -22,7 +22,7 @@ class TitleState : public State {
   private:
     sf::Sprite background;
     gui::Container guiContainer;
-    Patcher patcher;
+    // Patcher patcher;
     gui::Button* updateButton;
 };
 

@@ -42,20 +42,20 @@ TitleState::TitleState(StateStack &stack, State::Context context)
   guiContainer.pack(btExit);
 
   if(context.settings->get("checkForUpdates", true)) {
-    patcher.fetch();
-    auto btUpdate = std::make_shared<gui::Button>(context);
-    updateButton = btUpdate.get();
-    btUpdate->setPosition(440, 220);
-    btUpdate->setText("");
-    btUpdate->setCallback([this]() {
-        if (patcher.getStatus() == Patcher::Status::READY_TO_DOWNLOAD) {
-          patcher.download();
-        } else if (patcher.getStatus() == Patcher::Status::DONE) {
-          patcher.patch();
-          requestStackClear();
-        }
-    });
-    guiContainer.pack(btUpdate);
+//    patcher.fetch();
+//    auto btUpdate = std::make_shared<gui::Button>(context);
+//    updateButton = btUpdate.get();
+//    btUpdate->setPosition(440, 220);
+//    btUpdate->setText("");
+//    btUpdate->setCallback([this]() {
+//        if (patcher.getStatus() == Patcher::Status::READY_TO_DOWNLOAD) {
+//          patcher.download();
+//        } else if (patcher.getStatus() == Patcher::Status::DONE) {
+//          patcher.patch();
+//          requestStackClear();
+//        }
+//    });
+//    guiContainer.pack(btUpdate);
   }
 
   // Wenn es ein Savegame gibt
@@ -81,35 +81,35 @@ void TitleState::draw() {
 }
 
 bool TitleState::update(sf::Time dt) {
-  if(updateButton != nullptr && context.settings->get("checkForUpdates", true)) {
-    switch(patcher.getStatus()) {
-      case Patcher::Status::FAILED:
-        updateButton->setText("Update fehlgeschlagen");
-            break;
-      case Patcher::Status::NO_UPDATE:
-        updateButton->setText("Kein Update gefunden");
-            break;
-      case Patcher::Status::FETCHING_INFO:
-        updateButton->setText("Suche Aktualisierungen...");
-            break;
-      case Patcher::Status::READY_TO_DOWNLOAD:
-        updateButton->setText("Update herunterladen");
-            break;
-      case Patcher::Status::DOWNLOADING:
-        updateButton->setText("Update wird heruntergeladen...");
-            break;
-      case Patcher::Status::DOWNLOAD_DONE:
-        updateButton->setText("Update heruntergeladen");
-            break;
-      case Patcher::Status::UPDATING:
-        updateButton->setText("Update wird extrahiert...");
-            break;
-      case Patcher::Status::DONE:
-        updateButton->setText("Update installieren");
-            break;
-      default: break;
-    }
-  }
+//  if(updateButton != nullptr && context.settings->get("checkForUpdates", true)) {
+//    switch(patcher.getStatus()) {
+//      case Patcher::Status::FAILED:
+//        updateButton->setText("Update fehlgeschlagen");
+//            break;
+//      case Patcher::Status::NO_UPDATE:
+//        updateButton->setText("Kein Update gefunden");
+//            break;
+//      case Patcher::Status::FETCHING_INFO:
+//        updateButton->setText("Suche Aktualisierungen...");
+//            break;
+//      case Patcher::Status::READY_TO_DOWNLOAD:
+//        updateButton->setText("Update herunterladen");
+//            break;
+//      case Patcher::Status::DOWNLOADING:
+//        updateButton->setText("Update wird heruntergeladen...");
+//            break;
+//      case Patcher::Status::DOWNLOAD_DONE:
+//        updateButton->setText("Update heruntergeladen");
+//            break;
+//      case Patcher::Status::UPDATING:
+//        updateButton->setText("Update wird extrahiert...");
+//            break;
+//      case Patcher::Status::DONE:
+//        updateButton->setText("Update installieren");
+//            break;
+//      default: break;
+//    }
+//  }
 
   guiContainer.update(dt);
   return true;

@@ -7,10 +7,10 @@ set(VERSION_MINOR "6")
 set(VERSION_PATCH "1")
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 set(ARCHIVE_FILE_NAME "${PROJECT_NAME}-${VERSION}-${CMAKE_SYSTEM_NAME}.zip")
-set(INCLUDE_UPDATE_LIBRARIES TRUE)
+set(INCLUDE_UPDATE_LIBRARIES FALSE)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "D:/Coding/libs/SFML-2.4.2/cmake/Modules" ${CMAKE_MODULE_PATH})
 set(CMAKE_INSTALL_RPATH "$ORIGIN/lib:$ORIGIN/")
 
 # configure a header file to pass some of the CMake settings
@@ -26,10 +26,8 @@ if (NOT CMAKE_BUILD_TYPE)
 endif (NOT CMAKE_BUILD_TYPE)
 
 if (WIN32)
-	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-    set(CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/../SFML-Release;${CMAKE_SOURCE_DIR}/../libcurl-vs2015;${CMAKE_SOURCE_DIR}/../zlib-Release")
+    set(CMAKE_PREFIX_PATH "D:/Coding/libs/SFML-2.4.2;${CMAKE_SOURCE_DIR}/../libcurl-vs2015;${CMAKE_SOURCE_DIR}/../zlib-Release")
     set(SFML_STATIC_LIBRARIES TRUE)
-    set(CURL_STATICLIB TRUE)
     find_package(SFML 2 REQUIRED COMPONENTS main)
 endif ()
 
@@ -37,6 +35,7 @@ find_package(SFML 2 REQUIRED COMPONENTS audio graphics window system)
 include_directories(${SFML_INCLUDE_DIR})
 
 if(INCLUDE_UPDATE_LIBRARIES)
+    set(CURL_STATICLIB TRUE)
     find_package(CURL REQUIRED)
     find_package(ZLIB REQUIRED)
     include_directories(${CURL_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/../zipper/zipper)
@@ -46,7 +45,11 @@ endif()
 
 
 # Define sources and executable
-set(SOURCE_FILES main.cpp system/Application.cpp system/Application.hpp nodes/SceneNode.cpp nodes/SceneNode.hpp nodes/Category.hpp nodes/SpriteNode.cpp nodes/SpriteNode.hpp system/Command.cpp system/Command.hpp system/CommandQueue.cpp system/CommandQueue.hpp ResourceIdentifiers.hpp system/ResourceHolder.hpp system/StateStack.hpp system/StateStack.cpp system/State.hpp system/State.cpp states/StateIdentifiers.hpp states/GameState.cpp states/GameState.hpp states/TitleState.cpp states/TitleState.hpp gui/Container.cpp gui/Container.hpp gui/Component.cpp gui/Component.hpp gui/Button.cpp gui/Button.hpp system/SoundPlayer.cpp system/SoundPlayer.hpp system/MusicPlayer.cpp system/MusicPlayer.hpp nodes/SoundNode.cpp nodes/SoundNode.hpp states/PauseState.cpp states/PauseState.hpp system/Utility.hpp system/Utility.cpp system/Animation.cpp system/Animation.hpp system/Particle.hpp nodes/ParticleNode.cpp nodes/ParticleNode.hpp nodes/EmitterNode.cpp nodes/EmitterNode.hpp Player.cpp Player.hpp World.cpp World.hpp entities/Entity.cpp entities/Entity.hpp entities/Paddle.cpp entities/Paddle.hpp entities/Block.cpp entities/Block.hpp DataTables.cpp DataTables.hpp entities/Ball.cpp entities/Ball.hpp Wall.cpp Wall.hpp Score.cpp Score.hpp states/GameOverState.cpp states/GameOverState.hpp Level.cpp Level.hpp Life.cpp Life.hpp ScoreBoard.cpp ScoreBoard.hpp gui/TextInput.cpp gui/TextInput.hpp states/NewHighscoreState.cpp states/NewHighscoreState.hpp tween/Tweenable.cpp tween/Tweenable.hpp tween/Tween.cpp tween/Tween.hpp tween/LinearTween.cpp tween/LinearTween.hpp tween/EaseOutElastic.cpp tween/EaseOutElastic.hpp LevelInfo.cpp LevelInfo.hpp system/Observable.cpp system/Observable.hpp states/SettingsState.cpp states/SettingsState.hpp system/SettingsParser.cpp system/SettingsParser.hpp gui/Label.cpp gui/Label.hpp system/Statistics.cpp system/Statistics.hpp entities/BlockTypes.hpp skills/Skill.cpp skills/Skill.hpp skills/DuplicateBallSkill.cpp skills/DuplicateBallSkill.hpp system/CollisionManager.cpp system/CollisionManager.hpp system/Patcher.cpp system/Patcher.hpp shaders/PostEffect.cpp shaders/PostEffect.hpp shaders/BloomEffect.cpp shaders/BloomEffect.hpp shaders/Space.cpp shaders/Space.hpp Background.cpp Background.hpp skills/SlowmotionSkill.cpp skills/SlowmotionSkill.hpp)
+set(SOURCE_FILES main.cpp system/Application.cpp system/Application.hpp nodes/SceneNode.cpp nodes/SceneNode.hpp nodes/Category.hpp nodes/SpriteNode.cpp nodes/SpriteNode.hpp system/Command.cpp system/Command.hpp system/CommandQueue.cpp system/CommandQueue.hpp ResourceIdentifiers.hpp system/ResourceHolder.hpp system/StateStack.hpp system/StateStack.cpp system/State.hpp system/State.cpp states/StateIdentifiers.hpp states/GameState.cpp states/GameState.hpp states/TitleState.cpp states/TitleState.hpp gui/Container.cpp gui/Container.hpp gui/Component.cpp gui/Component.hpp gui/Button.cpp gui/Button.hpp system/SoundPlayer.cpp system/SoundPlayer.hpp system/MusicPlayer.cpp system/MusicPlayer.hpp nodes/SoundNode.cpp nodes/SoundNode.hpp states/PauseState.cpp states/PauseState.hpp system/Utility.hpp system/Utility.cpp system/Animation.cpp system/Animation.hpp system/Particle.hpp nodes/ParticleNode.cpp nodes/ParticleNode.hpp nodes/EmitterNode.cpp nodes/EmitterNode.hpp Player.cpp Player.hpp World.cpp World.hpp entities/Entity.cpp entities/Entity.hpp entities/Paddle.cpp entities/Paddle.hpp entities/Block.cpp entities/Block.hpp DataTables.cpp DataTables.hpp entities/Ball.cpp entities/Ball.hpp Wall.cpp Wall.hpp Score.cpp Score.hpp states/GameOverState.cpp states/GameOverState.hpp Level.cpp Level.hpp Life.cpp Life.hpp ScoreBoard.cpp ScoreBoard.hpp gui/TextInput.cpp gui/TextInput.hpp states/NewHighscoreState.cpp states/NewHighscoreState.hpp tween/Tweenable.cpp tween/Tweenable.hpp tween/Tween.cpp tween/Tween.hpp tween/LinearTween.cpp tween/LinearTween.hpp tween/EaseOutElastic.cpp tween/EaseOutElastic.hpp LevelInfo.cpp LevelInfo.hpp system/Observable.cpp system/Observable.hpp states/SettingsState.cpp states/SettingsState.hpp system/SettingsParser.cpp system/SettingsParser.hpp gui/Label.cpp gui/Label.hpp system/Statistics.cpp system/Statistics.hpp entities/BlockTypes.hpp skills/Skill.cpp skills/Skill.hpp skills/DuplicateBallSkill.cpp skills/DuplicateBallSkill.hpp system/CollisionManager.cpp system/CollisionManager.hpp shaders/PostEffect.cpp shaders/PostEffect.hpp shaders/BloomEffect.cpp shaders/BloomEffect.hpp shaders/Space.cpp shaders/Space.hpp Background.cpp Background.hpp skills/SlowmotionSkill.cpp skills/SlowmotionSkill.hpp states/StoreState.cpp states/StoreState.hpp)
+
+if(INCLUDE_UPDATE_LIBRARIES)
+    set(SOURCE_FILES ${SOURCE_FILES} system/Patcher.cpp system/Patcher.hpp)
+endif()
 
 if(WIN32)
     add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES})
