@@ -241,11 +241,11 @@ void World::buildScene() {
   this->score = score.get();
   sceneGraph.attachChild(std::move(score));
 
-  auto dupSkill = std::make_unique<DuplicateBallSkill>(textures.get(Textures::SKILLS), fonts.get(Fonts::MAIN), (sf::Keyboard::Key) settings.get("key_skill_1", (int) sf::Keyboard::Q));
+  auto dupSkill = std::make_unique<DuplicateBallSkill>(textures.get(Textures::SKILLS), fonts.get(Fonts::MAIN), (sf::Keyboard::Key) settings.get(Skills::ID::DUPLICATE_BALL, (int) sf::Keyboard::Q));
   dupSkill->move(200, 10);
   sceneGraph.attachChild(std::move(dupSkill));
 
-  auto slowSkill = std::make_unique<SlowmotionSkill>(textures.get(Textures::SKILLS), fonts.get(Fonts::MAIN), (sf::Keyboard::Key) settings.get("key_skill_2", (int) sf::Keyboard::W));
+  auto slowSkill = std::make_unique<SlowmotionSkill>(textures.get(Textures::SKILLS), fonts.get(Fonts::MAIN), (sf::Keyboard::Key) settings.get(Skills::ID::SLOWMOTION, (int) sf::Keyboard::W));
   slowSkill->move(260, 10);
   sceneGraph.attachChild(std::move(slowSkill));
 }

@@ -88,15 +88,25 @@ SettingsState::SettingsState(StateStack &stack, State::Context context)
       label->setText(String::from(context.player->getAssignedKey(Player::MOVE_RIGHT)));
   });
 
-  addOption("Skill 1", [context](const sf::Event& event, gui::Button* button) {
+  addOption("Skill: Ball duplizieren", [context](const sf::Event& event, gui::Button* button) {
       if(event.key.code != sf::Keyboard::Escape) {
         context.player->assignKey(Player::DUPLICATE_BALL, event.key.code);
-        context.settings->set("key_skill_1", (int) event.key.code);
+        context.settings->set(Skills::ID::DUPLICATE_BALL, (int) event.key.code);
       }
       button->deactivate();
   }, [context](gui::Label* label) {
       label->setText(String::from(context.player->getAssignedKey(Player::DUPLICATE_BALL)));
   });
+
+    addOption("Skill: Slowmotion", [context](const sf::Event& event, gui::Button* button) {
+        if(event.key.code != sf::Keyboard::Escape) {
+            context.player->assignKey(Player::SLOWDOWN_BALL, event.key.code);
+            context.settings->set(Skills::ID::SLOWMOTION , (int) event.key.code);
+        }
+        button->deactivate();
+    }, [context](gui::Label* label) {
+        label->setText(String::from(context.player->getAssignedKey(Player::SLOWDOWN_BALL)));
+    });
 
   auto backButton = std::make_shared<gui::Button>(context);
   backButton->setPosition(80.0f, 600.0f);

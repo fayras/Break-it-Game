@@ -1,6 +1,8 @@
 #ifndef SFML_TEMPLATE_RESOURCEIDENTIFIERS_HPP
 #define SFML_TEMPLATE_RESOURCEIDENTIFIERS_HPP
 
+#include <string>
+
 // Forward declaration of SFML classes
 namespace sf {
   class Texture;
@@ -62,6 +64,12 @@ namespace Shaders {
     };
 }
 
+namespace Skills {
+    namespace ID {
+        const std::string DUPLICATE_BALL = "skill_duplicate_ball";
+        const std::string SLOWMOTION = "skill_slowmotion";
+    }
+}
 
 // Forward declaration and a few type definitions
 template <typename Resource, typename Identifier>

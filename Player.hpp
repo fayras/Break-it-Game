@@ -13,7 +13,7 @@ class Player {
       MOVE_LEFT,
       MOVE_RIGHT,
       DUPLICATE_BALL,
-        SLOWDOWN_BALL
+      SLOWDOWN_BALL
     };
 
     Player();
