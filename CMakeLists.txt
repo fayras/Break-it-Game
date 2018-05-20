@@ -26,6 +26,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif (NOT CMAKE_BUILD_TYPE)
 
 if (WIN32)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static -static-libgcc -static-libstdc++")
     set(CMAKE_PREFIX_PATH "D:/Coding/libs/SFML-2.4.2;${CMAKE_SOURCE_DIR}/../libcurl-vs2015;${CMAKE_SOURCE_DIR}/../zlib-Release")
     set(SFML_STATIC_LIBRARIES TRUE)
     find_package(SFML 2 REQUIRED COMPONENTS main)
