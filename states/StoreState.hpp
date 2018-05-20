@@ -9,6 +9,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <unordered_map>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include "../system/State.hpp"
 #include "../gui/Container.hpp"
 
@@ -20,11 +21,13 @@ class StoreState : public State {
         bool update(sf::Time dt) override;
         bool handleEvent(const sf::Event& event) override;
         bool skillUnlocked(const std::string& string) const;
+        bool unlockSkill(const std::string& string, int cost);
 
     private:
         std::unordered_map<std::string, std::pair<sf::Sprite, sf::Text>> skillSprites;
         std::vector<std::string> skillsUnlocked;
         gui::Container guiContainer;
+        sf::RectangleShape background;
 };
 
 

@@ -12,6 +12,7 @@ namespace gui {
 
       Label(const std::string& text, const FontHolder& fonts);
       Label(const std::string& text, const sf::Font& font);
+      Label(const std::wstring& text, const sf::Font& font);
 
       bool selectable() const override;
       void setText(const std::string& text);

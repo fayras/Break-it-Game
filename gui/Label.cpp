@@ -7,7 +7,11 @@ gui::Label::Label(const std::string &text, const FontHolder &fonts)
 {}
 
 gui::Label::Label(const std::string &text, const sf::Font & font)
-    : text(text, font, 35)
+  : text(text, font, 35)
+{}
+
+gui::Label::Label(const std::wstring &text, const sf::Font &font)
+  : text(text, font, 35)
 {}
 
 bool gui::Label::selectable() const {
