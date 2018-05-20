@@ -10,8 +10,8 @@ GameState::GameState(StateStack &stack, const State::Context &context)
       player(*context.player)
 {
   context.music->play(Music::GAME);
-  world.setLevel(context.saveData->get("player_level", 0));
-  world.setScore(context.saveData->get("player_score", 0));
+  world.setLevel(context.saveData->getLevel());
+  world.setScore(context.saveData->getScore());
 }
 
 void GameState::draw() {
@@ -23,24 +23,31 @@ bool GameState::update(sf::Time dt) {
   CommandQueue& commands = world.getCommandQueue();
   player.handleRealtimeInput(commands);
 
+  if(getContext().saveData->skillUnlocked(Skills::ID::DUPLICATE_BALL)) {
+    world.unlockSkill(Skills::ID::DUPLICATE_BALL);
+  }
+  if(getContext().saveData->skillUnlocked(Skills::ID::SLOWMOTION)) {
+    world.unlockSkill(Skills::ID::SLOWMOTION);
+  }
+
   if(world.destroyed()) {
     player.setScore(world.getScore());
-    context.saveData->set("player_level", 0);
-    context.saveData->set("player_score", world.getScore());
-    context.saveData->saveToFile();
+    context.saveData->setLevel(0);
+    context.saveData->setScore(world.getScore());
+    context.saveData->save();
     requestStackPush(States::GAME_OVER);
   } else if(world.reachedEnd()) {
     player.setScore(world.getScore());
     player.setLevel(-1);
-    context.saveData->set("player_level", 0);
-    context.saveData->set("player_score", world.getScore());
-    context.saveData->saveToFile();
+    context.saveData->setLevel(0);
+    context.saveData->setScore(world.getScore());
+    context.saveData->save();
     requestStackPush(States::GAME_OVER);
   } else if(worldLevel != world.getCurrentLevel()) {
     worldLevel = world.getCurrentLevel();
-    context.saveData->set("player_level", worldLevel);
-    context.saveData->set("player_score", world.getScore());
-    context.saveData->saveToFile();
+    context.saveData->setLevel(worldLevel);
+    context.saveData->setScore(world.getScore());
+    context.saveData->save();
   } else if(world.finishedLevel()) {
     requestStackPush(States::LEVEL_FINISHED);
   }

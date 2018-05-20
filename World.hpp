@@ -41,6 +41,8 @@ class World : private sf::NonCopyable {
     void setLevel(int level);
     void setScore(int score);
 
+    void unlockSkill(const std::string& string);
+
     bool destroyed();
 
   private:

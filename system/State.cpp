@@ -10,7 +10,7 @@ State::Context::Context(
   Player& player,
   ScoreBoard& scoreBoard,
   SettingsParser& settings,
-  SettingsParser& saveData
+  SaveData& saveData
 )
   : window(&window),
     textures(&textures),

@@ -36,7 +36,7 @@ class Application {
     Player player;
     ScoreBoard scoreBoard;
     SettingsParser settings;
-    SettingsParser saveData;
+    SaveData saveData;
     Statistics stats;
 
     static const sf::Time	TimePerFrame;

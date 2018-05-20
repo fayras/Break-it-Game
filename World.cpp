@@ -245,14 +245,6 @@ void World::buildScene() {
   score->setPosition(worldView.getSize().x - 25, -5);
   this->score = score.get();
   sceneGraph.attachChild(std::move(score));
-
-  auto dupSkill = std::make_unique<DuplicateBallSkill>(textures.get(Textures::SKILLS), fonts.get(Fonts::MAIN), (sf::Keyboard::Key) settings.get(Skills::ID::DUPLICATE_BALL, (int) sf::Keyboard::Q));
-  dupSkill->move(200, 10);
-  sceneGraph.attachChild(std::move(dupSkill));
-
-  auto slowSkill = std::make_unique<SlowmotionSkill>(textures.get(Textures::SKILLS), fonts.get(Fonts::MAIN), (sf::Keyboard::Key) settings.get(Skills::ID::SLOWMOTION, (int) sf::Keyboard::W));
-  slowSkill->move(260, 10);
-  sceneGraph.attachChild(std::move(slowSkill));
 }
 
 sf::FloatRect World::getViewBounds() const {
@@ -281,4 +273,24 @@ int World::getCurrentLevel() const {
 
 bool World::finishedLevel() const {
     return currentLevel->done();
+}
+
+void World::unlockSkill(const std::string &string) {
+  if (string == Skills::ID::DUPLICATE_BALL && !sceneGraph.containsNode(Category::DUPLICATE_SKILL)) {
+    auto dupSkill = std::make_unique<DuplicateBallSkill>(
+            textures.get(Textures::SKILLS), fonts.get(Fonts::MAIN),
+            (sf::Keyboard::Key) settings.get(Skills::ID::DUPLICATE_BALL,
+            (int) sf::Keyboard::Q)
+    );
+    dupSkill->move(200, 10);
+    sceneGraph.attachChild(std::move(dupSkill));
+  } else if(string == Skills::ID::SLOWMOTION && !sceneGraph.containsNode(Category::SLOWMOTION_SKILL)) {
+    auto slowSkill = std::make_unique<SlowmotionSkill>(
+            textures.get(Textures::SKILLS), fonts.get(Fonts::MAIN),
+            (sf::Keyboard::Key) settings.get(Skills::ID::SLOWMOTION,
+            (int) sf::Keyboard::W)
+    );
+    slowSkill->move(260, 10);
+    sceneGraph.attachChild(std::move(slowSkill));
+  }
 }

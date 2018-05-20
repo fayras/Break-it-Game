@@ -14,7 +14,6 @@ StoreState::StoreState(StateStack &stack, State::Context context)
       guiContainer()
 {
     background.setFillColor(sf::Color(0, 0, 0, 170));
-    context.saveData->get("skillsUnlocked", skillsUnlocked);
 
     sf::Sprite sprite1{ context.textures->get(Textures::SKILLS), sf::IntRect{120, 120, 40, 40} };
     sf::Sprite sprite2{ context.textures->get(Textures::SKILLS), sf::IntRect{320, 0, 40, 40} };
@@ -25,7 +24,7 @@ StoreState::StoreState(StateStack &stack, State::Context context)
     skillSprites.emplace(Skills::ID::DUPLICATE_BALL, std::move(std::pair<sf::Sprite, sf::Text>(sprite1, text1)));
     // skillSprites.emplace("AAA", sf::Sprite{ context.textures->get(Textures::SKILLS), sf::IntRect{320, 0, 40, 40} });
 
-    auto score = getContext().saveData->get("player_score", 0);
+    auto score = getContext().saveData->getScore();
 
     auto availablePointsText = std::make_shared<gui::Label>(
             std::wstring(L"Verfügbare Punkte: "),
@@ -35,7 +34,7 @@ StoreState::StoreState(StateStack &stack, State::Context context)
     availablePointsText->setPosition(100, 50);
 
     auto availablePointsLabel = std::make_shared<gui::Label>(
-            std::to_string(getContext().saveData->get("player_score", 0)),
+            std::to_string(getContext().saveData->getScore()),
             context.fonts->get(Fonts::MAIN)
     );
     auto availablePointsPointer = availablePointsLabel.get();
@@ -45,7 +44,7 @@ StoreState::StoreState(StateStack &stack, State::Context context)
     auto btDup = std::make_shared<gui::Button>(context);
     auto btDupPointer = btDup.get();
     btDup->setPosition(600, 130);
-    if(skillUnlocked(Skills::ID::DUPLICATE_BALL)) {
+    if(getContext().saveData->skillUnlocked(Skills::ID::DUPLICATE_BALL)) {
         btDup->setText("Freigeschaltet");
         btDup->disable(true);
     } else if(score < 3000) {
@@ -54,8 +53,8 @@ StoreState::StoreState(StateStack &stack, State::Context context)
     } else {
         btDup->setText("Freischalten");
         btDup->setCallback([this, btDupPointer, availablePointsPointer] () {
-            if(unlockSkill(Skills::ID::DUPLICATE_BALL, 3000)) {
-                availablePointsPointer->setText(std::to_string(getContext().saveData->get("player_score", 0)));
+            if(getContext().saveData->unlockSkill(Skills::ID::DUPLICATE_BALL, 3000)) {
+                availablePointsPointer->setText(std::to_string(getContext().saveData->getScore()));
                 btDupPointer->setText("Freigeschaltet");
                 btDupPointer->disable(true);
             }
@@ -65,7 +64,7 @@ StoreState::StoreState(StateStack &stack, State::Context context)
     auto btSlow = std::make_shared<gui::Button>(context);
     auto btSlowPointer = btSlow.get();
     btSlow->setPosition(600, 280);
-    if(skillUnlocked(Skills::ID::SLOWMOTION)) {
+    if(getContext().saveData->skillUnlocked(Skills::ID::SLOWMOTION)) {
         btSlow->setText("Freigeschaltet");
         btSlow->disable(true);
     } else if(score < 8000) {
@@ -74,8 +73,8 @@ StoreState::StoreState(StateStack &stack, State::Context context)
     } else {
         btSlow->setText("Freischalten");
         btSlow->setCallback([this, btSlowPointer, availablePointsPointer] () {
-            if(unlockSkill(Skills::ID::SLOWMOTION, 8000)) {
-                availablePointsPointer->setText(std::to_string(getContext().saveData->get("player_score", 0)));
+            if(getContext().saveData->unlockSkill(Skills::ID::SLOWMOTION, 8000)) {
+                availablePointsPointer->setText(std::to_string(getContext().saveData->getScore()));
                 btSlowPointer->setText("Freigeschaltet");
                 btSlowPointer->disable(true);
             }
@@ -119,22 +118,5 @@ bool StoreState::update(sf::Time dt) {
 
 bool StoreState::handleEvent(const sf::Event &event) {
     guiContainer.handleEvent(event);
-    return false;
-}
-
-bool StoreState::skillUnlocked(const std::string &string) const {
-    return std::find(skillsUnlocked.begin(), skillsUnlocked.end(), string) != skillsUnlocked.end();
-}
-
-bool StoreState::unlockSkill(const std::string &string, int cost) {
-    auto score = getContext().saveData->get("player_score", 0);
-    if(!skillUnlocked(string) && score >= cost) {
-        skillsUnlocked.push_back(string);
-        getContext().saveData->set("skillsUnlocked", skillsUnlocked);
-        getContext().saveData->set("player_score", score - cost);
-        getContext().saveData->saveToFile();
-        return true;
-    }
-
     return false;
 }

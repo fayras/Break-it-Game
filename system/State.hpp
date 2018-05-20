@@ -6,6 +6,7 @@
 #include "../Player.hpp"
 #include "../ScoreBoard.hpp"
 #include "SettingsParser.hpp"
+#include "SaveData.hpp"
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
@@ -24,7 +25,7 @@ class State {
     typedef std::unique_ptr<State> Ptr;
 
     struct Context {
-      Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, MusicPlayer& music, SoundPlayer& sounds, Player& player, ScoreBoard& scoreBoard, SettingsParser& settings, SettingsParser& saveData);
+      Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, MusicPlayer& music, SoundPlayer& sounds, Player& player, ScoreBoard& scoreBoard, SettingsParser& settings, SaveData& saveData);
       sf::RenderWindow* window;
       TextureHolder* textures;
       FontHolder* fonts;
@@ -33,7 +34,7 @@ class State {
       Player* player;
       ScoreBoard* scoreBoard;
       SettingsParser* settings;
-      SettingsParser* saveData;
+      SaveData* saveData;
     };
 
     State(StateStack& stack, Context context);
