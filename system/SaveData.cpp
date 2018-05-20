@@ -10,8 +10,9 @@ SaveData::SaveData()
 {}
 
 void SaveData::loadFromFile(std::string file) {
-    data.loadFromFile(file);
-    data.get("skillsUnlocked", skillsUnlocked);
+    if(data.loadFromFile(file)) {
+        data.get("skillsUnlocked", skillsUnlocked);
+    }
 }
 
 bool SaveData::exists() const {
@@ -35,7 +36,9 @@ void SaveData::setScore(int score) {
 }
 
 void SaveData::save() {
-    data.set("skillsUnlocked", skillsUnlocked);
+    if(!skillsUnlocked.empty()) {
+        data.set("skillsUnlocked", skillsUnlocked);
+    }
     data.saveToFile();
 }
 
