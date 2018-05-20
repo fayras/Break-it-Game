@@ -41,6 +41,8 @@ bool GameState::update(sf::Time dt) {
     context.saveData->set("player_level", worldLevel);
     context.saveData->set("player_score", world.getScore());
     context.saveData->saveToFile();
+  } else if(world.finishedLevel()) {
+    requestStackPush(States::LEVEL_FINISHED);
   }
 
   return true;

@@ -10,7 +10,8 @@ namespace States {
     GAME_OVER,
     NEW_HIGHSCORE,
     SETTINGS,
-    STORE
+    STORE,
+    LEVEL_FINISHED
   };
 }
 

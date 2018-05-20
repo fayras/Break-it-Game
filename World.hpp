@@ -35,6 +35,7 @@ class World : private sf::NonCopyable {
     CommandQueue& getCommandQueue();
 
     bool reachedEnd() const;
+    bool finishedLevel() const;
     int getCurrentLevel() const;
     int getScore() const;
     void setLevel(int level);

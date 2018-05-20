@@ -119,9 +119,7 @@ bool Level::isLast() const {
 }
 
 void Level::updateCurrent(sf::Time dt, CommandQueue &commands) {
-  if(done()) {
-    loadNext();
-  } else if(ballLost()) {
+  if(ballLost()) {
     objectsNeedUpdate = true;
     auto ball = std::make_unique<Ball>(textures.get(Textures::BALL));
     ballsLayer->attachChildNow(std::move(ball));

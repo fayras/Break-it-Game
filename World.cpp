@@ -49,6 +49,11 @@ void World::update(sf::Time dt) {
   if(!currentLevel->isLoading()) {
     handleCollisions(dt);
   }
+
+  if(currentLevel->done()) {
+    currentLevel->loadNext();
+  }
+
   sceneGraph.update(dt, commandQueue);
   adaptPlayerPosition();
   updateSounds();
@@ -272,4 +277,8 @@ void World::setScore(int score) {
 
 int World::getCurrentLevel() const {
   return currentLevel->getID();
+}
+
+bool World::finishedLevel() const {
+    return currentLevel->done();
 }

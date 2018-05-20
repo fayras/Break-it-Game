@@ -8,6 +8,7 @@
 #include "../states/SettingsState.hpp"
 #include "../Config.hpp"
 #include "../states/StoreState.hpp"
+#include "../states/LevelFinished.hpp"
 
 const int FPS = 60;
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / FPS);
@@ -94,6 +95,7 @@ void Application::registerStates() {
   stateStack.registerState<NewHighscoreState>(States::ID::NEW_HIGHSCORE);
   stateStack.registerState<SettingsState>(States::ID::SETTINGS);
   stateStack.registerState<StoreState>(States::ID::STORE);
+  stateStack.registerState<LevelFinished>(States::ID::LEVEL_FINISHED);
 }
 
 void Application::loadAssets() {
