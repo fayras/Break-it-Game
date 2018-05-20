@@ -13,7 +13,7 @@ class CollisionManager {
 
   private:
     sf::FloatRect getBroadphasingRect(const Entity& entity, sf::Time dt);
-    float sweptAABB(const Entity& b1, const Entity& b2, float& normalX, float& normalY);
+    float sweptAABB(const Entity& b1, const Entity& b2, float& normalX, float& normalY, sf::Time dt);
 
     SceneNode& nodes;
     std::set<SceneNode::Pair> pairs;

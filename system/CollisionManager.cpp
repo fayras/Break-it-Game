@@ -61,7 +61,7 @@ void CollisionManager::doCollisionChecking(
 
   for(auto const& otherEntity : found) {
     float nX, nY;
-    float collisionTime = sweptAABB(*entity, *otherEntity, nX, nY);
+    float collisionTime = sweptAABB(*entity, *otherEntity, nX, nY, time);
 
     if (collisionTime < 1.0f) {
       pairs.emplace(std::minmax(entity, otherEntity));
@@ -75,8 +75,10 @@ void CollisionManager::doCollisionChecking(
 
       entity->pushDirection(dir);
 
-      sf::Time remaining = time - time * collisionTime;
-      doCollisionChecking(remaining, entity, entities, pairs, ++depth);
+      if(entity->getCollisionResponse() == Entity::CollisionResponse::DEFLECT) {
+        sf::Time remaining = time - time * collisionTime;
+        doCollisionChecking(remaining, entity, entities, pairs, ++depth);
+      }
       return;
     }
   }
@@ -98,10 +100,10 @@ sf::FloatRect CollisionManager::getBroadphasingRect(const Entity& entity, sf::Ti
   return rect;
 }
 
-float CollisionManager::sweptAABB(const Entity& e1, const Entity& e2, float &normalX, float &normalY) {
+float CollisionManager::sweptAABB(const Entity& e1, const Entity& e2, float &normalX, float &normalY, sf::Time dt) {
   auto b1 = e1.getBoundingRect();
   auto b2 = e2.getBoundingRect();
-  auto vel = e1.getVelocity();
+  auto vel = e1.getVelocity() * dt.asSeconds();
 
   float xInvEntry, yInvEntry;
   float xInvExit, yInvExit;
@@ -144,35 +146,52 @@ float CollisionManager::sweptAABB(const Entity& e1, const Entity& e2, float &nor
   }
 
   // find the earliest/latest times of collision
+  if (yEntry > 1.0f) yEntry = -std::numeric_limits<float>::infinity();
+  if (xEntry > 1.0f) xEntry = -std::numeric_limits<float>::infinity();
   float entryTime = std::max(xEntry, yEntry);
   float exitTime = std::min(xExit, yExit);
 
   // if there was no collision
-  if (entryTime > exitTime || xEntry < 0.0f && yEntry < 0.0f || xEntry > 1.0f || yEntry > 1.0f) {
+  if (entryTime > exitTime) {
     normalX = 0.0f;
     normalY = 0.0f;
     return 1.0f;
-  } else { // if there was a collision
-    // calculate normal of collided surface
-    if (xEntry > yEntry) {
-      if (xInvEntry < 0.0f) {
-        normalX = 1.0f;
-        normalY = 0.0f;
-      } else {
-        normalX = -1.0f;
-        normalY = 0.0f;
-      }
-    } else {
-      if (yInvEntry < 0.0f) {
-        normalX = 0.0f;
-        normalY = 1.0f;
-      } else {
-        normalX = 0.0f;
-        normalY = -1.0f;
-      }
-    }
-
-    // return the time of collision
-    return entryTime;
   }
+
+  if (xEntry < 0.0f && yEntry < 0.0f) {
+    normalX = 0.0f;
+    normalY = 0.0f;
+    return 1.0f;
+  }
+
+  if(xEntry < 0.0f) {
+    if (b1.left + b1.width < b2.left || b1.left > b2.left + b2.width) return 1.0f;
+  }
+
+  if(yEntry < 0.0f) {
+    if (b1.top + b1.height < b2.top || b1.top > b2.top + b2.height) return 1.0f;
+  }
+
+  // calculate normal of collided surface
+  if (xEntry > yEntry) {
+    if (xInvEntry < 0.0f) {
+      normalX = 1.0f;
+      normalY = 0.0f;
+    } else {
+      normalX = -1.0f;
+      normalY = 0.0f;
+    }
+  } else {
+    if (yInvEntry < 0.0f) {
+      normalX = 0.0f;
+      normalY = 1.0f;
+    } else {
+      normalX = 0.0f;
+      normalY = -1.0f;
+    }
+  }
+
+  // return the time of collision
+  return entryTime;
+
 }

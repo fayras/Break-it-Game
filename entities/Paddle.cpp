@@ -38,3 +38,7 @@ sf::FloatRect Paddle::getBoundingRect() const {
 bool Paddle::isMarkedForRemoval() const {
   return false;
 }
+
+Entity::CollisionResponse Paddle::getCollisionResponse() const {
+    return CollisionResponse::STOP;
+}

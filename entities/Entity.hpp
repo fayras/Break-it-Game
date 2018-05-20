@@ -7,8 +7,13 @@ class Entity : public SceneNode {
   public:
     struct Direction {
       float distance{0.f};
-      float deltaTime;
+      float deltaTime{};
       sf::Vector2f dir;
+    };
+
+    enum CollisionResponse {
+        DEFLECT,
+        STOP
     };
 
     explicit Entity(int hitpoints);
@@ -36,6 +41,8 @@ class Entity : public SceneNode {
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     void pushDirection(Direction dir);
+
+    virtual CollisionResponse getCollisionResponse() const;
 
   protected:
     void updateCurrent(sf::Time dt, CommandQueue& commands) override;

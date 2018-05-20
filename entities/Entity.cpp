@@ -73,8 +73,10 @@ void Entity::updateCurrent(sf::Time dt, CommandQueue &commands) {
       move(velocity * dt.asSeconds());
     } else {
       for(const Direction& d : directions) {
-        setVelocity(velocity.x * d.dir.x, velocity.y * d.dir.y);
         move(velocity * (d.distance * d.deltaTime));
+        if (getCollisionResponse() == CollisionResponse::DEFLECT || &d != &directions.back()) {
+          setVelocity(velocity.x * d.dir.x, velocity.y * d.dir.y);
+        }
       }
       doneDirections = directions;
       directions.clear();
@@ -94,9 +96,11 @@ sf::Vector2f Entity::getPosition() const {
   sf::Vector2f pos = Transformable::getPosition();
   sf::Vector2f vel = velocity;
   for(const Direction& d : directions) {
-    vel.x *= d.dir.x;
-    vel.y *= d.dir.y;
     pos += vel * d.distance * d.deltaTime;
+    if (getCollisionResponse() == CollisionResponse::DEFLECT || &d != &directions.back()) {
+      vel.x *= d.dir.x;
+      vel.y *= d.dir.y;
+    }
   }
   return pos;
 }
@@ -112,14 +116,17 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     std::size_t index = 0;
 
     for(const Direction& d : doneDirections) {
-      vel.x *= d.dir.x;
-      vel.y *= d.dir.y;
-
       lines[index++] = sf::Vertex(pos);
       pos += vel * d.distance * d.deltaTime;
       lines[index++] = sf::Vertex(pos);
+      vel.x *= d.dir.x;
+      vel.y *= d.dir.y;
     }
 
     target.draw(lines, states);
   }
+}
+
+Entity::CollisionResponse Entity::getCollisionResponse() const {
+  return CollisionResponse::DEFLECT;
 }
