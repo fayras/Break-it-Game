@@ -94,6 +94,10 @@ StoreState::StoreState(StateStack &stack, State::Context context)
     guiContainer.pack(availablePointsLabel);
 }
 
+StoreState::~StoreState() {
+    getContext().saveData->save();
+}
+
 void StoreState::draw() {
     sf::RenderWindow& window = *getContext().window;
     window.setView(window.getDefaultView());

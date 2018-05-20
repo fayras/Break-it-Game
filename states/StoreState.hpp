@@ -16,6 +16,7 @@
 class StoreState : public State {
     public:
         StoreState(StateStack& stack, Context context);
+        ~StoreState();
 
         void draw() override;
         bool update(sf::Time dt) override;
