@@ -154,11 +154,7 @@ void World::handleCollisions(sf::Time dt) {
       sounds.play(SoundEffect::HIT_GENERAL);
       score->resetMultiplier();
 
-      float oldY = paddle.getPosition().y;
-      paddle.tween(std::make_unique<LinearTween>(sf::milliseconds(100), [&paddle, oldY](const float& t) {
-        float y = oldY + 20.0f * (0.5f - std::abs(0.5f - t));
-        paddle.setPosition(paddle.getPosition().x, y);
-      }));
+      paddle.bounce(-20.f);
     } else if(matchesCategories(collisionPair, Category::BALL, Category::BLOCK)) {
       auto& ball = dynamic_cast<Ball&>(*collisionPair.first);
       auto& block = dynamic_cast<Block&>(*collisionPair.second);

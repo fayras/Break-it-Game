@@ -13,12 +13,15 @@ class Paddle : public Entity {
     bool isMarkedForRemoval() const override;
     CollisionResponse getCollisionResponse() const override;
 
+    void bounce(float height);
+
   protected:
     void updateCurrent(sf::Time dt, CommandQueue &commands) override;
     void drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const override;
 
   private:
     sf::Sprite sprite;
+    bool bouncing{false};
 };
 
 #endif //BREAK_IT_PADDLE_HPP

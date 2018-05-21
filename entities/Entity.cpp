@@ -74,9 +74,7 @@ void Entity::updateCurrent(sf::Time dt, CommandQueue &commands) {
     } else {
       for(const Direction& d : directions) {
         move(velocity * (d.distance * d.deltaTime));
-        if (getCollisionResponse() == CollisionResponse::DEFLECT || &d != &directions.back()) {
-          setVelocity(velocity.x * d.dir.x, velocity.y * d.dir.y);
-        }
+        setVelocity(velocity.x * d.dir.x, velocity.y * d.dir.y);
       }
       doneDirections = directions;
       directions.clear();
@@ -89,6 +87,10 @@ void Entity::setHP(int points) {
 }
 
 void Entity::pushDirection(const Entity::Direction dir) {
+  if(!recieveEvents) {
+    return;
+  }
+
   directions.emplace_back(dir);
 }
 
@@ -97,10 +99,8 @@ sf::Vector2f Entity::getPosition() const {
   sf::Vector2f vel = velocity;
   for(const Direction& d : directions) {
     pos += vel * d.distance * d.deltaTime;
-    if (getCollisionResponse() == CollisionResponse::DEFLECT || &d != &directions.back()) {
-      vel.x *= d.dir.x;
-      vel.y *= d.dir.y;
-    }
+    vel.x *= d.dir.x;
+    vel.y *= d.dir.y;
   }
   return pos;
 }

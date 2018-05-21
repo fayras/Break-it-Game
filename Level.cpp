@@ -195,11 +195,19 @@ void Level::resetObjects(CommandQueue &commands) {
   auto t = std::make_unique<LinearTween>(sf::milliseconds(2900), [](const float& t) {});
   t->attachObserver([&commands]() {
     Command command;
-    command.category = Category::BALL | Category::PADDLE;
-    command.action = derivedAction<Entity>([](Entity& entity, sf::Time) {
+    command.category = Category::BALL;
+    command.action = derivedAction<Ball>([](Ball& entity, sf::Time) {
       entity.recieveEvents = true;
     });
+
+    Command commandPaddle;
+      commandPaddle.category = Category::PADDLE;
+      commandPaddle.action = derivedAction<Paddle>([](Paddle& entity, sf::Time) {
+      entity.recieveEvents = true;
+    });
+
     commands.push(command);
+    commands.push(commandPaddle);
   });
   tween(std::move(t));
 }

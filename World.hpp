@@ -21,6 +21,7 @@
 #include "system/CollisionManager.hpp"
 #include "system/SettingsParser.hpp"
 #include "shaders/BloomEffect.hpp"
+#include "system/CollisionManagerMinkowski.hpp"
 
 namespace sf {
   class RenderTarget;
@@ -73,7 +74,7 @@ class World : private sf::NonCopyable {
     Score* score;
     Level* currentLevel;
     SceneNode sceneGraph;
-    CollisionManager collisions;
+    CollisionManagerMinkowski collisions;
 
     bool shakeScreen{false};
     sf::Time shakeTimer{sf::Time::Zero};

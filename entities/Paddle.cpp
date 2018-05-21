@@ -2,6 +2,7 @@
 #include "../system/ResourceHolder.hpp"
 #include "../system/Utility.hpp"
 #include "../Life.hpp"
+#include "../tween/LinearTween.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 
 const int SPEED = 500;
@@ -41,4 +42,21 @@ bool Paddle::isMarkedForRemoval() const {
 
 Entity::CollisionResponse Paddle::getCollisionResponse() const {
     return CollisionResponse::STOP;
+}
+
+void Paddle::bounce(float height) {
+    if(bouncing) {
+        return;
+    }
+
+    float oldY = getPosition().y;
+    auto t = std::make_unique<LinearTween>(sf::milliseconds(100), [this, oldY, height](const float& t) {
+        float y = oldY - height * (0.5f - std::abs(0.5f - t));
+        setPosition(getPosition().x, y);
+    });
+    t->attachObserver([this]() {
+        bouncing = false;
+    });
+    tween(std::move(t));
+    bouncing = true;
 }
