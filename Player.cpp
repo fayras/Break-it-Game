@@ -4,6 +4,7 @@
 #include "entities/Ball.hpp"
 #include "skills/DuplicateBallSkill.hpp"
 #include "skills/SlowmotionSkill.hpp"
+#include "system/Utility.hpp"
 #include <map>
 #include <string>
 #include <algorithm>
@@ -34,6 +35,46 @@ void Player::handleEvent(const sf::Event &event, CommandQueue &commands) {
       command.action = [](SceneNode& node, sf::Time) {
         node.showDebugInfo = !node.showDebugInfo;
       };
+      commands.push(command);
+    }
+  }
+
+  if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right) {
+    dragStart.x = event.mouseButton.x;
+    dragStart.y = event.mouseButton.y;
+
+    auto ds = dragStart;
+
+    Command command;
+    command.category = Category::BALL;
+    command.action = derivedAction<Ball>([this, ds](Ball& ball, sf::Time) {
+        if(ball.showDebugInfo) {
+          ball.setPosition(ds.x, ds.y);
+          ball.recieveEvents = false;
+          mouseDrag = true;
+        }
+    });
+    commands.push(command);
+  }
+
+  if(mouseDrag && event.type == sf::Event::MouseMoved) {
+    dragEnd.x = event.mouseMove.x;
+    dragEnd.y = event.mouseMove.y;
+  }
+
+  if (mouseDrag && event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Right) {
+    mouseDrag = false;
+    auto diff = sf::Vector2f(event.mouseButton.x, event.mouseButton.y) - dragStart;
+
+    if(Vector::length(diff) > 2.f) {
+      Command command;
+      command.category = Category::BALL;
+      command.action = derivedAction<Ball>([diff](Ball& ball, sf::Time) {
+          if(ball.showDebugInfo) {
+            ball.setVelocity(diff * 3.5f);
+            ball.recieveEvents = true;
+          }
+      });
       commands.push(command);
     }
   }
@@ -111,4 +152,14 @@ void Player::setLevel(int level) {
 
 int Player::getLevel() const {
   return level;
+}
+
+void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+  if(mouseDrag) {
+    sf::Vertex line[] = {
+            sf::Vertex(dragStart),
+            sf::Vertex(dragEnd)
+    };
+    target.draw(line, 2, sf::Lines);
+  }
 }

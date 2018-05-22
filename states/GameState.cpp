@@ -16,6 +16,7 @@ GameState::GameState(StateStack &stack, const State::Context &context)
 
 void GameState::draw() {
   world.draw();
+  getContext().window->draw(player);
 }
 
 bool GameState::update(sf::Time dt) {

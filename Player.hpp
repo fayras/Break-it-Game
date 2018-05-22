@@ -3,11 +3,13 @@
 
 #include <SFML/Window/Event.hpp>
 #include <map>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Drawable.hpp>
 #include "system/Command.hpp"
 
 class CommandQueue;
 
-class Player {
+class Player : public sf::Drawable {
   public:
     enum Action {
       MOVE_LEFT,
@@ -17,6 +19,8 @@ class Player {
     };
 
     Player();
+
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     void handleEvent(const sf::Event& event, CommandQueue& commands);
     void handleRealtimeInput(CommandQueue& commands);
@@ -35,6 +39,10 @@ class Player {
     std::map<Action, Command> actionBinding;
     int score{0};
     int level{0};
+
+    bool mouseDrag{false};
+    sf::Vector2f dragStart;
+    sf::Vector2f dragEnd;
 };
 
 #endif //SFML_TEMPLATE_PLAYER_HPP

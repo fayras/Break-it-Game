@@ -15,11 +15,13 @@ SceneNode::SceneNode(Category::Type category)
 
 void SceneNode::attachChild(SceneNode::Ptr child) {
   child->parent = this;
+  child->showDebugInfo = showDebugInfo;
   pendingChildren.push_back(std::move(child));
 }
 
 void SceneNode::attachChildNow(SceneNode::Ptr child) {
   child->parent = this;
+  child->showDebugInfo = showDebugInfo;
   children.push_back(std::move(child));
 }
 
