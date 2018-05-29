@@ -76,7 +76,10 @@ void Entity::updateCurrent(sf::Time dt, CommandQueue &commands) {
         move(velocity * (d.distance * d.deltaTime));
         setVelocity(velocity.x * d.dir.x, velocity.y * d.dir.y);
       }
-      doneDirections = directions;
+      if(showDebugInfo) {
+        doneDirections.clear();
+        doneDirections = directions;
+      }
       directions.clear();
     }
   }
