@@ -177,24 +177,24 @@ float CollisionManagerMinkowski::getRayIntersectionFractionOfFirstRay(sf::Vector
 
 sf::Vector2f CollisionManagerMinkowski::closestPointOnBoundsToPoint(sf::FloatRect rect, sf::Vector2f point) {
     float minDist = std::abs(point.x - rect.left);
-    sf::Vector2f boundsPoint{rect.left, point.y};
+    sf::Vector2f boundsPoint{rect.left - 1, point.y};
 
     if(std::abs(rect.left + rect.width - point.x) < minDist) {
         minDist = std::abs(rect.left + rect.width - point.x);
-        boundsPoint.x = rect.left + rect.width;
+        boundsPoint.x = rect.left + rect.width + 1;
         boundsPoint.y = point.y;
     }
 
     if(std::abs(rect.top + rect.height - point.y) < minDist) {
         minDist = std::abs(rect.top + rect.height - point.y);
         boundsPoint.x = point.x;
-        boundsPoint.y = rect.top + rect.height;
+        boundsPoint.y = rect.top + rect.height + 1;
     }
 
     if(std::abs(rect.top - point.y) < minDist) {
         minDist = std::abs(rect.top - point.y);
         boundsPoint.x = point.x;
-        boundsPoint.y = rect.top;
+        boundsPoint.y = rect.top - 1;
     }
 
     return boundsPoint;
