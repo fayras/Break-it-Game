@@ -46,12 +46,13 @@ bool GameState::update(sf::Time dt) {
     requestStackPush(States::GAME_OVER);
   } else if(worldLevel != world.getCurrentLevel()) {
     worldLevel = world.getCurrentLevel();
+    world.setScore(context.saveData->getScore());
     context.saveData->setLevel(worldLevel);
-    context.saveData->setScore(world.getScore());
     context.saveData->save();
   } else if(world.finishedLevel()) {
     context.saveData->setLevel(worldLevel);
     context.saveData->setScore(world.getScore());
+    context.saveData->save();
     requestStackPush(States::LEVEL_FINISHED);
   }
 
