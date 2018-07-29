@@ -7,6 +7,11 @@
 #include "../system/ResourceHolder.hpp"
 #include "../gui/Button.hpp"
 #include "../gui/Label.hpp"
+#include "../DataTables.hpp"
+
+namespace {
+    const std::vector<SkillData> SkillTable = initializeSkillData();
+}
 
 StoreState::StoreState(StateStack &stack, State::Context context)
     : State(stack, context),
@@ -14,15 +19,6 @@ StoreState::StoreState(StateStack &stack, State::Context context)
       guiContainer()
 {
     background.setFillColor(sf::Color(0, 0, 0, 170));
-
-    sf::Sprite sprite1{ context.textures->get(Textures::SKILLS), sf::IntRect{120, 120, 40, 40} };
-    sf::Sprite sprite2{ context.textures->get(Textures::SKILLS), sf::IntRect{320, 0, 40, 40} };
-    sf::Text text1{ "Dupliziert den Ball\nKosten: 3000 Punkte", context.fonts->get(Fonts::MAIN) };
-    sf::Text text2{ L"Verlangsamt den Ball für einige Sekunden\nKosten: 8000 Punkte", context.fonts->get(Fonts::MAIN) };
-
-    skillSprites.emplace(Skills::ID::SLOWMOTION, std::move(std::pair<sf::Sprite, sf::Text>(sprite2, text2)));
-    skillSprites.emplace(Skills::ID::DUPLICATE_BALL, std::move(std::pair<sf::Sprite, sf::Text>(sprite1, text1)));
-    // skillSprites.emplace("AAA", sf::Sprite{ context.textures->get(Textures::SKILLS), sf::IntRect{320, 0, 40, 40} });
 
     auto score = getContext().saveData->getScore();
 
@@ -41,44 +37,39 @@ StoreState::StoreState(StateStack &stack, State::Context context)
     availablePointsLabel->setSize(25);
     availablePointsLabel->setPosition(330, 50);
 
-    auto btDup = std::make_shared<gui::Button>(context);
-    auto btDupPointer = btDup.get();
-    btDup->setPosition(600, 130);
-    if(getContext().saveData->skillUnlocked(Skills::ID::DUPLICATE_BALL)) {
-        btDup->setText("Freigeschaltet");
-        btDup->disable(true);
-    } else if(score < 3000) {
-        btDup->setText("Nicht genug Punkte");
-        btDup->disable(true);
-    } else {
-        btDup->setText("Freischalten");
-        btDup->setCallback([this, btDupPointer, availablePointsPointer] () {
-            if(getContext().saveData->unlockSkill(Skills::ID::DUPLICATE_BALL, 3000)) {
-                availablePointsPointer->setText(std::to_string(getContext().saveData->getScore()));
-                btDupPointer->setText("Freigeschaltet");
-                btDupPointer->disable(true);
-            }
-        });
-    }
+    int i = 0;
+    for(auto const &skill : SkillTable) {
+        sf::Sprite sprite{ context.textures->get(Textures::SKILLS), skill.spriteRect };
+        sf::Text text{ skill.description, context.fonts->get(Fonts::MAIN) };
 
-    auto btSlow = std::make_shared<gui::Button>(context);
-    auto btSlowPointer = btSlow.get();
-    btSlow->setPosition(600, 280);
-    if(getContext().saveData->skillUnlocked(Skills::ID::SLOWMOTION)) {
-        btSlow->setText("Freigeschaltet");
-        btSlow->disable(true);
-    } else if(score < 8000) {
-        btSlow->setText("Nicht genug Punkte");
-        btSlow->disable(true);
-    } else {
-        btSlow->setText("Freischalten");
-        btSlow->setCallback([this, btSlowPointer, availablePointsPointer] () {
-            if(getContext().saveData->unlockSkill(Skills::ID::SLOWMOTION, 8000)) {
-                availablePointsPointer->setText(std::to_string(getContext().saveData->getScore()));
-                btSlowPointer->setText("Freigeschaltet");
-                btSlowPointer->disable(true);
-            }
-        });
+        sprite.setPosition(100, i * 150 + 130);
+        text.setPosition(200, i * 150 + 130);
+        text.setCharacterSize(15);
+
+        skillSprites.emplace_back(std::move(std::pair<sf::Sprite, sf::Text>(sprite, text)));
+
+        auto button = std::make_shared<gui::Button>(context);
+        auto buttonPointer = button.get();
+        button->setPosition(600, 130 + i * 150);
+        if(getContext().saveData->skillUnlocked(skill.id)) {
+            button->setText("Freigeschaltet");
+            button->disable(true);
+        } else if(score < skill.cost) {
+            button->setText("Nicht genug Punkte");
+            button->disable(true);
+        } else {
+            button->setText("Freischalten");
+            button->setCallback([this, buttonPointer, availablePointsPointer, skill] () {
+                if(getContext().saveData->unlockSkill(skill.id, skill.cost)) {
+                    availablePointsPointer->setText(std::to_string(getContext().saveData->getScore()));
+                    buttonPointer->setText("Freigeschaltet");
+                    buttonPointer->disable(true);
+                }
+            });
+        }
+
+        guiContainer.pack(button);
+        i++;
     }
 
     auto backButton = std::make_shared<gui::Button>(context);
@@ -87,8 +78,6 @@ StoreState::StoreState(StateStack &stack, State::Context context)
     backButton->setShortcut(sf::Keyboard::Escape);
     backButton->setCallback(std::bind(&StoreState::requestStackPop, this));
 
-    guiContainer.pack(btDup);
-    guiContainer.pack(btSlow);
     guiContainer.pack(backButton);
     guiContainer.pack(availablePointsText);
     guiContainer.pack(availablePointsLabel);
@@ -102,16 +91,12 @@ void StoreState::draw() {
     sf::RenderWindow& window = *getContext().window;
     window.setView(window.getDefaultView());
     window.draw(background);
-    int i = 0;
-    for(auto& skill : skillSprites) {
-        skill.second.first.setPosition(100, i * 150 + 130);
-        skill.second.second.setPosition(200, i * 150 + 130);
-        skill.second.second.setCharacterSize(15);
-        window.draw(skill.second.first);
-        window.draw(skill.second.second);
 
-        i++;
+    for(auto& skill : skillSprites) {
+        window.draw(skill.first);
+        window.draw(skill.second);
     }
+
     window.draw(guiContainer);
 }
 

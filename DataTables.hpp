@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/System.hpp>
 #include <vector>
+#include <SFML/Graphics/Rect.hpp>
 #include "ResourceIdentifiers.hpp"
 #include "entities/BlockTypes.hpp"
 
@@ -22,7 +23,15 @@ struct LevelData {
   std::string filename;
 };
 
-std::vector<ParticleData>	initializeParticleData();
+struct SkillData {
+    std::string id;
+    std::wstring description;
+    sf::IntRect spriteRect;
+    int cost;
+};
+
+std::vector<ParticleData> initializeParticleData();
 std::vector<LevelData> initializeLevelData();
+std::vector<SkillData> initializeSkillData();
 
 #endif //BREAK_IT_DATATABLES_HPP

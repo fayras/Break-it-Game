@@ -7,7 +7,7 @@
 
 
 #include <SFML/Graphics/Sprite.hpp>
-#include <unordered_map>
+#include <vector>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include "../system/State.hpp"
@@ -16,14 +16,14 @@
 class StoreState : public State {
     public:
         StoreState(StateStack& stack, Context context);
-        ~StoreState();
+        ~StoreState() override;
 
         void draw() override;
         bool update(sf::Time dt) override;
         bool handleEvent(const sf::Event& event) override;
 
     private:
-        std::unordered_map<std::string, std::pair<sf::Sprite, sf::Text>> skillSprites;
+        std::vector<std::pair<sf::Sprite, sf::Text>> skillSprites;
         std::vector<std::string> skillsUnlocked;
         gui::Container guiContainer;
         sf::RectangleShape background;

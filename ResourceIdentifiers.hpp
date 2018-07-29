@@ -66,8 +66,8 @@ namespace Shaders {
 
 namespace Skills {
     namespace ID {
-        const std::string DUPLICATE_BALL = "skill_duplicate_ball";
-        const std::string SLOWMOTION = "skill_slowmotion";
+        extern const std::string DUPLICATE_BALL;
+        extern const std::string SLOWMOTION;
     }
 }
 
@@ -75,7 +75,7 @@ namespace Skills {
 template <typename Resource, typename Identifier>
 class ResourceHolder;
 
-typedef ResourceHolder<sf::Texture, Textures::ID>	TextureHolder;
+typedef ResourceHolder<sf::Texture, Textures::ID> TextureHolder;
 typedef ResourceHolder<sf::Font, Fonts::ID> FontHolder;
 typedef ResourceHolder<sf::SoundBuffer, SoundEffect::ID> SoundBufferHolder;
 typedef ResourceHolder<sf::Shader, Shaders::ID>	ShaderHolder;
