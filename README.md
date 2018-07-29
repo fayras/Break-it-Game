@@ -33,3 +33,20 @@ Hinweis: Sollte `SFML` nicht in einem Ordner liegen, welcher automatisch gefunde
 Nachdem das Projekt erfolgreich erstellt wurde muss noch die Datei `openal32.dll` aus dem Verzeichnis `path/to/sfml/bin` kopiert werden. (Das hat damit zu tun, dass diese Datei dynamisch gelinkt werden muss auf Grund ihrer Lizenz.)
 
 Dann ist es auch geschafft und das Spiel kann gestartet werden. Viel Spass!
+
+### Attributionen
+
+##### Grafiken
+
+- "Space Shooter Pack" von "Sparkin Labs" (https://github.com/sparklinlabs/superpowers-asset-packs/tree/master/space-shooter, http://superpowers-html5.com/index.en.html)
+- "RPG Battle System Pack" von "Sparkin Labs"
+
+##### Musik
+
+- "Through Space" von "maxstack" (https://opengameart.org/content/through-space)
+- "Retro 1" von "DL Sounds" (https://www.dl-sounds.com/royalty-free/retro1-140/)
+
+##### Font
+
+- "TimesNewPixel" von "pentacom" (http://www.pentacom.jp/pentacom/bitfontmaker2/gallery/?id=57)
+- "Diner" von "David Rakowski" (https://www.fontsquirrel.com/fonts/Diner-Skinny)
