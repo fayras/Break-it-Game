@@ -2,7 +2,9 @@
 
 Ein [Breakout](https://de.wikipedia.org/wiki/Breakout_(Computerspiel)) Klon entstanden in der Freizeit als Hobby-Projekt. 
 
-Es wurde die Bibliothek [SFML](https://www.sfml-dev.org/) benutzt. 
+Es wurde die Bibliothek [SFML](https://www.sfml-dev.org/) benutzt.
+
+![Break It Image](assets/break-it-small.png)
 
 ### Projekt selbst erstellen
 
