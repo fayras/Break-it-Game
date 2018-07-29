@@ -82,7 +82,7 @@ void Application::update(sf::Time dt) {
 void Application::render() {
   window.clear();
   stateStack.draw();
-  window.draw(stats);
+  // window.draw(stats);
   window.setView(window.getDefaultView());
   window.display();
 }
